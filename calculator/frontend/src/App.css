@@ -26,3 +26,12 @@
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
+
+.form-control {
+  margin-right:auto; 
+  margin-left:auto;
+  width:300px;
+}
+.btn.btn-primary{
+margin: 4px
+}
