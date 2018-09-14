@@ -1,0 +1,38 @@
+2018-09-13 13:51:57,174 INFO o.a.j.u.JMeterUtils: Setting Locale to en_US
+2018-09-13 13:51:57,202 INFO o.a.j.JMeter: Loading user properties from: /Users/nirbhaykekre/Downloads/apache-jmeter-4.0/bin/user.properties
+2018-09-13 13:51:57,203 INFO o.a.j.JMeter: Loading system properties from: /Users/nirbhaykekre/Downloads/apache-jmeter-4.0/bin/system.properties
+2018-09-13 13:51:57,211 INFO o.a.j.JMeter: Copyright (c) 1998-2018 The Apache Software Foundation
+2018-09-13 13:51:57,211 INFO o.a.j.JMeter: Version 4.0 r1823414
+2018-09-13 13:51:57,212 INFO o.a.j.JMeter: java.version=10.0.2
+2018-09-13 13:51:57,212 INFO o.a.j.JMeter: java.vm.name=Java HotSpot(TM) 64-Bit Server VM
+2018-09-13 13:51:57,212 INFO o.a.j.JMeter: os.name=Mac OS X
+2018-09-13 13:51:57,212 INFO o.a.j.JMeter: os.arch=x86_64
+2018-09-13 13:51:57,212 INFO o.a.j.JMeter: os.version=10.13.6
+2018-09-13 13:51:57,212 INFO o.a.j.JMeter: file.encoding=UTF-8
+2018-09-13 13:51:57,212 INFO o.a.j.JMeter: Max memory     =2147483648
+2018-09-13 13:51:57,212 INFO o.a.j.JMeter: Available Processors =4
+2018-09-13 13:51:57,219 INFO o.a.j.JMeter: Default Locale=English (United States)
+2018-09-13 13:51:57,219 INFO o.a.j.JMeter: JMeter  Locale=English (United States)
+2018-09-13 13:51:57,220 INFO o.a.j.JMeter: JMeterHome=/Users/nirbhaykekre/Downloads/apache-jmeter-4.0
+2018-09-13 13:51:57,220 INFO o.a.j.JMeter: user.dir  =/Users/nirbhaykekre/Desktop/gitWS/CMPE273-37/calculator/backend
+2018-09-13 13:51:57,220 INFO o.a.j.JMeter: PWD       =/Users/nirbhaykekre/Desktop/gitWS/CMPE273-37/calculator/backend
+2018-09-13 13:51:57,239 INFO o.a.j.JMeter: IP: 10.0.0.104 Name: Nirbhays-MacBook-Pro.local FullName: 10.0.0.104
+2018-09-13 13:51:58,841 INFO o.a.j.g.a.LookAndFeelCommand: Installing Darcula LAF
+2018-09-13 13:51:58,849 INFO o.a.j.g.a.LookAndFeelCommand: Using look and feel: com.bulenkov.darcula.DarculaLaf [Darcula]
+2018-09-13 13:51:58,849 INFO o.a.j.JMeter: Setting LAF to: com.bulenkov.darcula.DarculaLaf
+2018-09-13 13:51:58,954 INFO o.a.j.JMeter: Loaded icon properties from org/apache/jmeter/images/icon.properties
+2018-09-13 13:51:59,413 INFO o.a.j.e.u.CompoundVariable: Note: Function class names must contain the string: '.functions.'
+2018-09-13 13:51:59,416 INFO o.a.j.e.u.CompoundVariable: Note: Function class names must not contain the string: '.gui.'
+2018-09-13 13:52:01,012 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for text/html is org.apache.jmeter.protocol.http.parser.LagartoBasedHtmlParser
+2018-09-13 13:52:01,014 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for application/xhtml+xml is org.apache.jmeter.protocol.http.parser.LagartoBasedHtmlParser
+2018-09-13 13:52:01,014 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for application/xml is org.apache.jmeter.protocol.http.parser.LagartoBasedHtmlParser
+2018-09-13 13:52:01,015 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for text/xml is org.apache.jmeter.protocol.http.parser.LagartoBasedHtmlParser
+2018-09-13 13:52:01,015 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for text/vnd.wap.wml is org.apache.jmeter.protocol.http.parser.RegexpHTMLParser
+2018-09-13 13:52:01,016 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for text/css is org.apache.jmeter.protocol.http.parser.CssParser
+2018-09-13 13:52:01,471 INFO o.a.j.e.KeyToolUtils: keytool found at 'keytool'
+2018-09-13 13:52:01,472 INFO o.a.j.p.h.p.ProxyControl: HTTP(S) Test Script Recorder SSL Proxy will use keys that support embedded 3rd party resources in file /Users/nirbhaykekre/Downloads/apache-jmeter-4.0/bin/proxyserver.jks
+2018-09-13 13:52:01,611 INFO o.a.j.s.FileServer: Default base='/Users/nirbhaykekre/Desktop/gitWS/CMPE273-37/calculator/backend'
+2018-09-13 13:52:01,941 INFO o.a.j.s.SampleResult: Note: Sample TimeStamps are START times
+2018-09-13 13:52:01,941 INFO o.a.j.s.SampleResult: sampleresult.default.encoding is set to ISO-8859-1
+2018-09-13 13:52:01,941 INFO o.a.j.s.SampleResult: sampleresult.useNanoTime=true
+2018-09-13 13:52:01,941 INFO o.a.j.s.SampleResult: sampleresult.nanoThreadSleep=5000
