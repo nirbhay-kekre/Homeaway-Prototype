@@ -1,6 +1,8 @@
 let express = require("express");
-let query = require("../connection/single").singleQuery;
+let query = require("../connection/pool").poolQuery;
 let bcrypt = require("bcrypt");
+let expressValidator = require("express-validator");
+
 let router = express.Router;
 
 router.post("/signup", (req, res) => {
@@ -9,7 +11,30 @@ router.post("/signup", (req, res) => {
     let firstname = req.body.firstname;
     let lastname = req.body.lastname;
     let role = req.body.role;
-    checkAndStoreUser(username, password, firstname, lastname, role);
+
+    req.checkBody("username", "An Email address is required.").notEmpty();
+    req.checkBody("username", "The email you provided is an invalid email format.").isEmail();
+    req.checkBody("password", "A Password is required.").notEmpty();
+    req.checkBody("password", "Your Password must contain at least 1 number and 1 letter. Your Password must be between 7 and 32 characters.").matches(/^(?=.*\d)(?=.*[a-zA-Z]).{8,32}$/);
+    req.checkBody("firstname", "First name is required").notEmpty();
+    req.checkBody("lastname", "Last name is required").notEmpty();
+    if(!role){
+        req.body.role= role = "traveler"; //default is traveler account.
+    }
+    let errors = req.validationErrors();
+    if (errors) {
+        let msg = errors.map(error => error.msg).reduce((accumulator, currentVal) => accumulator + "\n" + currentVal);
+        resp.writeHead(400, {
+            'Content-Type': 'application/json'
+        });
+        resp.end(JSON.stringify({
+            success: false,
+            message: msg
+        }));
+    }
+    else{
+        checkAndStoreUser(username, password, firstname, lastname, role);
+    }
 });
 function checkAndStoreUser(username, password, firstname, lastname, role, response) {
     bcrypt.hash(password, 10, function(err, hash) {
@@ -18,7 +43,7 @@ function checkAndStoreUser(username, password, firstname, lastname, role, respon
                 if (error.errno === 1062) { //1062 is for primary key violation 
                     createErrorResponseWithMessage(409, "Email address is already in use." , response);
                 } else if(error.errno === 1048){//1048 is for Not Null violation
-                    createErrorResponseWithMessage(409, "All mandatory fields must be populated" , response);
+                    createErrorResponseWithMessage(400, "All mandatory fields must be populated" , response);
                 }else{
                     createErrorResponseWithMessage(500, "Internal server error", response);
                 }
@@ -29,7 +54,7 @@ function checkAndStoreUser(username, password, firstname, lastname, role, respon
                         if (error.errno === 1062) { //1062 is for primary key violation 
                             createErrorResponseWithMessage(409, "Email address is already in use." , response);
                         } else if(error.errno === 1048){//1048 is for Not Null violation
-                            createErrorResponseWithMessage(409, "All mandatory fields must be populated" , response);
+                            createErrorResponseWithMessage(400, "All mandatory fields must be populated" , response);
                         }else{
                             createErrorResponseWithMessage(500, "Internal server error", response);
                         }
