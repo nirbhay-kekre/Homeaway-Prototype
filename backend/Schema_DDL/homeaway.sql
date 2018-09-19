@@ -1,6 +1,7 @@
 CREATE DATABASE IF NOT EXISTS  `homeaway`;
 USE `homeaway`;
 
+DROP TABLE IF EXISTS `amenities`; 
 DROP TABLE IF EXISTS `profile`;
 DROP TABLE IF EXISTS `propertyPhotos`;
 DROP TABLE IF EXISTS `propertyBlockDate`;
@@ -61,7 +62,7 @@ CREATE TABLE `property` (
 CREATE TABLE `propertyPhotos` (
   `propertyId` int(11) NOT NULL,
   `photoUrl` varchar(255) NOT NULL,
-  `markedForDelete` tinyint(1) DEFAULT '0',
+  `markForDelete` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`propertyId`,`photoUrl`),
   CONSTRAINT `propertyphotos_ibfk_1` FOREIGN KEY (`propertyId`) REFERENCES `property` (`propertyid`)
 );
@@ -72,6 +73,13 @@ CREATE TABLE `propertyBlockDate` (
   `endDate` date NOT NULL,
   PRIMARY KEY (`propertyId`,`startDate`,`endDate`),
   CONSTRAINT `propertyblockdate_ibfk_1` FOREIGN KEY (`propertyId`) REFERENCES `property` (`propertyid`)
+);
+
+CREATE TABLE `amenities` (
+ `propertyId` int(11) NOT NULL,
+ `amenity` varchar(60) NOT NULL,
+ PRIMARY KEY(`propertyId`, `amenity`),
+ CONSTRAINT `amenities_ibfk_1` FOREIGN KEY (`propertyId`) REFERENCES `property`(`propertyId`)
 );
 
 
