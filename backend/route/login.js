@@ -2,17 +2,33 @@ let express = require("express");
 let query = require("../connection/pool").poolQuery;
 let bycrypt = require("bcrypt");
 
-let router = express.Router;
+let router = express.Router();
 
-router.post("/login", (req, res) => {
+router.use("/", function(req,resp,next){
+    if(req.session.username){
+        resp.writeHead(200, {
+            'Content-Type': 'application/json'
+        });
+        resp.end(JSON.stringify({
+            success: true,
+            message: "user already logged in",
+            username: req.session.username,
+            role: req.session.role
+        }));
+    }else{
+        next();
+    }
+})
+
+router.post("/", (req, res) => {
     let usernameActual = req.body.username;
     let passwordActual = req.body.password;
-    macthCredentialsInDB(usernameActual, passwordActual, res);
+    macthCredentialsInDB(usernameActual, passwordActual, req, res);
 });
 
-function macthCredentialsInDB(usernameActual, passwordActual, resp) {
+function macthCredentialsInDB(usernameActual, passwordActual, req, resp) {
 
-    query(`SELECT username, password from credentials where username= ?`,[usernameActual], function (error, records, fields) {
+    query(`SELECT username, password, role from credentials where username= ?`,[usernameActual], function (error, records, fields) {
         if (error) {
             console.log(`Error: ${error.message}`);
             resp.writeHead(500, {
@@ -26,7 +42,7 @@ function macthCredentialsInDB(usernameActual, passwordActual, resp) {
             let record = records[0];
             bycrypt.compare(passwordActual, record.password, function (err, result) {
                 if (result) {
-                    // res.cookie('cookie',username,{maxAge: 900000, httpOnly: false, path : '/'});
+                    resp.cookie('cookie',record.username,{maxAge: 900000, httpOnly: false, path : '/'});
                     req.session.username = record.username;
                     req.session.role= record.role;
                     resp.writeHead(200, {
@@ -48,9 +64,16 @@ function macthCredentialsInDB(usernameActual, passwordActual, resp) {
                     }));
                 }
             });
-
+        }else {
+            resp.writeHead(401, {
+                'Content-Type': 'application/json'
+            });
+            resp.end(JSON.stringify({
+                success: false,
+                message: "The username or password you entered is incorrect."
+            }));
         }
     });
 }
 
-module.exports.router = router;
+module.exports = router;
