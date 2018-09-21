@@ -1,11 +1,10 @@
 let express = require("express");
 let query = require("../connection/pool").poolQuery;
 let bcrypt = require("bcrypt");
-let expressValidator = require("express-validator");
 
-let router = express.Router;
+let router = express.Router();
 
-router.post("/signup", (req, res) => {
+router.post("/", (req, resp) => {
     let username = req.body.username;
     let password = req.body.password;
     let firstname = req.body.firstname;
@@ -15,7 +14,7 @@ router.post("/signup", (req, res) => {
     req.checkBody("username", "An Email address is required.").notEmpty();
     req.checkBody("username", "The email you provided is an invalid email format.").isEmail();
     req.checkBody("password", "A Password is required.").notEmpty();
-    req.checkBody("password", "Your Password must contain at least 1 number and 1 letter. Your Password must be between 7 and 32 characters.").matches(/^(?=.*\d)(?=.*[a-zA-Z]).{8,32}$/);
+    req.checkBody("password", "Your Password must contain at least 1 number and 1 letter. \n Your Password must be between 7 and 32 characters.").matches(/^(?=.*\d)(?=.*[a-zA-Z]).{8,32}$/);
     req.checkBody("firstname", "First name is required").notEmpty();
     req.checkBody("lastname", "Last name is required").notEmpty();
     if(!role){
@@ -33,7 +32,7 @@ router.post("/signup", (req, res) => {
         }));
     }
     else{
-        checkAndStoreUser(username, password, firstname, lastname, role);
+        checkAndStoreUser(username, password, firstname, lastname, role,resp);
     }
 });
 function checkAndStoreUser(username, password, firstname, lastname, role, response) {
@@ -84,4 +83,4 @@ function createErrorResponseWithMessage(code,message,response){
         message: message
     }));
 }
-module.exports.router = router;
+module.exports = router;
