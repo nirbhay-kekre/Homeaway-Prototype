@@ -26,3 +26,140 @@
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
+
+.home-container {
+  background-image: linear-gradient(180deg,rgba(0,0,0,.5),rgba(0,0,0,.2) 12%,rgba(0,0,0,.2) 88%,rgba(0,0,0,.5)), url(./components/home/home.jpg);
+  background-size: 1440px;
+  
+}
+
+.home-inner {
+  height: 644.17px;
+  color: #fff;
+  position: relative;
+  padding: 20px 0px;
+  align-items: center;
+  display: flex;
+  justify-content: left;
+  flex-direction: column;
+  min-height: 78vh;
+}
+
+.home-search{
+  padding-left: 0;
+  padding-right: 0;
+  width: 100%;
+  max-width: 1020px;
+  margin: auto;
+  padding: 0 10px;
+}
+
+.home-searchField{
+  position: relative;
+  margin:auto;
+  padding: 10px 5px
+}
+.navbar .container-fluid>.navbar-header {
+  justify-content: flex-start;
+  margin-right: 10px;
+}
+.navbar .navbar-nav {
+  float: left;
+  margin: 5px;
+  flex-direction: row;
+
+}
+.nav>li {
+  float: left;
+}
+.nav-item{
+  margin-left: 15px;
+  margin-right: 15px;
+}
+.btn-light{
+    border-radius: 40px;
+    display: block;
+    border-color: #d3d8de;
+    color: #0067db;
+    background-color:#fff;
+    font-size: 14px;
+    margin: 0 15px;
+    padding: 12px 40px;
+}
+.btn-light:hover{
+  border-color: #0067db;
+  background-color:#fff;
+  color: #0067db;
+}
+.btn{
+  text-align: center;
+}
+.btn-secondary{
+ background-color: transparent;
+ border:none;
+} 
+.btn-secondary:hover, .btn-secondary:active, .btn-secondary:focus{
+  background-color: transparent !important;
+  border:none !important;
+  box-shadow: none !important;
+ } 
+
+.show>.btn-secondary.dropdown-toggle {
+  color: #fff;
+  background-color: transparent;
+  border-color: transparent;
+}
+.show>.btn-secondary.dropdown-toggle:focus {
+  box-shadow: none;
+}
+.navbar-nav .dropdown-menu{
+  position: absolute;
+}
+.dropdown-menu{
+  background-color: transparent;
+  color: inherit;
+  border-color: transparent;
+  left:auto;
+  right:0;
+  position: absolute;
+  /*overflow: hidden;*/
+  transform-origin: top;
+  float: left;
+  min-width: 175px;
+  padding: 5px 0;
+  margin: 8px 0 0;
+  list-style: none;
+  font-size: 16px;
+  text-align: left;
+  background-color: #fff;
+  border: 1px solid #d3d8de;
+  border-radius: 4px;
+  box-shadow: 0 8px 14px 0 rgba(0,0,0,.1);
+  background-clip: padding-box;
+  z-index: 1000;
+  top: 100%;
+}
+.dropdown-menu > li{
+  color: #0067db;
+  background-color: #fff;
+  padding: 0px 5px;
+}
+.dropdown-menu > li:hover {
+  background-color: #0067db; /* This doesn't... why? */
+  color: #ffff;
+}
+.dropdown-menu > li>a{
+ color: inherit;
+}
+.form-control{
+  height: 58px;
+  margin: 20px 0px; 
+}
+.btn-primary{
+  height: 58px;
+  width: 140px;
+  border-radius: 40px;
+  margin: 20px 0px;
+  background-color: #0067db
+}
+
