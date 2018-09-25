@@ -6,9 +6,9 @@ class BirdHouse extends Component{
     render(){
         let image = null;
         if(this.props.logo === "white"){
-            image = <a href="#"><img src={whitelogo}></img></a>
+            image = <a href="#"><img src={whitelogo} alt="BirdHouseLogo"></img></a>
         }else{
-            image = <a href="#"><img src={bluelogo}></img></a>
+            image = <a href="#"><img src={bluelogo} alt="BirdHouseLogo"></img></a>
         }
         return(image);
     }

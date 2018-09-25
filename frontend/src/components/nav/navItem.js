@@ -1,30 +1,34 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { Redirect } from 'react-router';
+import './navbar.css'
 
 class NavItem extends Component {
     render() {
         const dropdownItem= (item,index)=>{
-            return <li><a href= {item.href?item.href:"#"} className="nav-link">{item.title}</a></li>;;
+            if(item.onClick){
+                console.log(item.onClick);
+                return <li><Link to= {item.to?item.to:"#"} className="nav-link" onClick={item.onClick} >{item.title}</Link></li>;
+            }else{
+                return <li><Link to= {item.to?item.to:"#"} className="nav-link" >{item.title}</Link></li>;
+            }
         }
         let element = null;
         let themeStyle = {
             color: (this.props.theme === 'white'? '#fff':'#0067db')
         }
         if (this.props.dropdown) {
-
-            element = <div class="dropdown">
-            <button class="btn btn-secondary dropdown-toggle" type="button" id={this.props.title + "dropdown"} data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style={themeStyle}>
+            element = <div className="dropdown">
+            <button className="btn btn-secondary dropdown-toggle" type="button" id={this.props.title + "dropdown"} data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style={themeStyle}>
               {this.props.title}
             </button>
-            <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+            <ul className="dropdown-menu" aria-labelledby="dropdownMenu1">
               {this.props.dropdown.map(dropdownItem)}
             </ul>
           </div>
         } else if (this.props.button) {
-            element = <a href={this.props.href ? this.props.href : "#"} class="btn btn-light">{this.props.title}</a>
+            element = <Link to={this.props.to ? this.props.to : "#"} className="btn btn-light">{this.props.title}</Link>
         } else {
-            element = <a href={this.props.href ? this.props.href : "#"} className='nav-link' style={themeStyle}> {this.props.title}</a>
+            element = <Link to={this.props.to ? this.props.to : "#"} className='nav-link' style={themeStyle}> {this.props.title}</Link>
         }
         return (
             <li className="nav-item">

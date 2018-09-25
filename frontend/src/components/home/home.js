@@ -1,5 +1,9 @@
 import React, { Component } from 'react';
 import Navbar from './../nav/navbar'
+import './home.css'
+import cookie from 'react-cookies';
+import axios from 'axios';
+
 class Home extends Component {
 
     constructor(props){
@@ -18,6 +22,7 @@ class Home extends Component {
         this.departureChangeHandler = this.departureChangeHandler.bind(this);
         this.guestsChangeHandler = this.guestsChangeHandler.bind(this);
         this.searchResultHandler = this.searchResultHandler.bind(this);
+        this.handleLogout = this.handleLogout.bind(this);
     }
     searchTextChangeHandler = (e)=>{
         this.setState({
@@ -45,6 +50,11 @@ class Home extends Component {
     onBlurDate = (e)=>{
         e.currentTarget.type ="text"
     }
+    handleLogout = () => {
+        cookie.remove('cookie', { path: '/' });
+        axios.delete("http://localhost:3001/signout");
+        this.setState({});
+    }
 
     searchResultHandler = (e)=>{
 
@@ -53,72 +63,108 @@ class Home extends Component {
         let navOptions = [
             {
                 title: "Trip boards",
-                href: "#",
+                to: "#",
                 dropdown: false,
                 button: false
             },
-            {
+        ];
+        if (cookie.load('cookie')) {
+            let name=""
+            if(cookie.load("firstname")){
+                name= cookie.load("firstname");
+            }
+            if(cookie.load("lastname")){
+                if(name){
+                    name+= " "+cookie.load("lastname").charAt(0)+"."
+                }else{
+                    name=cookie.load("lastname")
+                }
+            }
+            if(!name){
+                name="Me"
+            }
+            navOptions.push( {
+                title: name,
+                dropdown:[{
+                    title: "Inbox",
+                    to: "#"
+                },{
+                    title: "My trips",
+                    to: "#"
+                },{
+                    title: "My profile",
+                    to: "#"
+                },{
+                    title:"Account",
+                    to: "#"
+                },{
+                    title: "Logout",
+                    to:"/",
+                    onClick: this.handleLogout
+                }]
+            });
+        }else{
+            navOptions.push( {
                 title: "Login",
                 dropdown: [{
-                    title: "traveler login",
-                    href: "#"
+                    title: "Traveler login",
+                    to: "/login"
                 }, {
-                    title: "owner login",
-                    href: "#"
+                    title: "Owner login",
+                    to: "#"
                 }],
                 button: false
-            },
-            {
-                title: "Help",
-                dropdown: [
-                    {
-                        title: "Visit help center",
-                        href: "#",
-                    },
-                    {
-                        title: "How it Works",
-                        href: "#"
-                    },
-                    {
-                        title: "Security",
-                        href: "#"
-                    }
-                ]
-            },
-            {
-                title: "List your property",
-                href: "#",
-                dropdown: false,
-                button: true
-            }
-        ];
-
+            });
+        }
+        navOptions.push( {
+            title: "Help",
+            dropdown: [
+                {
+                    title: "Visit help center",
+                    to: "#",
+                },
+                {
+                    title: "How it Works",
+                    to: "#"
+                },
+                {
+                    title: "Security",
+                    to: "#"
+                }
+            ]
+        },
+        {
+            title: "List your property",
+            to: "#",
+            dropdown: false,
+            button: true
+        });
         return (
             <div className="home-container">
                 <Navbar items={navOptions} logo="white"></Navbar>
                 <div className="home-inner">
-                    <div classname="home-search" style={{ width: "100%", maxWidth: '1020px', margin: "150px 0px 10px 0px"}}>
-                        <h1 class="container">
+                    <div className="home-search" style={{ width: "100%", maxWidth: '1020px', margin: "150px 0px 10px 0px"}}>
+                        <h1 style={{ color: "#fff"}}>
                             <span>Book beach houses, cabins,</span><br />
                             <span>condos and more, worldwide</span>
                         </h1>
 
                         <form className="form-horizontal" onSubmit={this.searchResultHandler}>
-                            <div class="form-row">
-                                <div class="col-4">
+                            <div className="form-row">
+                                <div className="col-4">
                                     <input type="text" className="form-control" id="location" placeholder="Where do you want to go?" onChange={this.searchTextChangeHandler} required />
                                 </div>
-                                <div class="col-2">
+                                <div className="col-2">
                                     <input type="text" onFocus={this.onFocusDate} onBlur={this.onBlurDate} className="form-control" id="arrival" placeholder="Arrive" onChange={this.arrivalChangeHandler} />
                                 </div>
-                                <div class="col-2">
+                                <div className="col-2">
                                     <input type="text" onFocus={this.onFocusDate} onBlur={this.onBlurDate} className="form-control" id="departure" placeholder="Depart" onChange={this.departureChangeHandler}/>
                                 </div>
                                 <div className="col-2">
                                     <input type="number" className="form-control" min="1" max="9" placeholder="Guests" onChange={this.guestsChangeHandler}/>
                                 </div>
                                 <div className="col-2">
-                                    <button className="btn-primary">Search</button>
+                                    <button className="btn-primary search-button">Search</button>
                                 </div>
 
                             </div>

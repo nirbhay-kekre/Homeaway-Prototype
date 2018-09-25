@@ -1,14 +1,16 @@
 import React, {Component} from 'react';
 import bluelogo from './blue.svg';
 import whitelogo from './white.svg';
+import {Link} from 'react-router-dom';
+import './navbar.css'
 
 class Logo extends Component{
     render(){
         let image = null;
         if(this.props.logo === "white"){
-            image = <a href={this.props.href}><img src={whitelogo}></img></a>
+            image = <Link to={this.props.to}><img src={whitelogo} alt="Logo"></img></Link>
         }else{
-            image = <a href={this.props.href}><img src={bluelogo}></img></a>
+            image = <Link to={this.props.to}><img src={bluelogo} alt="Logo"></img></Link>
         }
         return(image);
     }
