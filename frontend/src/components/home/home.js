@@ -85,7 +85,7 @@ class Home extends Component {
             if(!name){
                 name="Me"
             }
-            navOptions.push( {
+            let userOptions={
                 title: name,
                 dropdown:[{
                     title: "Inbox",
@@ -104,7 +104,14 @@ class Home extends Component {
                     to:"/",
                     onClick: this.handleLogout
                 }]
-            });
+            }
+            if(localCookie["role"]=="owner" || localCookie["role"]=="both"){
+                userOptions["dropdown"].push({
+                    title: "Owner Dashboard",
+                    to: "/owner/dashboard"
+                });
+            }
+            navOptions.push( userOptions);
         }else{
             navOptions.push( {
                 title: "Login",

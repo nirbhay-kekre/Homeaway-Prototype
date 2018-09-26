@@ -5,8 +5,9 @@ import axios from 'axios'
 import './login.css'
 import cookie from 'react-cookies';
 import { Redirect } from 'react-router';
+import ownerLoginImage from './ownerLogin.png'
 
-class Login extends Component {
+class OwnerLogin extends Component {
     
     constructor(props) {
         super(props);
@@ -59,7 +60,7 @@ class Login extends Component {
             axios.post("http://localhost:3001/login",{
                     username: this.state.username,
                     password: this.state.password,
-                    role: "traveler"
+                    role: "owner"
             }).then(response => {
                 if (response.status === 200) {
                     this.setState({
@@ -89,8 +90,14 @@ class Login extends Component {
 
     render() {
         let redirectVar = null, invalidCredentials = null;
-        if (cookie.load('cookie')) {
-            redirectVar = <Redirect to="/" />
+        let localCookie=cookie.load('cookie');
+        if (localCookie) {
+            localCookie = JSON.parse(localCookie.substring(2,localCookie.length));
+            if(localCookie.role=="owner" || localCookie.role=="both"){
+                redirectVar = <Redirect to="/owner/dashboard" />
+            }else{
+                redirectVar = <Redirect to="/" />
+            }
         }
         if (this.state.errorMessage && this.state.isLoginAttempted && !this.state.authFlag) {
             invalidCredentials = <p className="alert alert-danger error-message">{this.state.errorMessage}</p>
@@ -100,20 +107,14 @@ class Login extends Component {
                 {redirectVar}
                 <Navbar logo="blue"></Navbar>
                 <div className='login-container'>
-                    <div className='login-inner'>
-                        <div className="login-header text-center col-md-12 traveler">
-                            <h1 >Log in to HomeAway</h1>
+                    <div className='login-inner row'>
+                        <div className="col-md-6 col-sm-6 hidden-xs">
+                            <img align="right" src={ownerLoginImage}></img>
                         </div>
-                        <div>
-                            <span className="signup">Need an account?</span>
-                            <Link to="/signup" className="link">Sign up</Link>
-                        </div>
-                        <div className="col-lg-4 col-lg-offset-4 col-md-5 col-md-offset-4 col-sm-6 col-sm-offset-3 col-xs-12 login-dashboard">
+                        <div className="col-lg-4 col-md-5 col-sm-6 col-xs-12">
                             <div className="login-pannel">
-
-                                <div className="pannel-header"><p>Account login</p></div>
-                                <div className="pannel-body">
-                                    
+                                <div className="pannel-header"><p>Owner login</p></div>
+                                <div className="pannel-body">  
                                     <form className="login-form" onSubmit={this.loginHandler}>
                                         <fieldset>
                                             <div>{invalidCredentials}</div>
@@ -131,7 +132,7 @@ class Login extends Component {
                                             </div>
                                             <div className="form-check login-checkBox">
                                                 <input type="checkbox" className="form-check-input" id="Remember" />
-                                                <label className="form-check-label" htmlFor="Remember">Remember me</label>
+                                                <label className="form-check-label" htmlFor="Remember">Keep me signed in</label>
                                             </div>
                                         </fieldset>
                                     </form>
@@ -145,4 +146,4 @@ class Login extends Component {
     }
 }
 
-export default Login;
+export default OwnerLogin;

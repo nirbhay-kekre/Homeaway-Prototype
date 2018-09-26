@@ -23,12 +23,13 @@ router.use("/", function(req,resp,next){
 router.post("/", (req, res) => {
     let usernameActual = req.body.username;
     let passwordActual = req.body.password;
-    macthCredentialsInDB(usernameActual, passwordActual, req, res);
+    let role = req.body.role;
+    macthCredentialsInDB(usernameActual, passwordActual, role, req, res);
 });
 
-function macthCredentialsInDB(usernameActual, passwordActual, req, resp) {
+function macthCredentialsInDB(usernameActual, passwordActual, role, req, resp) {
 
-    query(`SELECT cred.username, cred.password, cred.role, pro.firstname, pro.lastname from credentials cred, profile pro where pro.username=cred.username and cred.username= ?`,[usernameActual], function (error, records, fields) {
+    query(`SELECT cred.username, cred.password, cred.role, pro.firstname, pro.lastname from credentials cred, profile pro where pro.username=cred.username and cred.username= ? and (cred.role= ? or cred.role= 'both')`,[usernameActual, role], function (error, records, fields) {
         if (error) {
             console.log(`Error: ${error.message}`);
             resp.writeHead(500, {

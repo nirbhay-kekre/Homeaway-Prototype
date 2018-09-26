@@ -72,12 +72,14 @@ p{
     line-height: 1.33;
     border-radius: 0;
     padding-right: 40px;
+    margin: auto;
 }
 
 .login-form{
     padding: 20px 20px 30px;
     min-height: 300px;
     clear: both;
+    font-size: 14px;
 }
 .login-checkBox{
     margin: 10px 0px 0px 0px;

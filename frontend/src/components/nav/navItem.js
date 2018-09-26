@@ -6,7 +6,6 @@ class NavItem extends Component {
     render() {
         const dropdownItem= (item,index)=>{
             if(item.onClick){
-                console.log(item.onClick);
                 return <li><Link to= {item.to?item.to:"#"} className="nav-link" onClick={item.onClick} >{item.title}</Link></li>;
             }else{
                 return <li><Link to= {item.to?item.to:"#"} className="nav-link" >{item.title}</Link></li>;
