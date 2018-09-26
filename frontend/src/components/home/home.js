@@ -68,16 +68,18 @@ class Home extends Component {
                 button: false
             },
         ];
-        if (cookie.load('cookie')) {
+        let localCookie = cookie.load('cookie');
+        if (localCookie) {
+            localCookie = JSON.parse(localCookie.substring(2,localCookie.length))
             let name=""
-            if(cookie.load("firstname")){
-                name= cookie.load("firstname");
+            if(localCookie["firstname"]){
+                name= localCookie["firstname"];
             }
-            if(cookie.load("lastname")){
+            if(localCookie["lastname"]){
                 if(name){
-                    name+= " "+cookie.load("lastname").charAt(0)+"."
+                    name+= " "+localCookie["lastname"].charAt(0)+"."
                 }else{
-                    name=cookie.load("lastname")
+                    name=localCookie["lastname"]
                 }
             }
             if(!name){
@@ -111,7 +113,7 @@ class Home extends Component {
                     to: "/login"
                 }, {
                     title: "Owner login",
-                    to: "#"
+                    to: "/login/owner"
                 }],
                 button: false
             });

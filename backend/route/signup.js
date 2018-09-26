@@ -14,7 +14,7 @@ router.post("/", (req, resp) => {
     req.checkBody("username", "An Email address is required.").notEmpty();
     req.checkBody("username", "The email you provided is an invalid email format.").isEmail();
     req.checkBody("password", "A Password is required.").notEmpty();
-    req.checkBody("password", "Your Password must contain at least 1 number and 1 letter. \n Your Password must be between 7 and 32 characters.").matches(/^(?=.*\d)(?=.*[a-zA-Z]).{8,32}$/);
+    req.checkBody("password", "Your Password must contain at least 1 number and 1 letter. \n Your Password must be between 7 and 32 characters.").matches(/^(?=.*\d)(?=.*[a-zA-Z]).{7,32}$/);
     req.checkBody("firstname", "First name is required").notEmpty();
     req.checkBody("lastname", "Last name is required").notEmpty();
     if(!role){
@@ -32,10 +32,10 @@ router.post("/", (req, resp) => {
         }));
     }
     else{
-        checkAndStoreUser(username, password, firstname, lastname, role,resp);
+        checkAndStoreUser(username, password, firstname, lastname, role,resp, req);
     }
 });
-function checkAndStoreUser(username, password, firstname, lastname, role, response) {
+function checkAndStoreUser(username, password, firstname, lastname, role, response, req) {
     bcrypt.hash(password, 10, function(err, hash) {
         query(`INSERT INTO credentials(username,password,role) values(?,?,?)`, [username, hash, role], function (error, records, fields) {
             if (error) {
@@ -58,6 +58,15 @@ function checkAndStoreUser(username, password, firstname, lastname, role, respon
                             createErrorResponseWithMessage(500, "Internal server error", response);
                         }
                     }else{
+                        response.cookie('cookie',{
+                            username: username,
+                            firstname: firstname,
+                            lastname:lastname,
+                            role: role
+                        },{maxAge: 900000, httpOnly: false, path : '/'});
+                        req.session.username = username;
+                        req.session.role= role;
+
                         response.writeHead(200, {
                             'Content-Type': 'application/json'
                         });

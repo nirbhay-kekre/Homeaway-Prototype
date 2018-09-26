@@ -42,10 +42,12 @@ function macthCredentialsInDB(usernameActual, passwordActual, req, resp) {
             let record = records[0];
             bycrypt.compare(passwordActual, record.password, function (err, result) {
                 if (result) {
-                    resp.cookie('cookie',record.username,{maxAge: 900000, httpOnly: false, path : '/'});
-                    resp.cookie('firstname',record.firstname,{maxAge: 900000, httpOnly: false, path : '/'});
-                    resp.cookie('lastname',record.lastname,{maxAge: 900000, httpOnly: false, path : '/'});
-                    resp.cookie('role',record.role,{maxAge: 900000, httpOnly: false, path : '/'});
+                    resp.cookie('cookie',{
+                        username: record.username,
+                        firstname: record.firstname,
+                        lastname:record.lastname,
+                        role: record.role
+                    },{maxAge: 900000, httpOnly: false, path : '/'});
 
                     req.session.username = record.username;
                     req.session.role= record.role;
