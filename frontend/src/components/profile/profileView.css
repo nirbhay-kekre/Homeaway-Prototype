@@ -1,0 +1,84 @@
+.profile-container {
+    margin-top: 65px;
+    font-family: 'Open Sans', sans-serif;
+}
+
+
+.profile-v2 .profile-edit {
+    margin-right: 20px;
+    font-size: 18px;
+    text-align: right;
+}
+.image-dim{
+    width: 225px;
+    height: 225px;
+    border-radius: 100%;
+}
+.col-md-offset-1 {
+    margin-left: 8.33333333%;
+}
+
+.profile-about{
+    margin-bottom: 20px;
+}
+.aboutme{
+    margin-bottom: 0px;
+}
+.user-detail{
+    margin-top: 20px;
+}
+.profile-field{
+    margin:auto;
+}
+
+.user-description{
+    padding: 20px;
+}
+.main-content-area{
+    margin-top:-60px;
+}
+h1,.h1,.h2{
+    font-weight: 100;
+    color:#353e44;
+}
+
+h3, .h3{
+    font-weight: 200;
+}
+
+.profile-pic-update{
+    height: 120px;
+    width: 120px;
+    border: 1px solid #d3d8de;
+    overflow: hidden;
+}
+
+.btn-icon-circle{
+    border-radius: 100%;
+    height:40px;
+    width: 40px;
+    border: 1px solid #d3d8de;
+    padding: 6px 6px;
+    margin-top: -20px;
+    margin-left: 40px;
+    background-color: #fff;
+    color: #0067db
+}
+
+.alert-success {
+    background-color: #f4fcf6;
+    border-color: #cef2d7;
+}
+
+.default-border{
+    border: 1px solid #d3d8de;
+    border-radius: 25px
+}
+.material-icons.blue006{
+    color: #0067db;
+    background-color: transparent;
+}
+.material-icons.md100{
+    font-size: 100px
+}
+

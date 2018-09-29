@@ -1,9 +1,11 @@
 let express = require("express");
 let query = require("../connection/pool").poolQuery;
 let multer = require("multer");
+const path = require("path");
+
 let storage = multer.diskStorage({
     destination: function (req, file, callbk) {
-        callbk(null, "backend/uploads/profile/")
+        callbk(null, path.join( __dirname, "../uploads/profile/"))
     },
     filename: function (req, file, callbk) {
         callbk(null, req.session.username + "_profile" +
@@ -81,11 +83,15 @@ router.post("/update", upload.single('profilePhoto'),function (req, response) {
         firstname: req.body.firstname, lastname: req.body.lastname,
         aboutme: req.body.aboutme, city: req.body.city, company: req.body.company, school: req.body.school,
         hometown: req.body.hometown, languages: req.body.languages, gender: req.body.gender,
-        phone: req.body.phone, profilefilepath: "http://localhost:3001/profilePic/"+req.file.filename
+        phone: req.body.phone, profilefilepath: req.body.profilefilepath
+    }
+
+    if(req.file !== undefined){
+        profile.profilefilepath= "http://localhost:3001/profilePic/"+req.file.filename;
     }
     req.checkBody("firstname", "First name is required").notEmpty();
     req.checkBody("lastname", "Last name is required").notEmpty();
-
+    req.checkBody("phone","Phone number must be 10 digits").isLength({max:10});
     let errors = req.validationErrors();
     if (errors) {
         let msg = errors.map(error => error.msg).reduce((accumulator, currentVal) => accumulator + "\n" + currentVal);
@@ -112,7 +118,8 @@ router.post("/update", upload.single('profilePhoto'),function (req, response) {
                 });
                 response.end(JSON.stringify({
                     success: true,
-                    message: "profile updated"
+                    message: "profile updated",
+                    profilefilepath: profile.profilefilepath
                 }))
             }
         });

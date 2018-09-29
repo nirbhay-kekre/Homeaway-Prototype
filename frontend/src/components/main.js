@@ -5,6 +5,8 @@ import Login from './login/login'
 import Signup from './signup/signup'
 import OwnerLogin from './login/ownerLogin'
 import Welcome from './welcome/welcome'
+import ProfileView from './profile/profileView'
+import ProfileUpdate from './profile/profileUpdate'
 
 //Create a Main Component
 class Main extends Component {
@@ -17,6 +19,8 @@ class Main extends Component {
                 <Route exact path="/signup" component={Signup} />
                 <Route exact path="/login/owner" component={OwnerLogin} />
                 <Route exact path="/welcome" component={Welcome} />
+                <Route exact path="/profile/view" component={ProfileView} />
+                <Route exact path="/profile/update" component={ProfileUpdate} />
             </div>
         )
     }
