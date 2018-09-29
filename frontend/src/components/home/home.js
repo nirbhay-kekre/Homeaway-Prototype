@@ -58,27 +58,27 @@ class Home extends Component {
                 <Navbar showMenu={true} logo="white"></Navbar>
                 <div className="home-inner">
                     <div className="home-search" style={{ width: "100%", maxWidth: '1020px', margin: "150px 0px 10px 0px"}}>
-                        <h1 style={{ color: "#fff"}}>
+                        <h1 id="intro" style={{ color: "#fff"}}>
                             <span>Book beach houses, cabins,</span><br />
                             <span>condos and more, worldwide</span>
                         </h1>
 
                         <form className="form-horizontal" onSubmit={this.searchResultHandler}>
                             <div className="form-row">
-                                <div className="col-4">
+                                <div className="col-12 col-md-4">
                                     <input type="text" className="form-control" id="location" placeholder="Where do you want to go?" onChange={this.searchTextChangeHandler} required />
                                 </div>
-                                <div className="col-2">
+                                <div className="col-5 col-md-2">
                                     <input type="text" onFocus={this.onFocusDate} onBlur={this.onBlurDate} className="form-control" id="arrival" placeholder="Arrive" onChange={this.arrivalChangeHandler} />
                                 </div>
-                                <div className="col-2">
+                                <div className="col-5 col-md-2">
                                     <input type="text" onFocus={this.onFocusDate} onBlur={this.onBlurDate} className="form-control" id="departure" placeholder="Depart" onChange={this.departureChangeHandler}/>
                                 </div>
                                 <div className="col-2">
                                     <input type="number" className="form-control" min="1" max="9" placeholder="Guests" onChange={this.guestsChangeHandler}/>
                                 </div>
-                                <div className="col-2">
-                                    <button className="btn btn-primary search-button">Search</button>
+                                <div className="col-12 col-md-2 ">
+                                    <button className="btn btn-primary search-button w-100">Search</button>
                                 </div>
 
                             </div>

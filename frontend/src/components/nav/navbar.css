@@ -82,15 +82,12 @@
   z-index: 1000;
   top: 100%;
 }
-.dropdown-menu > li{
+.dropdown-item{
   color: #0067db;
   background-color: #fff;
-  padding: 0px 5px;
+  padding-left: 5px;
 }
-.dropdown-menu > li:hover {
-  background-color: #0067db; /* This doesn't... why? */
-  color: #ffff;
-}
-.dropdown-menu > li>a{
- color: inherit;
+.dropdown-item:hover {
+  background-color: #0067db; 
+  color: #fff;
 }
