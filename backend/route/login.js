@@ -6,6 +6,12 @@ let router = express.Router();
 
 router.use("/", function(req,resp,next){
     if(req.session.username){
+        resp.cookie('cookie',{
+            username: req.session.username,
+            firstname: req.session.firstname,
+            lastname:req.session.lastname,
+            role: req.session.role
+        },{maxAge: 900000, httpOnly: false, path : '/'});
         resp.writeHead(200, {
             'Content-Type': 'application/json'
         });
@@ -52,6 +58,8 @@ function macthCredentialsInDB(usernameActual, passwordActual, role, req, resp) {
 
                     req.session.username = record.username;
                     req.session.role= record.role;
+                    req.session.firstname=record.firstname;
+                    req.session.lastname=record.lastname;
                     resp.writeHead(200, {
                         'Content-Type': 'application/json'
                     });
