@@ -31,7 +31,7 @@ class Welcome extends Component {
                             <div className="login-pannel">
                                 <div className="pannel-header"><p style={{textAlign: "center"}}>Welcome <strong>{name}</strong></p></div>
                                 <div className="pannel-body login-form">
-                                    <img src={anonymosPhoto}></img>
+                                    <img src={anonymosPhoto} alt="profile"></img>
                                     <div><p style={{textAlign:"left"}}>Please take a few moments to update your profile with a picture and a few
                                      details about yourself. Property owners are more likely to respond more quickly
                                       to travelers with profiles.</p></div>

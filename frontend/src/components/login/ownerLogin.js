@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 import Navbar from './../nav/navbar';
 import axios from 'axios'
 import './login.css'
@@ -93,7 +92,7 @@ class OwnerLogin extends Component {
         let localCookie=cookie.load('cookie');
         if (localCookie) {
             localCookie = JSON.parse(localCookie.substring(2,localCookie.length));
-            if(localCookie.role=="owner" || localCookie.role=="both"){
+            if(localCookie.role==="owner" || localCookie.role==="both"){
                 redirectVar = <Redirect to="/owner/dashboard" />
             }else{
                 redirectVar = <Redirect to="/" />
@@ -109,7 +108,7 @@ class OwnerLogin extends Component {
                 <div className='login-container'>
                     <div className='login-inner row'>
                         <div className="col-md-6 col-sm-6 hidden-xs">
-                            <img align="right" src={ownerLoginImage}></img>
+                            <img align="right" src={ownerLoginImage} alt="profile"></img>
                         </div>
                         <div className="col-lg-4 col-md-5 col-sm-6 col-xs-12">
                             <div className="login-pannel">
