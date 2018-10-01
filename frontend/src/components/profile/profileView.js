@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import Navbar from './../nav/navbar';
 import axios from 'axios'
 import cookie from 'react-cookies';
-/*import { Redirect } from 'react-router';*/
+import { Redirect } from 'react-router';
 import Default_profile_Pic from './default-profile-pic.png'
 import './profileView.css'
 
@@ -52,13 +52,13 @@ class ProfileView extends Component {
     render() {
         let redirectVar = null;
         if (!cookie.load('cookie')) {
-            redirectVar = <Link to="/login"></Link>
+            redirectVar = <Redirect to="/login"></Redirect>
         }
 
         return (
             <div>
                 {redirectVar}
-                <Navbar logo="blue"></Navbar>
+                <Navbar showMenu={true} logo="blue"></Navbar>
                 <div className="profile-container container">
                     <div className="profile-v2">
                         <div className="row">

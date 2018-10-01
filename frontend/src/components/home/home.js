@@ -1,84 +1,91 @@
 import React, { Component } from 'react';
-import Navbar from './../nav/navbar'
-import './home.css'
+import Navbar from './../nav/navbar';
+import './home.css';
+import cookie from 'react-cookies';
+import { Link } from 'react-router-dom';
+// import { Redirect } from 'react-router';
 
 class Home extends Component {
 
-    constructor(props){
+    constructor(props) {
         super(props)
-        this.state={
-            searchText: "",
-            arrival: null,
-            departure: null,
-            guests: null,
+        this.state = {
+            city: "",
+            arrivalDate: null,
+            departureDate: null,
+            accomodates: null,
             redirectTo: null
         }
-        this.onBlurDate= this.onBlurDate.bind(this);
-        this.onFocusDate= this.onFocusDate.bind(this);
-        this.searchTextChangeHandler =this.searchTextChangeHandler.bind(this);
-        this.arrivalChangeHandler = this.arrivalChangeHandler.bind(this);
-        this.departureChangeHandler = this.departureChangeHandler.bind(this);
-        this.guestsChangeHandler = this.guestsChangeHandler.bind(this);
+        this.onBlurDate = this.onBlurDate.bind(this);
+        this.onFocusDate = this.onFocusDate.bind(this);
+        this.stateChangeHandler = this.stateChangeHandler.bind(this);
         this.searchResultHandler = this.searchResultHandler.bind(this);
     }
-    searchTextChangeHandler = (e)=>{
-        this.setState({
-            searchText: e.target.value
-        })
+    stateChangeHandler = (e) => {
+        let updateState = {}
+        updateState[e.target.name] = e.target.value
+        this.setState(updateState);
     }
-    arrivalChangeHandler = (e)=>{
-        this.setState({
-            arrival: e.target.value
-        })
+    onFocusDate = (e) => {
+        e.currentTarget.type = "date";
     }
-    departureChangeHandler = (e)=>{
-        this.setState({
-            departure: e.target.value
-        })
-    }
-    guestsChangeHandler = (e)=>{
-        this.setState({
-            guests: e.target.value
-        })
-    }
-    onFocusDate=(e)=>{
-        e.currentTarget.type="date";
-    }
-    onBlurDate = (e)=>{
-        e.currentTarget.type ="text"
+    onBlurDate = (e) => {
+        e.currentTarget.type = "text"
     }
 
+    searchResultHandler = (e) => {
 
-    searchResultHandler = (e)=>{
 
     }
+
     render() {
+        let redirectVar = null;
+        if (!cookie.load('cookie')) {
+            redirectVar = "/login"
+        } else {
+            redirectVar = "/search/list"
+        }
         return (
             <div className="home-container">
                 <Navbar showMenu={true} logo="white"></Navbar>
                 <div className="home-inner">
-                    <div className="home-search" style={{ width: "100%", maxWidth: '1020px', margin: "150px 0px 10px 0px"}}>
-                        <h1 id="intro" style={{ color: "#fff"}}>
+                    <div className="home-search" style={{ width: "100%", maxWidth: '1020px', margin: "150px 0px 10px 0px" }}>
+                        <h1 id="intro" style={{ color: "#fff" }}>
                             <span>Book beach houses, cabins,</span><br />
                             <span>condos and more, worldwide</span>
                         </h1>
 
-                        <form className="form-horizontal" onSubmit={this.searchResultHandler}>
+                        <form className="form-horizontal">
                             <div className="form-row">
                                 <div className="col-12 col-md-4">
-                                    <input type="text" className="form-control" id="location" placeholder="Where do you want to go?" onChange={this.searchTextChangeHandler} required />
+                                    <div className="row w-100 m-auto">
+                                        <input type="text" name="city" className="form-control" id="location" placeholder="Where do you want to go?" onChange={this.stateChangeHandler} required />
+                                    </div>
+                                    <div className="row m-auto"><small>* Please metion only city name</small></div>
                                 </div>
                                 <div className="col-5 col-md-2">
-                                    <input type="text" onFocus={this.onFocusDate} onBlur={this.onBlurDate} className="form-control" id="arrival" placeholder="Arrive" onChange={this.arrivalChangeHandler} />
+                                    <input type="text" name="arrivalDate" onFocus={this.onFocusDate} onBlur={this.onBlurDate} className="form-control" id="arrival" placeholder="Arrive" onChange={this.stateChangeHandler} />
                                 </div>
                                 <div className="col-5 col-md-2">
-                                    <input type="text" onFocus={this.onFocusDate} onBlur={this.onBlurDate} className="form-control" id="departure" placeholder="Depart" onChange={this.departureChangeHandler}/>
+                                    <input type="text" name="departureDate" onFocus={this.onFocusDate} onBlur={this.onBlurDate} className="form-control" id="departure" placeholder="Depart" onChange={this.stateChangeHandler} />
                                 </div>
                                 <div className="col-2">
-                                    <input type="number" className="form-control" min="1" max="9" placeholder="Guests" onChange={this.guestsChangeHandler}/>
+                                    <input type="number" name="accomodates" className="form-control" min="1" max="9" placeholder="Guests" onChange={this.stateChangeHandler} />
                                 </div>
                                 <div className="col-12 col-md-2 ">
-                                    <button className="btn btn-primary search-button w-100">Search</button>
+                                    <Link className="btn btn-primary search-button w-100 p-3" to={
+                                        {
+                                            pathname: redirectVar,
+                                            props: {
+                                                city: this.state.city,
+                                                arrivalDate: this.state.arrivalDate,
+                                                departureDate: this.state.departureDate,
+                                                accomodates: this.state.accomodates
+                                            }
+                                        }
+                                    }
+
+                                    >Search</Link>
                                 </div>
 
                             </div>

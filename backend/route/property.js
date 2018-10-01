@@ -66,7 +66,8 @@ router.get("/search/list", function (req, resp) {
             resp.end(JSON.stringify({
                 success: true,
                 message: `${list.length} results found`,
-                results: list
+                results: list,
+                size: `${list.length}`
             }));
         }
     })
@@ -265,7 +266,7 @@ function createListPropertiesQuery(req) {
                     if (val.every((str) => typeof str === 'string')) {
                         sqlQuery += ` and ( ${keys[i]} in ("${val.join('", "')}") )`;
                     }
-                    else {
+                    else if (val.every((str) => typeof str === 'number')) {
                         //in our usecase it will be number if not string
                         sqlQuery += ` and ( ${keys[i]} in (${val.join()}) )`;
                     }
@@ -273,25 +274,25 @@ function createListPropertiesQuery(req) {
                     if (val.max) {
                         if (typeof val.min === 'string' && typeof val.max === 'string') {
                             sqlQuery += ` and ( ${keys[i]} between "${val.min}" and "${val.max}")`;
-                        } else {
+                        } else if(typeof val.min === 'number' && val.max === 'number'){
                             sqlQuery += ` and ( ${keys[i]} between ${val.min} and ${val.max})`;
                         }
                     } else {
                         if (typeof val.min === 'string') {
                             sqlQuery += ` and ( ${keys[i]} >= "${val.min}")`;
-                        } else {
+                        } else if(typeof val.min === 'number'){
                             sqlQuery += ` and ( ${keys[i]} >= ${val.min})`;
                         }
                     }
                 } else if (val.max) {
-                    if (typeof val.min === 'string') {
+                    if (typeof val.max === 'string') {
                         sqlQuery += ` and ( ${keys[i]} <= "${val.max}")`;
-                    } else {
+                    } else if(typeof val.max === 'number'){
                         sqlQuery += ` and ( ${keys[i]} <= ${val.max})`;
                     }
-                } else if (typeof val === 'string') {
+                } else if (val && typeof val === 'string') {
                     sqlQuery += ` and ( ${keys[i]} = "${val}" )`
-                } else {
+                } else if(val && typeof val === 'number'){
                     sqlQuery += ` and ( ${keys[i]} = ${val} )`
                 }
             }

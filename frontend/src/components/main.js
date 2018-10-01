@@ -7,6 +7,7 @@ import OwnerLogin from './login/ownerLogin'
 import Welcome from './welcome/welcome'
 import ProfileView from './profile/profileView'
 import ProfileUpdate from './profile/profileUpdate'
+import SearchList from './search/searchList';
 
 //Create a Main Component
 class Main extends Component {
@@ -21,6 +22,7 @@ class Main extends Component {
                 <Route exact path="/welcome" component={Welcome} />
                 <Route exact path="/profile/view" component={ProfileView} />
                 <Route exact path="/profile/update" component={ProfileUpdate} />
+                <Route exact path="/search/list" component={SearchList}></Route>
             </div>
         )
     }

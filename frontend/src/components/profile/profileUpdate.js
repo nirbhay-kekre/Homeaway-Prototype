@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import Navbar from './../nav/navbar';
 import axios from 'axios'
 import cookie from 'react-cookies';
-/*import { Redirect } from 'react-router';*/
+import { Redirect } from 'react-router';
 import Default_profile_Pic from './default-profile-pic.png'
 import './profileView.css'
 import house from './house.png'
@@ -137,7 +137,7 @@ class ProfileUpdate extends Component {
     render() {
         let redirectVar = null, feedbackMessage, imagePreview = this.state.profileUpateTempUrl ? this.state.profileUpateTempUrl : this.state.profilefilepath;
         if (!cookie.load('cookie')) {
-            redirectVar = <Link to="/login"></Link>
+            redirectVar = <Redirect to="/login"></Redirect>
         }
         if (this.state.isProfileUpdateSuccessfull) {
             feedbackMessage = <div className="alert alert-success alert-dismissible row" role="alert">
