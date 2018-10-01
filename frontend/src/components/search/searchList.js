@@ -19,7 +19,8 @@ class SearchList extends Component {
                 },
                 amenity: []
             },
-            searchResults: []
+            searchResults: [],
+            forceReloadToggle: true
         };
         if (this.props.location && this.props.location.props && this.props.location.props.city) {
             this.state.filters["city"] = this.props.location.props.city
@@ -42,6 +43,13 @@ class SearchList extends Component {
         this.handleAminity = this.handleAminity.bind(this);
         this.imageSlider = this.imageSlider.bind(this);
         this.createCard = this.createCard.bind(this);
+        this.dateStateChangeHandler = this.dateStateChangeHandler.bind(this);
+    }
+    dateStateChangeHandler = (e) => {
+        let updateState = {};
+        updateState[e.target.name] = e.target.value;
+        this.setState(updateState);
+
     }
 
     sortHandler = (e) => {
@@ -130,9 +138,18 @@ class SearchList extends Component {
                     searchResults: response.data.results
                 });
             }
-        }).catch(err => {
-            console.log(err);
+        }).catch(error => {
+            if (error.message === "Network Error") {
+                console.log("Server is down!");
+            }
+            else if (error.response.status === 401) {
+                cookie.remove("cookie");
+                this.setState({
+                    forceReloadToggle: !this.state.forceReloadToggle
+                })
+            }
         });
+
     }
 
     imageSlider = (images) => {
@@ -199,7 +216,7 @@ class SearchList extends Component {
                                                     {result.bedroom ? <li className="list-inline-item border-left pl-2"><strong>{result.bedroom}</strong> BR</li> : ""}
                                                     {result.bathroom ? <li className="list-inline-item border-left pl-2"><strong>{result.bathroom}</strong> BA</li> : ""}
                                                     {result.accomodates ? <li className="list-inline-item border-left pl-2">sleeps <strong>{result.accomodates}</strong></li> : ""}
-                                                    {result.amenities.length >0 ? result.amenities.slice(0,5).map(element => <li className="list-inline-item border-left pl-2"><strong>{element}</strong></li> ):""}
+                                                    {result.amenities.length > 0 ? result.amenities.slice(0, 5).map(element => <li className="list-inline-item border-left pl-2"><strong>{element}</strong></li>) : ""}
                                                 </ul>
                                             </p>
                                         </div>
@@ -228,9 +245,9 @@ class SearchList extends Component {
     }
 
     render() {
-        let redirectVar = null, feedbackMessage, imagePreview = this.state.profileUpateTempUrl ? this.state.profileUpateTempUrl : this.state.profilefilepath;
+        let redirectVar = null;
         if (!cookie.load('cookie')) {
-            redirectVar = <Link to="/login"></Link>
+            redirectVar = <Redirect to="/login"></Redirect>
         }
         let customBorderStyle = {};
 
@@ -239,6 +256,7 @@ class SearchList extends Component {
 
         return (
             <div>
+                {redirectVar}
                 <Navbar showMenu={true} logo="blue"></Navbar>
                 <nav className="nav navbar sticky-top navbar-light d-block bg-white pb-0" style={customBorderStyle}>
 
@@ -248,10 +266,10 @@ class SearchList extends Component {
                                 <input type="text" name="city" className="form-control m-1" id="location" placeholder="Where do you want to go? (City name only) " onChange={this.stateChangeHandler} value={this.state.filters.city} />
                             </div>
                             <div className="col-5 col-md-2">
-                                <input type="text" name="arrivalDate" onFocus={this.onFocusDate} onBlur={this.onBlurDate} className="form-control m-1" id="arrival" placeholder="Arrive" value={this.state.arrivalDate} onChange={this.stateChangeHandler} value={this.state.filters.arrivalDate} />
+                                <input type="text" name="arrivalDate" onFocus={this.onFocusDate} onBlur={this.onBlurDate} className="form-control m-1" id="arrival" placeholder="Arrive" value={this.state.arrivalDate} onChange={this.dateStateChangeHandler} value={this.state.filters.arrivalDate} />
                             </div>
                             <div className="col-5 col-md-2">
-                                <input type="text" name="departureDate" onFocus={this.onFocusDate} onBlur={this.onBlurDate} className="form-control m-1" id="departure" placeholder="Depart" value={this.state.departureDate} onChange={this.stateChangeHandler} value={this.state.filters.departureDate} />
+                                <input type="text" name="departureDate" onFocus={this.onFocusDate} onBlur={this.onBlurDate} className="form-control m-1" id="departure" placeholder="Depart" value={this.state.departureDate} onChange={this.dateStateChangeHandler} value={this.state.filters.departureDate} />
                             </div>
                             <div className="col-2">
                                 <input type="number" name="accomodates" className="form-control m-1" min="1" max="9" placeholder="Guests" onChange={this.stateChangeHandler} value={this.state.filters.accomodates} />

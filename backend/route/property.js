@@ -250,11 +250,11 @@ function createListPropertiesQuery(req) {
         a.amenity from property p left join amenities a
         on p.propertyId = a.propertyId where  p.markForDelete = 0 and isActive=1`;
     if (arrivalDate && departureDate) {
-        let diff = DateDiff(new Date(arrivalDate), new Date(departureDate));
+        let diff = new DateDiff(new Date(departureDate), new Date( arrivalDate));
         sqlQuery += ` and (p.minNightStay = null or  p.minNightStay <= ${diff.days()}) and p.propertyId not in (
             select distinct propertyId from propertyBlockDate 
-            where "${arrivalDate}"  between startDate and endDate or "${departureDate}"  between startDate and endDate  or
-            startDate between "${arrivalDate}" and "${departureDate}" or endDate between "${arrivalDate}" and "${departureDate}" )`;
+            where '${arrivalDate}'  between startDate and endDate or '${departureDate}' between startDate and endDate  or
+            startDate between '${arrivalDate}' and '${departureDate}' or endDate between '${arrivalDate}' and '${departureDate}' )`;
     }
 
     if (filters) {
