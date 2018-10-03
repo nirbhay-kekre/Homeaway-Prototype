@@ -8,6 +8,7 @@ import Welcome from './welcome/welcome'
 import ProfileView from './profile/profileView'
 import ProfileUpdate from './profile/profileUpdate'
 import SearchList from './search/searchList';
+import SearchDetail from './search/searchDetail'
 
 //Create a Main Component
 class Main extends Component {
@@ -23,6 +24,7 @@ class Main extends Component {
                 <Route exact path="/profile/view" component={ProfileView} />
                 <Route exact path="/profile/update" component={ProfileUpdate} />
                 <Route exact path="/search/list" component={SearchList}></Route>
+                <Route exact path='/search/detail' component={SearchDetail}></Route>
             </div>
         )
     }

@@ -32,7 +32,7 @@ router.get("/search/list", function (req, resp) {
                             headline: record.headline,
                             propertyType: record.propertyType,
                             bedroom: record.bedroom,
-                            bathroom: record.bedroom,
+                            bathroom: record.bathroom,
                             accomodates: record.accomodates,
                             street: record.street,
                             city: record.city,
@@ -74,6 +74,16 @@ router.get("/search/list", function (req, resp) {
 });
 
 router.get("/search/detail", function (req, resp) {
+    let arrivalDate = req.query.arrivalDate ? new Date(req.query.arrivalDate) : new Date();
+    let departureDate = req.query.departureDate ? new Date(req.query.departureDate) : new Date();
+    let guests = req.query.guests?req.query.guests:1;
+    arrivalDate.setHours(0, 0, 0, 0);
+    departureDate.setHours(0, 0, 0, 0);
+    let numOfOnboardingDays = 1;
+    if (departureDate > arrivalDate) {
+        let dateDiff =new DateDiff(departureDate,arrivalDate);
+        numOfOnboardingDays = dateDiff.days() + 1;
+    }
     if (!req.query.propertyId) {
         resp.writeHead(400, {
             'Content-Type': 'application/json'
@@ -83,6 +93,7 @@ router.get("/search/detail", function (req, resp) {
             message: "propertyId is missing",
         }));
     } else {
+
         let sqlQuery = createDetailPropertyQuery(req);
         query(sqlQuery, [], function (error, records, fields) {
             if (error) {
@@ -108,7 +119,7 @@ router.get("/search/detail", function (req, resp) {
                                 headline: record.headline,
                                 propertyType: record.propertyType,
                                 bedroom: record.bedroom,
-                                bathroom: record.bedroom,
+                                bathroom: record.bathroom,
                                 accomodates: record.accomodates,
                                 street: record.street,
                                 city: record.city,
@@ -120,6 +131,11 @@ router.get("/search/detail", function (req, resp) {
                                 propertyDescription: record.propertyDescription,
                                 bookingOption: record.bookingOption,
                                 minNightStay: record.minNightStay,
+                                totalPrice: record.oneNightRate * numOfOnboardingDays,
+                                numOfOnboardingDays: numOfOnboardingDays,
+                                arrivalDate:arrivalDate,
+                                departureDate:departureDate,
+                                guests: guests,
                             };
                             data.amenities = new Set();
                             data.photoUrl = new Set();
@@ -250,7 +266,7 @@ function createListPropertiesQuery(req) {
         a.amenity from property p left join amenities a
         on p.propertyId = a.propertyId where  p.markForDelete = 0 and isActive=1`;
     if (arrivalDate && departureDate) {
-        let diff = new DateDiff(new Date(departureDate), new Date( arrivalDate));
+        let diff = new DateDiff(new Date(departureDate), new Date(arrivalDate));
         sqlQuery += ` and (p.minNightStay = null or  p.minNightStay <= ${diff.days()}) and p.propertyId not in (
             select distinct propertyId from propertyBlockDate 
             where '${arrivalDate}'  between startDate and endDate or '${departureDate}' between startDate and endDate  or
@@ -274,25 +290,25 @@ function createListPropertiesQuery(req) {
                     if (val.max) {
                         if (typeof val.min === 'string' && typeof val.max === 'string') {
                             sqlQuery += ` and ( ${keys[i]} between "${val.min}" and "${val.max}")`;
-                        } else if(typeof val.min === 'number' && val.max === 'number'){
+                        } else if (typeof val.min === 'number' && val.max === 'number') {
                             sqlQuery += ` and ( ${keys[i]} between ${val.min} and ${val.max})`;
                         }
                     } else {
                         if (typeof val.min === 'string') {
                             sqlQuery += ` and ( ${keys[i]} >= "${val.min}")`;
-                        } else if(typeof val.min === 'number'){
+                        } else if (typeof val.min === 'number') {
                             sqlQuery += ` and ( ${keys[i]} >= ${val.min})`;
                         }
                     }
                 } else if (val.max) {
                     if (typeof val.max === 'string') {
                         sqlQuery += ` and ( ${keys[i]} <= "${val.max}")`;
-                    } else if(typeof val.max === 'number'){
+                    } else if (typeof val.max === 'number') {
                         sqlQuery += ` and ( ${keys[i]} <= ${val.max})`;
                     }
                 } else if (val && typeof val === 'string') {
                     sqlQuery += ` and ( ${keys[i]} = "${val}" )`
-                } else if(val && typeof val === 'number'){
+                } else if (val && typeof val === 'number') {
                     sqlQuery += ` and ( ${keys[i]} = ${val} )`
                 }
             }
