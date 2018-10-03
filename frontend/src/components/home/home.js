@@ -19,7 +19,6 @@ class Home extends Component {
         this.onBlurDate = this.onBlurDate.bind(this);
         this.onFocusDate = this.onFocusDate.bind(this);
         this.stateChangeHandler = this.stateChangeHandler.bind(this);
-        this.searchResultHandler = this.searchResultHandler.bind(this);
     }
     stateChangeHandler = (e) => {
         let updateState = {}
@@ -33,10 +32,6 @@ class Home extends Component {
         e.currentTarget.type = "text"
     }
 
-    searchResultHandler = (e) => {
-
-
-    }
 
     render() {
         let redirectVar = null;
@@ -80,7 +75,9 @@ class Home extends Component {
                                                 city: this.state.city,
                                                 arrivalDate: this.state.arrivalDate,
                                                 departureDate: this.state.departureDate,
-                                                accomodates: this.state.accomodates
+                                                accomodates: {
+                                                    min:this.state.accomodates
+                                                }
                                             }
                                         }
                                     }
