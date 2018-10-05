@@ -1,21 +1,20 @@
 let express = require("express");
 let query = require("../connection/pool").poolQuery;
-let DateDiff = require("date-diff");
 let multer = require("multer");
 let storage = multer.diskStorage({
     destination: function (req, file, callbk) {
         callbk(null, "backend/uploads/property")
     },
     filename: function (req, file, callbk) {
-        callbk(null, req.body.propertyId+"_"+new Date().toISOString() + "_property" +
+        callbk(null, req.body.propertyId + "_" + new Date().toISOString() + "_property" +
             ((file.mimetype === 'image/jpeg') ? ".jpeg" : (file.mimetype === 'image/png') ? ".png" : ""));
     }
 });
 
-function fileFilter(req, file, callbk){
-    if(file.mimetype === 'image/jpeg' || file.mimetype === 'image/png'){
-        callbk(null,true);
-    }else{
+function fileFilter(req, file, callbk) {
+    if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png') {
+        callbk(null, true);
+    } else {
         callbk(null, false);
     }
 }
@@ -30,8 +29,8 @@ let upload = multer({
 
 let router = express.Router();
 
-router.use("/", function (req, resp, next) {
-    if (req.session.username && req.session.role == "owner") {
+let isUserOwner = function (req, resp, next) {
+    if (req.session.username && (req.session.role === "owner" || req.session.role === "both")) {
         next();
     } else {
         resp.writeHead(403, {
@@ -42,10 +41,10 @@ router.use("/", function (req, resp, next) {
             message: "User not an owner",
         }));
     }
-});
+};
 
 
-router.use("/create", function (req, resp, next) {
+router.use("/create", isUserOwner, function (req, resp, next) {
     req.checkBody("bedroom", "bedroom NAN").matches(/^[0-9]$/);
     req.checkBody("bathroom", "bathroom NAN").matches(/^[0-9]$/);
     req.checkBody("zip", "zip NAN").matches(/^[0-9]{5}$/);
@@ -69,7 +68,7 @@ router.use("/create", function (req, resp, next) {
     }
 });
 
-router.post("/create", function (req, resp) {
+router.post("/create", isUserOwner, function (req, resp) {
     let { bedroom, bathroom, street, city, state, zip, country, unit } = req.body;
     let data = {
         username: req.session.username,
@@ -81,7 +80,7 @@ router.post("/create", function (req, resp) {
 });
 
 
-router.post("/update", function (req, resp) {
+router.post("/update", isUserOwner, function (req, resp) {
     let { bedroom, bathroom, street, city, state, zip, country, unit,
         propertyId, headline, propertyDescription, propertyType,
         accomodates, bookingOption, oneNightRate, minNightStay, isActive } = req.body;
@@ -108,10 +107,10 @@ router.post("/update", function (req, resp) {
     }
 });
 
-router.post("/amenities", function(req,resp){
-    let {propertyId, amenities} = req.body;
-    if(amenities && amenities[0]){
-        if(!propertyId){
+router.post("/amenities", isUserOwner, function (req, resp) {
+    let { propertyId, amenities } = req.body;
+    if (amenities && amenities[0]) {
+        if (!propertyId) {
             resp.writeHead(400, {
                 'Content-Type': 'application/json'
             });
@@ -119,9 +118,9 @@ router.post("/amenities", function(req,resp){
                 success: false,
                 message: "propertyId is missing",
             }));
-        }else{
-            query("DELETE from amenities where propertyId = ?", [propertyId], function(error, records,fields){
-                if(error){
+        } else {
+            query("DELETE from amenities where propertyId = ?", [propertyId], function (error, records, fields) {
+                if (error) {
                     resp.writeHead(500, {
                         'Content-Type': 'application/json'
                     });
@@ -129,13 +128,13 @@ router.post("/amenities", function(req,resp){
                         success: false,
                         message: "Internal server error",
                     }));
-                }else{
-                    let sqlQuery=`Insert into amenities ( propertyId, amenity) values (${propertyId}, "${amenities[0]}")`
-                    for(i=1;i< amenities.length; i++ ){
-                        sqlQuery +=`, (${propertyId}, "${amenities[i]}")`
+                } else {
+                    let sqlQuery = `Insert into amenities ( propertyId, amenity) values (${propertyId}, "${amenities[0]}")`
+                    for (i = 1; i < amenities.length; i++) {
+                        sqlQuery += `, (${propertyId}, "${amenities[i]}")`
                     }
-                    query(sqlQuery, [], function(error,records, fields){
-                        if(error){
+                    query(sqlQuery, [], function (error, records, fields) {
+                        if (error) {
                             resp.writeHead(500, {
                                 'Content-Type': 'application/json'
                             });
@@ -143,7 +142,7 @@ router.post("/amenities", function(req,resp){
                                 success: false,
                                 message: "Internal server error",
                             }));
-                        }else{
+                        } else {
                             resp.writeHead(200, {
                                 'Content-Type': 'application/json'
                             });
@@ -158,7 +157,7 @@ router.post("/amenities", function(req,resp){
                 }
             });
         }
-    }else{
+    } else {
         resp.writeHead(200, {
             'Content-Type': 'application/json'
         });
@@ -171,11 +170,11 @@ router.post("/amenities", function(req,resp){
     }
 });
 
-router.post("/photos", upload.array("picture", 5), function(req,resp){
-    let {propertyId} = req.body;
-    let photoUrls=[];
-    if(req.files){
-        if(!propertyId){
+router.post("/photos", isUserOwner, upload.array("picture", 5), function (req, resp) {
+    let { propertyId } = req.body;
+    let photoUrls = [];
+    if (req.files) {
+        if (!propertyId) {
             resp.writeHead(400, {
                 'Content-Type': 'application/json'
             });
@@ -183,9 +182,9 @@ router.post("/photos", upload.array("picture", 5), function(req,resp){
                 success: false,
                 message: "propertyId is missing",
             }));
-        }else{
-            query("DELETE from propertyPhotos where propertyId = ?", [propertyId], function(error, records,fields){
-                if(error){
+        } else {
+            query("DELETE from propertyPhotos where propertyId = ?", [propertyId], function (error, records, fields) {
+                if (error) {
                     resp.writeHead(500, {
                         'Content-Type': 'application/json'
                     });
@@ -193,14 +192,14 @@ router.post("/photos", upload.array("picture", 5), function(req,resp){
                         success: false,
                         message: "Internal server error",
                     }));
-                }else{
-                    photoUrls = req.files.map(file=>`http://localhost:3001/propertyPic/${file.filename}`)
-                    let sqlQuery=`Insert into propertyPhotos ( propertyId, photoUrl) values (${propertyId}, "${photoUrls[0]}")`
-                    for(i=1;i< photoUrls.length; i++ ){
-                        sqlQuery +=`, (${propertyId}, "${photoUrls[i]}")`
+                } else {
+                    photoUrls = req.files.map(file => `http://localhost:3001/propertyPic/${file.filename}`)
+                    let sqlQuery = `Insert into propertyPhotos ( propertyId, photoUrl) values (${propertyId}, "${photoUrls[0]}")`
+                    for (i = 1; i < photoUrls.length; i++) {
+                        sqlQuery += `, (${propertyId}, "${photoUrls[i]}")`
                     }
-                    query(sqlQuery, [], function(error,records, fields){
-                        if(error){
+                    query(sqlQuery, [], function (error, records, fields) {
+                        if (error) {
                             resp.writeHead(500, {
                                 'Content-Type': 'application/json'
                             });
@@ -208,7 +207,7 @@ router.post("/photos", upload.array("picture", 5), function(req,resp){
                                 success: false,
                                 message: "Internal server error",
                             }));
-                        }else{
+                        } else {
                             resp.writeHead(200, {
                                 'Content-Type': 'application/json'
                             });
@@ -223,7 +222,7 @@ router.post("/photos", upload.array("picture", 5), function(req,resp){
                 }
             })
         }
-    }else{
+    } else {
         resp.writeHead(200, {
             'Content-Type': 'application/json'
         });
@@ -234,6 +233,74 @@ router.post("/photos", upload.array("picture", 5), function(req,resp){
             propertyId: propertyId
         }));
     }
+});
+
+router.get("/all", isUserOwner, function (req, resp) {
+    query(`select prop.*, photo.photoUrl from(
+        select p.propertyId, p.headline, p.propertyType, p.bedroom, p.bathroom,
+        p.accomodates, p.street, p.city, p.state, p.zip, p.country, p.oneNightRate, 
+        a.amenity from property p left join amenities a
+        on p.propertyId = a.propertyId where p.username="${req.session.username}" and  
+        p.markForDelete = 0 and isActive=1 ) prop left join ( select * from propertyPhotos
+        where markForDelete = 0) photo on prop.propertyId = photo.propertyId`, [],
+        function (error, records, fields) {
+            if (error) {
+                console.log(error);
+                resp.writeHead(500, {
+                    'Content-Type': 'application/json'
+                });
+                resp.end(JSON.stringify({
+                    success: false,
+                    message: "Internal server error",
+                }));
+            } else {
+                let list = [], propertyIdToPropertyMap = {};
+                if (records && records.length > 0) {
+                    for (let i = 0; i < records.length; i++) {
+                        const record = records[i];
+                        if (propertyIdToPropertyMap[record.propertyId] === undefined) {
+                            propertyIdToPropertyMap[record.propertyId] = {
+                                propertyId: record.propertyId,
+                                headline: record.headline,
+                                propertyType: record.propertyType,
+                                bedroom: record.bedroom,
+                                bathroom: record.bathroom,
+                                accomodates: record.accomodates,
+                                street: record.street,
+                                city: record.city,
+                                state: record.state,
+                                zip: record.zip,
+                                country: record.country,
+                                oneNightRate: record.oneNightRate,
+                                amenities: new Set(),
+                                photoUrl: new Set(),
+                            };
+                            list.push(propertyIdToPropertyMap[record.propertyId]);
+                        }
+                        if (record.amenity) {
+                            propertyIdToPropertyMap[record.propertyId].amenities.add(record.amenity);
+                        }
+                        if (record.photoUrl) {
+                            propertyIdToPropertyMap[record.propertyId].photoUrl.add(record.photoUrl);
+                        }
+                    }
+                    list.forEach(function (current) {
+                        current.amenities = [...current.amenities];
+                        current.photoUrl = [...current.photoUrl];
+                    });
+                }
+                resp.writeHead(200, {
+                    'Content-Type': 'application/json'
+                });
+                resp.end(JSON.stringify({
+                    success: true,
+                    message: `${list.length} results found`,
+                    results: list,
+                    size: `${list.length}`
+                }));
+            }
+        }
+    )
 });
 
 function insertData(resp, data) {

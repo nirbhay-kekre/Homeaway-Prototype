@@ -18,16 +18,12 @@ router.get("/search/list", function (req, resp) {
                 message: "Internal server error",
             }));
         } else {
-            let list = [];
+            let list = [], propertyIdToPropertyMap={};
             if (records && records.length > 0) {
-                let data = {}, pointer = {};
                 for (let i = 0; i < records.length; i++) {
                     const record = records[i];
-                    if (pointer[record.propertyId] === undefined) {
-                        pointer = {};
-                        pointer[record.propertyId] = record.propertyId;
-                        data = {};
-                        data = {
+                    if (propertyIdToPropertyMap[record.propertyId] === undefined) {
+                        propertyIdToPropertyMap[record.propertyId] = {
                             propertyId: record.propertyId,
                             headline: record.headline,
                             propertyType: record.propertyType,
@@ -39,23 +35,24 @@ router.get("/search/list", function (req, resp) {
                             state: record.state,
                             zip: record.zip,
                             country: record.country,
-                            oneNightRate: record.oneNightRate
+                            oneNightRate: record.oneNightRate,
+                            amenities: new Set(),
+                            photoUrl: new Set(),
+                            rank: i, // will be used to maintain sorted result from the sql query, as amenity and photo are not sorting criteria
                         };
-                        data.amenities = new Set();
-                        data.photoUrl = new Set();
-                        data["rank"] = i;    // will be used to maintain sorted result from the sql query, as amenity and photo are not sorting criteria
-                        list.push(data);
+                        
+                        list.push(propertyIdToPropertyMap[record.propertyId]);
                     }
                     if (record.amenity) {
-                        data.amenities.add(record.amenity);
+                        propertyIdToPropertyMap[record.propertyId].amenities.add(record.amenity);
                     }
                     if (record.photoUrl) {
-                        data.photoUrl.add(record.photoUrl);
+                        propertyIdToPropertyMap[record.propertyId].photoUrl.add(record.photoUrl);
                     }
                 }
-                list.forEach(function (part, index, arr) {
-                    arr[index].amenities = [...arr[index].amenities];
-                    arr[index].photoUrl = [...arr[index].photoUrl];
+                list.forEach(function (current) {
+                    current.amenities = [...current.amenities];
+                    current.photoUrl = [...current.photoUrl];
                 });
                 list.sort((property1, property2) => property1.rank - property2.rank);
 
@@ -76,14 +73,14 @@ router.get("/search/list", function (req, resp) {
 router.get("/search/detail", function (req, resp) {
     let arrivalDate = req.query.arrivalDate ? new Date(req.query.arrivalDate) : new Date();
     let departureDate = req.query.departureDate ? new Date(req.query.departureDate) : new Date();
-    let guests = req.query.guests?req.query.guests:1;
-    arrivalDate.setHours(0, 0, 0, 0);
-    departureDate.setHours(0, 0, 0, 0);
+    let guests = req.query.guests ? req.query.guests : 1;
     let numOfOnboardingDays = 1;
     if (departureDate > arrivalDate) {
-        let dateDiff =new DateDiff(departureDate,arrivalDate);
+        let dateDiff = new DateDiff(departureDate, arrivalDate);
         numOfOnboardingDays = dateDiff.days() + 1;
     }
+    arrivalDate = formatDate(arrivalDate);
+    departureDate = formatDate(departureDate);
     if (!req.query.propertyId) {
         resp.writeHead(400, {
             'Content-Type': 'application/json'
@@ -131,10 +128,10 @@ router.get("/search/detail", function (req, resp) {
                                 propertyDescription: record.propertyDescription,
                                 bookingOption: record.bookingOption,
                                 minNightStay: record.minNightStay,
-                                totalPrice: record.oneNightRate * numOfOnboardingDays,
+                                totalPrice: (record.oneNightRate * numOfOnboardingDays).toFixed(2),
                                 numOfOnboardingDays: numOfOnboardingDays,
-                                arrivalDate:arrivalDate,
-                                departureDate:departureDate,
+                                arrivalDate: arrivalDate,
+                                departureDate: departureDate,
                                 guests: guests,
                             };
                             data.amenities = new Set();
@@ -194,13 +191,12 @@ router.get("/history", function (req, resp) {
                     message: "internal server error"
                 }));
             } else {
-                let data = [];
+                let data = [], bookingIdToPropMap = {};
                 if (records && records.length > 0) {
-                    let elem = {};
                     for (let i = 0; i < records.length; i++) {
-                        let record = records[1];
-                        if (elem.propertyId === undefined) {
-                            elem = {
+                        let record = records[i];
+                        if (bookingIdToPropMap[record.bookingId] === undefined) {
+                            bookingIdToPropMap[record.bookingId] = {
                                 bookingId: record.bookingId,
                                 propertyId: record.propertyId,
                                 startDate: record.startDate,
@@ -210,15 +206,26 @@ router.get("/history", function (req, resp) {
                                 city: record.city,
                                 state: record.state,
                                 country: record.country,
-                                zip: record.zip
+                                zip: record.zip,
+                                bedroom: record.bedroom,
+                                bathroom: record.bathroom,
+                                occupants: record.occupants,
+                                oneNightRate: record.oneNightRate,
+                                accomodates: record.accomodates,
+                                amountPaid: record.amountPaid,
+                                photoUrl: new Set(),
+                                buyer_username: record.buyer_username,
+                                owner_username: record.owner_username
                             }
-                            elem["photoUrl"] = new Set();
-                            data.push(elem);
+                            data.push(bookingIdToPropMap[record.bookingId]);
                         }
                         if (record.photoUrl) {
-                            elem["photoUrl"].add(record.photoUrl);
+                            bookingIdToPropMap[record.bookingId].photoUrl.add(record.photoUrl);
                         }
                     }
+                    data.forEach(function (current) {
+                        current.photoUrl = [...current.photoUrl];
+                    });
                 }
                 resp.writeHead(200, {
                     'Content-Type': 'application/json'
@@ -236,12 +243,20 @@ router.get("/history", function (req, resp) {
 
 
 function createHistoryQuery(req) {
-    if (req.session.username && req.body.role) {
+    if (req.session.username && req.query.bookingHistoryFor) {
+        let key = null;
+        if (req.query.bookingHistoryFor === "traveler") {
+            key = "buyer_username"
+        } else {
+            key = "owner_username"
+        }
         return `select book.*, photo.photoUrl  from  propertyPhotos photo, 
-    (select book.*, prop.headline, prop.street, prop.city, prop.state, 
-        prop.country, prop.zip from bookingHistory book , property prop
-         where book.propertyId =prop.propertyId and book.username='${req.session.username} and book.role= '${req.body.role}') book
-          where book.propertyId= photo.propertyId`
+    (select book.bookingId, book.owner_username, book.propertyId, date_format(book.startDate,"%Y-%m-%d") as startDate,
+    date_format(book.endDate,"%Y-%m-%d") as endDate, book.occupants, book.amountPaid, book.buyer_username,
+    prop.headline, prop.street, prop.city, prop.state, prop.country, prop.zip, prop.bedroom, prop.bathroom,
+    prop.accomodates, prop.oneNightRate from bookingHistory book , property prop
+    where book.propertyId =prop.propertyId and book.${key}='${req.session.username}') book
+    where book.propertyId= photo.propertyId`;
     } else {
         return null;
     }
@@ -324,5 +339,9 @@ function createListPropertiesQuery(req) {
     return sqlQuery;
 }
 
+
+function formatDate(date) {
+    return `${date.getUTCFullYear()}-${date.getUTCMonth() + 1}-${date.getUTCDate()}`;
+}
 
 module.exports = router;

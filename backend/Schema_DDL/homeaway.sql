@@ -85,18 +85,19 @@ CREATE TABLE `amenities` (
 
 CREATE TABLE `bookingHistory` (
   `bookingId` int(11) NOT NULL AUTO_INCREMENT,
-  `username` varchar(255) NOT NULL,
+  `owner_username` varchar(255) NOT NULL,
   `propertyId` int(11) NOT NULL,
   `startDate` date NOT NULL,
   `endDate` date NOT NULL,
   `occupants`int(2) NOT NULL,
   `amountPaid` float not null,
-  `role` varchar(10) NOT NULL,
+  `buyer_username` varchar(255) NOT NULL,
   PRIMARY KEY (`bookingId`),
-  KEY `bookingHistory_username` (`username`),
-  KEY `bookingHistory_propertyId` (`propertyId`),
+  INDEX `owner_username_index` (`owner_username`),
+  INDEX `buyer_username_index` (`buyer_username`),
   CONSTRAINT `bookingHistory_propertyId` FOREIGN KEY (`propertyId`) REFERENCES `property` (`propertyid`),
-  CONSTRAINT `bookingHistory_username` FOREIGN KEY (`username`) REFERENCES `credentials` (`username`)
+  CONSTRAINT `bookingHistory_owner_username` FOREIGN KEY (`owner_username`) REFERENCES `credentials` (`username`),
+   CONSTRAINT `bookingHistory_buyer_username` FOREIGN KEY (`buyer_username`) REFERENCES `credentials` (`username`)
 );
 
 

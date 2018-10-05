@@ -93,7 +93,7 @@ class OwnerLogin extends Component {
         if (localCookie) {
             localCookie = JSON.parse(localCookie.substring(2,localCookie.length));
             if(localCookie.role==="owner" || localCookie.role==="both"){
-                redirectVar = <Redirect to="/owner/dashboard" />
+                redirectVar = <Redirect to="/owner/dashboard/all" />
             }else{
                 redirectVar = <Redirect to="/" />
             }

@@ -13,6 +13,8 @@ class SearchDetail extends Component {
         super(props);
         this.state = {
             forceRelodOnServerSessionDeletedToggle: true,
+            bookingSuccess: null,
+            errorMessage: null,
             searchResult: {}
         }
         if (this.props.location && this.props.location.state && this.props.location.state.propertyId) {
@@ -32,6 +34,7 @@ class SearchDetail extends Component {
         }
         this.searchHandler = this.searchHandler.bind(this);
         this.stateChangeHandler = this.stateChangeHandler.bind(this);
+        this.bookNowHandler = this.bookNowHandler.bind(this);
     }
 
     searchHandler = (e) => {
@@ -80,18 +83,96 @@ class SearchDetail extends Component {
             }
         });
     }
+
     stateChangeHandler = (e) => {
         let updateState = {}, name = e.target.name;
         updateState[e.target.name] = e.target.value;
         this.setState(updateState);
     }
 
+    bookNowHandler = (e) => {
+        e.preventDefault();
+        let data = {
+            owner_username: this.state.searchResult.username,
+            arrivalDate: this.state.searchResult.arrivalDate,
+            departureDate: this.state.searchResult.departureDate,
+            propertyId: this.state.searchResult.propertyId,
+            amountPaid: this.state.searchResult.totalPrice,
+            occupants: this.state.searchResult.guests
+
+        }
+        axios.post("http://localhost:3001/property/book", data).then(response => {
+            if (response.status === 200) {
+                if (response.data.success) {
+                    this.setState({
+                        bookingSuccess: true,
+                        errorMessage: null,
+                    })
+                } else {
+                    this.setState({
+                        bookingSuccess: false,
+                        errorMessage: response.data.message,
+                    })
+                }
+            }
+            else {
+                this.setState({
+                    bookingSuccess: false,
+                    errorMessage: "Something went wrong, try again later",
+                })
+            }
+        }).catch(error => {
+            if (error.message === "Network Error") {
+                console.log("Server is down!");
+                this.setState({
+                    bookingSuccess: false,
+                    errorMessage: "Backend server is down, try again later",
+                })
+            }
+            else if (error.response.status === 401) {
+                cookie.remove("cookie");
+                this.setState({
+                    forceRelodOnServerSessionDeletedToggle: !this.state.forceRelodOnServerSessionDeletedToggle
+                })
+            }
+            else {
+                this.setState({
+                    bookingSuccess: false,
+                    message: "Something went wrong, try again later"
+                })
+            }
+        })
+    }
+
     render() {
         let customBorderStyle = {};
-
+        let redirectVar = null, feedbackMessage=null;
+        if (!cookie.load('cookie')) {
+            redirectVar = <Redirect to="/login"></Redirect>
+        }
         customBorderStyle.borderBottom = "1px solid #dbdbdb";
+        if (this.state.bookingSuccess) {
+            feedbackMessage = <div className="alert alert-success alert-dismissible row" role="alert">
+                <div className="col-xs-2"><i className="material-icons">check_circle</i></div>
+                <div className="col-xs-8 ml-2">
+                    <strong>Success!</strong><br />
+                    Booking is successful
+                </div>
+                <div className="col-xs-2"><button type="button" className="close" data-dismiss="alert"><span aria-hidden="true">×</span><span className="sr-only">Close</span></button></div>
+            </div>
+        } else if (this.state.bookingSuccess === false && this.state.errorMessage) {
+            feedbackMessage = <div className="alert alert-danger alert-dismissible row" role="alert">
+                <div className="col-xs-2"><i className="material-icons">warning</i></div>
+                <div className="col-xs-8 ml-2">
+                    <strong>Please try again.</strong><br />
+                    {this.state.errorMessage}
+            </div>
+                <div className="col-xs-2"><button type="button" className="close" data-dismiss="alert"><span aria-hidden="true">×</span><span className="sr-only">Close</span></button></div>
+            </div>
+        }
         return (
             <div>
+                {redirectVar}
                 <Navbar showMenu={true} logo="blue"></Navbar>
                 <nav className="nav navbar navbar-light d-block bg-white pb-0" style={customBorderStyle}>
                     <SearchHederForm
@@ -166,6 +247,7 @@ class SearchDetail extends Component {
                                 </div>
                             </div>
                             <div className="col-4 border-left border-right">
+                                {feedbackMessage}
                                 <div className="row m-3">
                                     <h3>${this.state.searchResult.oneNightRate}</h3>
                                     <p className="text-muted p-2"> per night</p>
@@ -178,7 +260,7 @@ class SearchDetail extends Component {
                                                     <small className="w-100 text-center text-muted">Check In</small>
                                                 </div>
                                                 <div className="row">
-                                                    <p className="w-100 text-center" >{this.state.searchResult.arrivalDate ? this.state.searchResult.arrivalDate.substring(0, 10) : ""}</p>
+                                                    <p className="w-100 text-center" >{this.state.searchResult.arrivalDate}</p>
                                                 </div>
                                             </div>
                                             <div className="col-6">
@@ -186,7 +268,7 @@ class SearchDetail extends Component {
                                                     <small className="w-100 text-center text-muted">Check Out</small>
                                                 </div>
                                                 <div className="row">
-                                                    <p className="w-100 text-center" >{this.state.searchResult.departureDate ? this.state.searchResult.departureDate.substring(0, 10) : ""}</p>
+                                                    <p className="w-100 text-center" >{this.state.searchResult.departureDate}</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -207,7 +289,7 @@ class SearchDetail extends Component {
                                     <h4 className="text-right col-6 w-100">${this.state.searchResult.totalPrice}</h4>
                                 </div>
                                 <div className="row m-4">
-                                    <button class="btn btn-primary search-button w-100 p-3 m-1" type="button">Book Now</button>
+                                    <button class="btn btn-primary search-button w-100 p-3 m-1" type="button" onClick={this.bookNowHandler}>Book Now</button>
                                 </div>
                             </div>
                         </div>
@@ -215,7 +297,6 @@ class SearchDetail extends Component {
                     </div>
                 </div>
             </div>
-
         )
     }
 }

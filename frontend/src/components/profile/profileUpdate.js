@@ -28,6 +28,7 @@ class ProfileUpdate extends Component {
             profilePhoto: null,
             profileUpateTempUrl: null,
             isSomethingUpdated: false,
+            forceReloadOnServerAuthFailureToggle:true
         };
         this.stateChangeHandler = this.stateChangeHandler.bind(this);
         this.updateProfileSubmitHandler = this.updateProfileSubmitHandler.bind(this);
@@ -89,7 +90,14 @@ class ProfileUpdate extends Component {
                     errorMessage: "Server is not running, try again later",
                 });
             }
-            else if (error.response.status === 401 || error.response.status === 500 || error.response.status === 400) {
+            else if (error.response.status === 401 ){
+                console.log("removing cookie as server didn't authenticate current user")
+                cookie.remove("cookie");
+                this.setState({
+                    forceReloadOnServerAuthFailureToggle:!this.state.forceReloadOnServerAuthFailureToggle
+                })
+            }
+            else if( error.response.status === 500 || error.response.status === 400) {
                 this.setState({
                     isProfileUpdateSuccessfull: false,
                     errorMessage: error.response.data.message,

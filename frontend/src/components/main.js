@@ -9,6 +9,9 @@ import ProfileView from './profile/profileView'
 import ProfileUpdate from './profile/profileUpdate'
 import SearchList from './search/searchList';
 import SearchDetail from './search/searchDetail'
+import TravelerHistory from './history/travelerHistory'
+import OwnerAllProperties from './ownerDashboard/ownerAllPropertyListing'
+import OwnerSoldProperties from './ownerDashboard/ownerSoldPropertyListing';
 
 //Create a Main Component
 class Main extends Component {
@@ -23,8 +26,11 @@ class Main extends Component {
                 <Route exact path="/welcome" component={Welcome} />
                 <Route exact path="/profile/view" component={ProfileView} />
                 <Route exact path="/profile/update" component={ProfileUpdate} />
-                <Route exact path="/search/list" component={SearchList}></Route>
-                <Route exact path='/search/detail' component={SearchDetail}></Route>
+                <Route exact path="/search/list" component={SearchList} />
+                <Route exact path='/search/detail' component={SearchDetail} />
+                <Route exact path='/mytrips' component={TravelerHistory}/> 
+                <Route exact path='/owner/dashboard/all' component={OwnerAllProperties} />
+                <Route exact path='/owner/dashboard/sold' component={OwnerSoldProperties} />
             </div>
         )
     }

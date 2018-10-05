@@ -20,7 +20,8 @@ class ProfileView extends Component {
             hometown: "",
             languages: "",
             profilefilepath: Default_profile_Pic,
-            createdOn: "The beginning"
+            createdOn: "The beginning",
+            forceReloadOnServerAuthFailureToggle: true
         }
     }
 
@@ -46,6 +47,19 @@ class ProfileView extends Component {
                     });
 
                 }
+            }
+        }).catch(error => {
+            if (error.message === "Network Error") {
+                console.log("Backend Server is down!");
+            }
+            else if (error.response.status === 401) {
+                console.log("removing cookie as server didn't authenticate current user")
+                cookie.remove("cookie");
+                this.setState({
+                    forceReloadOnServerAuthFailureToggle:!this.state.forceReloadOnServerAuthFailureToggle
+                })
+            } else if (error.response.status === 400 || error.response.status === 500) {
+                console.log("Error: " + error.response.status + " " + error.response.data.message);
             }
         });
     }

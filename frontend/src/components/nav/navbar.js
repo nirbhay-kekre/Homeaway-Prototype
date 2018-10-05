@@ -56,7 +56,7 @@ class Navbar extends Component {
                         to: "#"
                     }, {
                         title: "My trips",
-                        to: "#"
+                        to: "/mytrips"
                     }, {
                         title: "My profile",
                         to: "/profile/view"
@@ -75,7 +75,7 @@ class Navbar extends Component {
                     });
                     userOptions["dropdown"].push({
                         title: "Owner Dashboard",
-                        to: "/owner/dashboard"
+                        to: "/owner/dashboard/all"
                     });
                 }
                 navOptions.push(userOptions);
