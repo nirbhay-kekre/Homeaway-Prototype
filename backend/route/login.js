@@ -4,7 +4,7 @@ let bycrypt = require("bcrypt");
 
 let router = express.Router();
 
-router.use("/", function(req,resp,next){
+/*router.use("/", function(req,resp,next){
     if(req.session.username){
         resp.cookie('cookie',{
             username: req.session.username,
@@ -24,7 +24,7 @@ router.use("/", function(req,resp,next){
     }else{
         next();
     }
-})
+})*/
 
 router.post("/", (req, res) => {
     let usernameActual = req.body.username;
