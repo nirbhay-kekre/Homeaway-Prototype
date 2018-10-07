@@ -177,6 +177,7 @@ class SearchList extends Component {
                     guests ={this.state.filters.accomodates.min}
                     searchCity={this.state.filters.city}
                     cardFixedHeight="150px"
+                    cardIndex={result.propertyId}
                 ></SearchResultCard>
             )
         );

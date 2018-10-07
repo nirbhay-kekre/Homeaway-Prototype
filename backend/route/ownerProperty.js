@@ -19,7 +19,7 @@ function fileFilter(req, file, callbk) {
     }
 }
 
-let upload = multer({
+let  upload = multer({
     storage: storage,
     limits: {
         fileSize: 1024 * 1024 * 50
@@ -69,14 +69,18 @@ router.use("/create", isUserOwner, function (req, resp, next) {
 });
 
 router.post("/create", isUserOwner, function (req, resp) {
-    let { bedroom, bathroom, street, city, state, zip, country, unit } = req.body;
+    let { bedroom, bathroom, street, city, state, zip, country, unit,
+        headline, propertyDescription, propertyType, accomodates,
+        bookingOption, oneNightRate, minNightStay, isActive, blockDate, amenities } = req.body;
+
     let data = {
         username: req.session.username,
-        street: street, city: city, unit: unit,
-        state: state, zip: zip, country: country,
-        bathroom: bathroom, bedroom: bedroom
+        street, city, unit, state, zip, country,
+        bathroom, bedroom, headline, propertyDescription,
+        propertyType, accomodates, bookingOption, oneNightRate,
+        minNightStay, isActive: isActive ? isActive : 0
     };
-    insertData(resp, data);
+    insertData(resp, data, blockDate, amenities);
 });
 
 
@@ -170,7 +174,7 @@ router.post("/amenities", isUserOwner, function (req, resp) {
     }
 });
 
-router.post("/photos", isUserOwner, upload.array("picture", 5), function (req, resp) {
+router.post("/photos", isUserOwner, upload.any(), function (req, resp) {
     let { propertyId } = req.body;
     let photoUrls = [];
     if (req.files) {
@@ -303,7 +307,7 @@ router.get("/all", isUserOwner, function (req, resp) {
     )
 });
 
-function insertData(resp, data) {
+function insertData(resp, data, blockDates, amenities) {
     query("INSERT INTO property SET ?", data, function (error, records, fields) {
         if (error) {
             resp.writeHead(500, {
@@ -315,15 +319,73 @@ function insertData(resp, data) {
             }));
         } else {
             data.propertyId = records.insertId;
-            resp.writeHead(200, {
-                'Content-Type': 'application/json'
-            });
-            resp.end(JSON.stringify(Object.assign({
-                success: true,
-                message: "Property created",
-            }, data)));
+            if (blockDates) {
+                blockDatesQuery = createBlockDateQuery(blockDates, data.propertyId);
+            }
+            if (blockDatesQuery) {
+                query(blockDatesQuery, [], function (error, records, fields) {
+                    if (error) {
+                        resp.writeHead(500, {
+                            'Content-Type': 'application/json'
+                        });
+                        resp.end(JSON.stringify({
+                            success: false,
+                            message: "Internal server error",
+                        }));
+                    } else {
+                        if (amenities && amenities.length > 0) {
+                            createAmenities(data.propertyId, amenities, resp, data);
+                        } else {
+                            resp.writeHead(200, {
+                                'Content-Type': 'application/json'
+                            });
+                            resp.end(JSON.stringify(Object.assign({
+                                success: true,
+                                message: "Property created",
+                            }, data)));
+                        }
+                    }
+                })
+            } else if (amenities && amenities.length > 0) {
+                createAmenities(data.propertyId, amenities, resp, data);
+            } else {
+                resp.writeHead(200, {
+                    'Content-Type': 'application/json'
+                });
+                resp.end(JSON.stringify(Object.assign({
+                    success: true,
+                    message: "Property created",
+                }, data)));
+            }
         }
     });
+}
+
+function createAmenities(propertyId, amenities, resp, data) {
+    query(`Insert into amenities ( propertyId, amenity) values 
+    ${
+        amenities.map(
+            amenity => `( ${propertyId} , '${amenity}')`
+        ).join(", ")
+        }`, [], function (error, records, fields) {
+            if (error) {
+                resp.writeHead(500, {
+                    'Content-Type': 'application/json'
+                });
+                resp.end(JSON.stringify({
+                    success: false,
+                    message: "Internal server error",
+                }));
+            } else {
+                resp.writeHead(200, {
+                    'Content-Type': 'application/json'
+                });
+                resp.end(JSON.stringify(Object.assign({
+                    success: true,
+                    message: "Property created",
+                }, data)));
+            }
+        })
 }
 
 function updateData(req, resp, data, propertyId) {
@@ -347,6 +409,19 @@ function updateData(req, resp, data, propertyId) {
             }, data)));
         }
     });
+}
+
+function createBlockDateQuery(blockDates, propertyId) {
+    let query = "insert into propertyBlockDate (propertyId, startDate, endDate) values "
+    let values = blockDates.
+        filter(blockDate => (blockDate.startDate && blockDate.endDate)).
+        map(blockDate => `( ${propertyId}, '${blockDate.startDate}', '${blockDate.endDate}' )`).
+        join();
+    if (values.length > 0) {
+        return query += values;
+    } else {
+        return null;
+    }
 }
 
 module.exports = router;

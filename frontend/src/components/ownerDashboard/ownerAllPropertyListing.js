@@ -35,7 +35,7 @@ class OwnerAllProperties extends Component {
                     })
                 } else if (error.response.status === 403) {
                     //user is forbidden to access owner page redirecting to home
-                    this.props.push("/");
+                    this.props.history.push("/");
                 }
             });
     }
@@ -59,6 +59,7 @@ class OwnerAllProperties extends Component {
                             amenities={result.amenities}
                             oneNightRate={result.oneNightRate}
                             cardFixedHeight="150px"
+                            cardIndex={result.propertyId}
                         ></SearchResultCard>
                     )}
                 </div>

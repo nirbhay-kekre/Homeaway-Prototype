@@ -193,7 +193,7 @@ class SearchDetail extends Component {
                             <div className="col-8">
                                 <div className="row">
                                     <div className="col-12">
-                                        <ImageSlider images={this.state.searchResult.photoUrl ? this.state.searchResult.photoUrl : []} fixedHeight="500px" ></ImageSlider>
+                                        <ImageSlider images={this.state.searchResult.photoUrl ? this.state.searchResult.photoUrl : []} index="unique" fixedHeight="500px" ></ImageSlider>
                                     </div>
                                 </div>
                                 <div className="row m-0 mt-1">

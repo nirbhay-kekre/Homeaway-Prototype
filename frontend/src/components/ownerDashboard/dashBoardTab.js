@@ -15,7 +15,7 @@ class OwnerDashboardTab extends Component {
                     <Link className={"nav-link" + (this.props.currentComponent === "OwnerSoldProperties" ? " active" : "")} to="/owner/dashboard/sold">Sold Properties</Link>
                 </li>
                 <li className="nav-item display-inline">
-                    <Link className={"nav-link" + (this.props.currentComponent === "OwnerPostProperty" ? " active" : "")} to="/">Post Property</Link>
+                    <Link className={"nav-link" + (this.props.currentComponent === "OwnerPostProperty" ? " active" : "")} to="/owner/dashboard/post">Post Property</Link>
                 </li>
             </ul>
         );

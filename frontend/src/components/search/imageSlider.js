@@ -4,7 +4,7 @@ import './search.css'
 class ImageSlider extends Component{
     render(){
         return (
-            <div id="carouselPropertyIndicators" className="carousel slide " data-interval="false">
+            <div id={"carouselPropertyIndicators_"+this.props.index} className="carousel slide " data-interval="false">
                 <ol className="carousel-indicators">
                     {
                         this.props.images.map((image, index) =>
@@ -22,11 +22,11 @@ class ImageSlider extends Component{
                         })
                     }
                 </div>
-                <a className="carousel-control-prev" href="#carouselPropertyIndicators" role="button" data-slide="prev">
+                <a className="carousel-control-prev" href={"#carouselPropertyIndicators_"+this.props.index} role="button" data-slide="prev">
                     <span className="carousel-control-prev-icon" aria-hidden="true"></span>
                     <span className="sr-only">Previous</span>
                 </a>
-                <a className="carousel-control-next" href="#carouselPropertyIndicators" role="button" data-slide="next">
+                <a className="carousel-control-next" href={"#carouselPropertyIndicators_"+this.props.index} role="button" data-slide="next">
                     <span className="carousel-control-next-icon" aria-hidden="true"></span>
                     <span className="sr-only">Next</span>
                 </a>

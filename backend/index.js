@@ -13,6 +13,7 @@ let property = require("./route/property");
 let ownerProperty = require("./route/ownerProperty");
 let travelerProperty = require("./route/travelerProperty");
 let sessionValidator = require("./route/sessionValidator");
+let makeMeOwner = require("./route/makeMeOwner")
 
 
 let app = express();
@@ -54,6 +55,7 @@ app.use("/profile", profile);
 app.use("/property", property);
 app.use("/property", ownerProperty);
 app.use("/property", travelerProperty);
+app.use("/makeMeOwner", makeMeOwner);
 
 let server = app.listen(3001, function () {
     console.log("Server listening on port 3001");

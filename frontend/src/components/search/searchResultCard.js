@@ -23,7 +23,7 @@ class SearchResultCard extends Component{
                     <div className="card-body mr-0 pr-0 py-0">
                         <div className="row search-card-body mr-0">
                             <div className="col-6 col-md-3">
-                                <ImageSlider images={this.props.photoUrl} fixedHeight={this.props.cardFixedHeight}></ImageSlider>
+                                <ImageSlider images={this.props.photoUrl} fixedHeight={this.props.cardFixedHeight} index={this.props.cardIndex}></ImageSlider>
                             </div>
                             <div className="col-6 col-md-9 position-relative">
                                 <div className="row w-100">

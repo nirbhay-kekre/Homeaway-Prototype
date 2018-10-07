@@ -111,7 +111,7 @@ class Navbar extends Component {
             },
                 {
                     title: "List your property",
-                    to: "#",
+                    to: "/signup/owner/",
                     dropdown: false,
                     button: true
                 });

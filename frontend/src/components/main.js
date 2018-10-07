@@ -12,6 +12,8 @@ import SearchDetail from './search/searchDetail'
 import TravelerHistory from './history/travelerHistory'
 import OwnerAllProperties from './ownerDashboard/ownerAllPropertyListing'
 import OwnerSoldProperties from './ownerDashboard/ownerSoldPropertyListing';
+import OwnerPostProperties from './ownerDashboard/ownerPostProperty'
+import ChangeOwnership from './changeOwnership/changeOwnership'
 
 //Create a Main Component
 class Main extends Component {
@@ -31,6 +33,8 @@ class Main extends Component {
                 <Route exact path='/mytrips' component={TravelerHistory}/> 
                 <Route exact path='/owner/dashboard/all' component={OwnerAllProperties} />
                 <Route exact path='/owner/dashboard/sold' component={OwnerSoldProperties} />
+                <Route exact path="/owner/dashboard/post" component={OwnerPostProperties}/>
+                <Route exact path="/signup/owner/" component={ChangeOwnership}/>
             </div>
         )
     }
