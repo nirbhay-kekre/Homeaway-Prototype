@@ -74,7 +74,7 @@ class BookingHistory extends Component {
                                 oneNightRate={result.oneNightRate}
                                 customFooter={customFooter}
                                 cardFixedHeight="175px"
-                                cardIndex={result.propertyId}
+                                cardIndex={result.bookingId}
                             />
                         );
                     })}
