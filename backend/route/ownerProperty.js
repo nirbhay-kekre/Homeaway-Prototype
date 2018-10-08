@@ -1,9 +1,12 @@
 let express = require("express");
 let query = require("../connection/pool").poolQuery;
 let multer = require("multer");
+const path = require("path");
+
 let storage = multer.diskStorage({
     destination: function (req, file, callbk) {
-        callbk(null, "backend/uploads/property")
+        console.log(__dirname);
+        callbk(null, path.join( __dirname, "../uploads/property/"))
     },
     filename: function (req, file, callbk) {
         callbk(null, req.body.propertyId + "_" + new Date().toISOString() + "_property" +
