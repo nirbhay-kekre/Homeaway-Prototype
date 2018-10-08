@@ -12,14 +12,18 @@ class Navbar extends Component {
         super(props);
         this.handleLogout = this.handleLogout.bind(this);
         this.state = {
-            items: []
+            items: [],
+            forceReload: true
         }
     }
 
     handleLogout = () => {
         cookie.remove('cookie', { path: '/' });
         axios.delete("http://localhost:3001/signout");
-        this.setState({ loggedOut: true });
+        this.setState({ loggedOut: true,
+            forceReload: !this.state.forceReload
+        });
+        return false;
     }
 
     componentWillMount() {
