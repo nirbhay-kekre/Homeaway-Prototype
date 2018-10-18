@@ -21,13 +21,14 @@ class SearchList extends Component {
 
     componentDidMount(){
         console.log("calling fetch");
-        this.props.fetchPropertiesList();
+        this.props.fetchPropertiesList(this.props.filters);
     }
 
     createCard = () => {
         return (
-            this.props.results.map(result => 
+            this.props.results.map((result, index) => 
                 <SearchResultCard
+                    key={"searchCard_"+index}
                     propertyId={result.propertyId}
                     photoUrl={result.photoUrl}
                     headline={result.headline}

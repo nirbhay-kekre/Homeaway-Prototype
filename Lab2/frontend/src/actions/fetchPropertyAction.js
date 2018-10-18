@@ -14,9 +14,15 @@ export const updateSearchPropertyFilterCriteria = (filter) => (dispatch) => {
 export const fetchPropertiesList = (filters ={}) => async (dispatch) => {
     axios.defaults.withCredentials = true;
     let response = null;
+    console.log({filters});
     try {
         
-        response = await axios.get("http://localhost:3001/property/search/list");
+        response = await axios.get("http://localhost:3001/property/search/list",
+        {
+            params: {
+                filters
+            }
+        });
         console.log(response);
         dispatch({
             type: FETCH_PROPERTIES_LIST,

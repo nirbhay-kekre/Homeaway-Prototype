@@ -33,14 +33,14 @@ class SearchResultCard extends Component{
                                     <small>{this.props.street + ", " + this.props.city + ", " + this.props.state + " " + this.props.zip}</small>
                                 </div>
                                 <div className="row w-100">
-                                    <p className="card-text">
+                                    <div className="card-text">
                                         <ul className="list-inline">
                                             {this.props.bedroom ? <li className="list-inline-item border-left pl-2"><strong>{this.props.bedroom}</strong> BR</li> : ""}
                                             {this.props.bathroom ? <li className="list-inline-item border-left pl-2"><strong>{this.props.bathroom}</strong> BA</li> : ""}
                                             {this.props.accomodates ? <li className="list-inline-item border-left pl-2">sleeps <strong>{this.props.accomodates}</strong></li> : ""}
-                                            {(this.props.amenities && this.props.amenities.length > 0 ) ? this.props.amenities.slice(0, 5).map(element => <li className="list-inline-item border-left pl-2"><strong>{element}</strong></li>) : ""}
+                                            {(this.props.amenities && this.props.amenities.length > 0 ) ? this.props.amenities.slice(0, 5).map((element,index) => <li className="list-inline-item border-left pl-2" key={index}><strong>{element}</strong></li>) : ""}
                                         </ul>
-                                    </p>
+                                    </div>
                                 </div>
                                 <div className="row w-100 mt-auto p-2 position-absolute cardbottom">
                                     <div className="col-12">

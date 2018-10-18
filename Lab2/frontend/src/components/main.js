@@ -11,6 +11,7 @@ import SearchList from './search/searchList';
 import SearchDetail from './search/searchDetail'
 import Navbar from './nav/navbar';
 import SearchHederForm from './search/searchHeaderForm';
+import SearchFilterForm from './search/searchFilterForm';
 // import TravelerHistory from './history/travelerHistory'
 // import OwnerAllProperties from './ownerDashboard/ownerAllPropertyListing'
 // import OwnerSoldProperties from './ownerDashboard/ownerSoldPropertyListing';
@@ -44,6 +45,7 @@ class Main extends Component {
                 <Route exact path="/" component={Home} />
                 
                 <Route path="/search" render= { (props) => <SearchHederForm {...props} />} />
+                <Route exact path="/search/list" component={SearchFilterForm} />
                 <Route exact path="/search/list" component={SearchList} />
                 <Route exact path='/search/detail' component={SearchDetail} />
 

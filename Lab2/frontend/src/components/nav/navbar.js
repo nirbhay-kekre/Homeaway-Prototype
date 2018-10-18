@@ -143,7 +143,7 @@ class Navbar extends Component {
     render() {
 
         const createNavBarItem = (item, index) => {
-            return <NavItem key={item.name + index} to={item.to} title={item.title} dropdown={item.dropdown} button={item.button} theme={this.props.logo} />
+            return <NavItem key={item.title + index} to={item.to} title={item.title} dropdown={item.dropdown} button={item.button} theme={this.props.logo} />
         }
         let customBorderStyle = {};
         if (this.props.logo === "blue") {
@@ -153,8 +153,8 @@ class Navbar extends Component {
         return (
             <div style={customBorderStyle}>
                 <nav className="navbar navbar-expand-lg navbar-dark bd-navbar">
-                    <button class="navbar-toggler navbar-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
+                    <button className="navbar-toggler navbar-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span className="navbar-toggler-icon"></span>
                     </button>
                     <div className="navbar-brand mr-0 mr-md-2 ">
                         <Logo className="navbar-brand " to="/" logo={this.props.logo}></Logo>
@@ -162,10 +162,9 @@ class Navbar extends Component {
                     <div className="navbar-right d-xs-block d-lg-none">
                         <BirdHouse logo={this.props.logo} ></BirdHouse>
                     </div>
-                    <div class="collapse navbar-collapse float-right text-nowarp w-100" id="navbarSupportedContent">
+                    <div className="collapse navbar-collapse float-right text-nowarp w-100" id="navbarSupportedContent">
                         <ul className="navbar-nav ml-auto " >
                             {this.state.items.map(createNavBarItem)}
-
                         </ul>
                     </div>
                     <div className="navbar-right d-none d-lg-block">

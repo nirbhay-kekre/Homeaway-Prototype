@@ -5,9 +5,18 @@ const initialState = {
     result:{},
     filters:{
         accomodates:{},
-        sort: {},
-        dates: {},
-        pagination: {}
+        oneNightRate: {
+            min:"",
+            max:""
+        },
+        bedroom: {
+            min:""
+        },
+        bathroom: {
+            min:""
+        },
+        amenity: [],
+        sorting: {}
     }
 }
 

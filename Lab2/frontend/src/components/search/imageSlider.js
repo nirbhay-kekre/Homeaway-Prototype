@@ -8,15 +8,15 @@ class ImageSlider extends Component{
                 <ol className="carousel-indicators">
                     {
                         this.props.images.map((image, index) =>
-                            <li data-target="#carouselPropertyIndicators" data-slide-to={index} ></li>)
+                            <li data-target="#carouselPropertyIndicators" key={"indicator"+index} data-slide-to={index} ></li>)
                     }
                 </ol>
                 <div className="carousel-inner">
                     {
                         this.props.images.map((image, index) => {
                             return (
-                                <div className={"carousel-item" + (index === 0 ? " active" : "")} style={{height: this.props.fixedHeight? this.props.fixedHeight:""}}>
-                                    <img className="auto-fit d-block w-100" src={image} alt={"slide_" + index} />
+                                <div key={"div_"+index} className={"carousel-item" + (index === 0 ? " active" : "")} style={{height: this.props.fixedHeight? this.props.fixedHeight:""}}>
+                                    <img className="auto-fit d-block w-100" src={image} alt={"slide_" + index} key={"img_"+index}/>
                                 </div>
                             )
                         })

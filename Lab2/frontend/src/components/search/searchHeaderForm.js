@@ -25,13 +25,13 @@ class SearchHederForm extends Component {
         let name = e.target.name;
         let value = e.target.value;
         let minMaxIndex = -1;
-        if ((minMaxIndex = name.indexOf("_min")) != -1) {
+        if ((minMaxIndex = name.indexOf("_min")) !== -1) {
             name = name.substring(0, minMaxIndex);
             value = {
                 ...this.state[name],
                 min: e.target.value
             };
-        } else if ((minMaxIndex = name.indexOf("_max")) != -1) {
+        } else if ((minMaxIndex = name.indexOf("_max")) !== -1) {
             name = name.substring(0, minMaxIndex);
             value = {
                 ...this.state[name],
@@ -50,14 +50,15 @@ class SearchHederForm extends Component {
     }
     onSubmitHandler = async (e) => {
         e.preventDefault();
-        await this.props.updateSearchPropertyFilterCriteria(this.state);
+        //reseting filter upon search
+        const filters = {
+            ...(this.props.filters),
+            ...this.state
+        }
+        await this.props.updateSearchPropertyFilterCriteria(filters);
         this.props.history.push({
             pathname: '/search/list'
         })
-    }
-    componentWillReceiveProps(nextProps){
-        console.log("props received")
-        console.log({nextProps})
     }
     render() {
         return (
@@ -86,7 +87,7 @@ class SearchHederForm extends Component {
 
 SearchHederForm.propTypes = {
     filters: PropTypes.object.isRequired,
-    location: PropTypes.shape({
+    filters: PropTypes.shape({
         city: PropTypes.string,
         arrivalDate: PropTypes.string,
         departureDate: PropTypes.string,

@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import Navbar from './../nav/navbar';
-import axios from 'axios'
 import './login.css'
 import cookie from 'react-cookies';
 import { Redirect } from 'react-router';
