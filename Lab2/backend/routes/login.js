@@ -1,5 +1,4 @@
 let express = require("express");
-// let query = require("../connection/pool").poolQuery;
 let bycrypt = require("bcrypt");
 
 let router = express.Router();

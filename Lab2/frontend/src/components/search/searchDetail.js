@@ -32,7 +32,7 @@ class SearchDetail extends Component {
                                 </div>
                             </div>
                             <div className="row m-0 mt-1">
-                                <h3>{this.props.result.headline}</h3>
+                                <h2>{this.props.result.headline}</h2>
                             </div>
                             <div className="row m-0">
                                 <i className="material-icons">location_on</i>

@@ -146,7 +146,7 @@ class Navbar extends Component {
             return <NavItem key={item.title + index} to={item.to} title={item.title} dropdown={item.dropdown} button={item.button} theme={this.props.logo} />
         }
         let customBorderStyle = {};
-        if (this.props.logo === "blue") {
+        if (this.props.logo !== "white") {
             customBorderStyle.borderBottom = "1px solid #dbdbdb";
         }
 

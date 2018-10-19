@@ -36,7 +36,7 @@ class SearchList extends Component {
                     city={result.city}
                     state={result.state}
                     zip={result.zip}
-                    bedroom={result.bedrrom}
+                    bedroom={result.bedroom}
                     bathroom={result.bathroom}
                     accomodates={result.accomodates}
                     amenities={result.amenities}

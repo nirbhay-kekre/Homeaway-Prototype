@@ -1,4 +1,5 @@
 import { FETCH_PROPERTIES_LIST, FETCH_PROPERTY_DETAIL, SEARCH_FILTER_CRITERIA } from './types'
+import getURL from './url';
 import axios from 'axios';
 
 export const updateSearchPropertyFilterCriteria = (filter) => (dispatch) => {
@@ -17,7 +18,7 @@ export const fetchPropertiesList = (filters ={}) => async (dispatch) => {
     console.log({filters});
     try {
         
-        response = await axios.get("http://localhost:3001/property/search/list",
+        response = await axios.get(getURL('/property/search/list'),
         {
             params: {
                 filters
@@ -37,7 +38,7 @@ export const fetchPropertyDetail = (propertyDetail) => async (dispatch) => {
     axios.defaults.withCredentials = true;
     let response = null;
     try {
-        response = await axios.get("http://localhost:3001/property/search/detail?",{
+        response = await axios.get(getURL("property/search/detail?"),{
             params: propertyDetail
         });
         console.log(response);

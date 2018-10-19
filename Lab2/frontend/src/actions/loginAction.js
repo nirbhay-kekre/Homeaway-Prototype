@@ -1,5 +1,6 @@
 import { LOGIN_SUCCESS, LOGIN_FAIL } from './types'
 import axios from 'axios';
+import getURL from './url';
 
 export const loginAction = (credential) =>  (dispatch) => {
     return new Promise( async (resolve, reject)=>{
@@ -7,7 +8,7 @@ export const loginAction = (credential) =>  (dispatch) => {
     let response = null;
     try {
         console.log("logging in")
-        response = await axios.post("http://localhost:3001/login", credential);
+        response = await axios.post(getURL("login"), credential);
         console.log("Login response");
         console.log(response);
         dispatch({
