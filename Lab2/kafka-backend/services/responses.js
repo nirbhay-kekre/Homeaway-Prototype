@@ -54,4 +54,18 @@ const prepareInternalServerError = (resp, data = {}) => {
     return responseData;
 }
 
-module.exports = { prepareSuccess, prepareAuthenticationFailure, prepareAuthorizationFailure, prepareInternalServerError };
+const prepareResourceConflictFailure = (resp, data = {}) => {
+    const responseData = {
+        code: 409,
+        data: {
+            success: false,
+            message: "Resource Conflict",
+            ...data
+        }
+    };
+    console.log("preparing resource conflict error response with code 409");
+    console.log(responseData);
+    return responseData;
+}
+
+module.exports = { prepareSuccess, prepareAuthenticationFailure, prepareAuthorizationFailure, prepareInternalServerError, prepareResourceConflictFailure };

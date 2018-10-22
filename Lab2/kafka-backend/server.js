@@ -1,7 +1,9 @@
 const connection =  new require('./kafka/Connection');
+var { mongoose } = require('./connection/mongoose');
 
 const LoginService = require('./services/loginService.js');
-const { LOGIN_REQUEST_TOPIC, LOGIN_RESPONSE_TOPIC } = require('./kafka/topics'); 
+const SignUpService = require('./services/signUpService');
+const { LOGIN_REQUEST_TOPIC, SIGNUP_REQUEST_TOPIC} = require('./kafka/topics'); 
 
 function handleTopicRequest(topic_name,fname){
     var consumer = connection.getConsumer(topic_name);
@@ -35,3 +37,4 @@ function handleTopicRequest(topic_name,fname){
 //first argument is topic name
 //second argument is a function that will handle this topic request
 handleTopicRequest(LOGIN_REQUEST_TOPIC,LoginService);
+handleTopicRequest(SIGNUP_REQUEST_TOPIC, SignUpService);

@@ -7,7 +7,7 @@ let cors = require('cors');
 let expressValidator = require("express-validator");
 
 let login = require("./routes/login");
-// let signup = require("./routes/signup");
+let signup = require("./routes/signUp");
 // let signout = require("./routes/signout");
 // let profile = require("./routes/profile");
 // let property = require("./routes/property");
@@ -49,7 +49,7 @@ app.use(expressValidator());
 // app.use("/profilePic",express.static(__dirname+ "/uploads/profile"))
 // app.use("/propertyPic",express.static(__dirname+"/uploads/property"))
 app.use("/login", login);
-// app.use("/signup", signup);
+app.use("/signup", signup);
 // app.use("/signout", signout);
 // app.use("/", sessionValidator);
 // app.use("/profile", profile);

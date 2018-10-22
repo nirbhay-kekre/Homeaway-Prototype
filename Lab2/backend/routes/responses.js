@@ -13,6 +13,7 @@ const sendSuccess = (resp, data = {}) => {
 }
 
 const sendAuthenticationFailure = (resp, data = {}) => {
+    console.log("sending Authentication Failure with code 401", data);
     resp.writeHead(401, {
         'Content-Type': 'application/json'
     });
@@ -24,6 +25,7 @@ const sendAuthenticationFailure = (resp, data = {}) => {
 }
 
 const sendAuthorizationFailure = (resp, data = {}) => {
+    console.log("sending Authorization Failure with code 403", data);
     resp.writeHead(403, {
         'Content-Type': 'application/json'
     });
@@ -35,6 +37,7 @@ const sendAuthorizationFailure = (resp, data = {}) => {
 }
 
 const sendInternalServerError = (resp, data = {}) => {
+    console.log("sending Internal server error with code 500", data);
     resp.writeHead(500, {
         'Content-Type': 'application/json'
     });
@@ -46,12 +49,25 @@ const sendInternalServerError = (resp, data = {}) => {
 }
 
 const sendBadRequest = (resp, data = {}) => {
+    console.log("sending Bad Request with error code 400", data)
     resp.writeHead(400, {
         'Content-Type': 'application/json'
     });
     resp.end(JSON.stringify({
         success: false,
         message: "Bad Request",
+        ...data
+    }));
+}
+
+const sendResourceConflictFailure = (resp, data = {}) => {
+    console.log("sending Bad Request with error code 400", data)
+    resp.writeHead(409, {
+        'Content-Type': 'application/json'
+    });
+    resp.end(JSON.stringify({
+        success: false,
+        message: "Resource Conflict",
         ...data
     }));
 }
@@ -73,8 +89,13 @@ const responseHandler = (resp, result = {}) => {
         case 500:
             sendInternalServerError(resp);
             break;
+        case 409:
+            sendResourceConflictFailure(resp);
+            break;
         default:
-            sendInternalServerError(resp);
+            sendInternalServerError(resp,{
+                reason: "default"
+            });
     }
 }
 

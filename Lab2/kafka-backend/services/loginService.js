@@ -1,7 +1,6 @@
 const { prepareAuthenticationFailure, prepareInternalServerError, prepareSuccess } = require('./responses')
 const { User } = require('./../models/user');
-var { mongoose } = require('./../connection/mongoose');
-const bycrypt = require("bcrypt");
+const bcrypt = require("bcrypt");
 
 async function handle_request(req, callback) {
     let resp = {}
@@ -12,7 +11,7 @@ async function handle_request(req, callback) {
         });
         let match = false;
         if (user) {
-            match = await bycrypt.compare(req.password, user.password);
+            match = await bcrypt.compare(req.password, user.password);
         }
         if (match) {
             resp = prepareSuccess({
