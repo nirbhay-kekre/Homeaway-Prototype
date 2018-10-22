@@ -1,18 +1,20 @@
-let express = require("express");
-let bycrypt = require("bcrypt");
+const express = require("express");
+const kafka = require('./../kafka/client');
+const { LOGIN_REQUEST_TOPIC, LOGIN_RESPONSE_TOPIC } = require('./../kafka/topics');
+const { responseHandler, sendInternalServerError } = require('./responses');
 
-let router = express.Router();
+const router = express.Router();
 
 router.post("/", (req, res) => {
-    let inputUsername = req.body.username;
-    let inputPassword = req.body.password;
-    let role = req.body.role;
-    macthCredentialsInDB(inputUsername, inputPassword, role, req, res);
+    console.log("Inside Login Route :")
+    kafka.make_request(LOGIN_REQUEST_TOPIC, LOGIN_RESPONSE_TOPIC, req.body, function (err, result) {
+        if (err) {
+            sendInternalServerError(res);
+        } else {
+            responseHandler(res, result);
+        }
+
+    });
 });
-
-function macthCredentialsInDB(usernameActual, passwordActual, role, req, resp) {
-
-    
-}
 
 module.exports = router;
