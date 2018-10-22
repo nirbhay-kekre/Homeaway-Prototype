@@ -49,7 +49,7 @@ const sendInternalServerError = (resp, data = {}) => {
 }
 
 const sendBadRequest = (resp, data = {}) => {
-    console.log("sending Bad Request with error code 400", data)
+    console.log("sending Bad Request with error code 400", data);
     resp.writeHead(400, {
         'Content-Type': 'application/json'
     });

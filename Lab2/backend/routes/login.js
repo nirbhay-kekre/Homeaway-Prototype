@@ -30,4 +30,5 @@ function validateInput(req) {
     req.checkBody("role","A role is required.").notEmpty();
     return req.validationErrors();
 }
+
 module.exports = router;
