@@ -6,7 +6,7 @@ import Login from './login/login'
 // import OwnerLogin from './login/ownerLogin'
 // import Welcome from './welcome/welcome'
 import ProfileView from './profile/profileView'
-// import ProfileUpdate from './profile/profileUpdate'
+import ProfileUpdate from './profile/profileUpdate'
 import SearchList from './search/searchList';
 import SearchDetail from './search/searchDetail'
 import Navbar from './nav/navbar';
@@ -31,7 +31,6 @@ class Main extends Component {
                 <Route exact path="/login/owner" component={OwnerLogin} />
                 <Route exact path="/welcome" component={Welcome} />
                 
-                <Route exact path="/profile/update" component={ProfileUpdate} /> 
                 <Route exact path='/mytrips' component={TravelerHistory}/> 
                 <Route exact path='/owner/dashboard/all' component={OwnerAllProperties} />
                 <Route exact path='/owner/dashboard/sold' component={OwnerSoldProperties} />
@@ -52,8 +51,7 @@ class Main extends Component {
                 <Route exact path="/search/list" component={SearchList} />
                 <Route exact path='/search/detail' component={SearchDetail} />
                 <Route exact path="/profile/view" component={ProfileView} />
-
-
+                <Route exact path="/profile/update" component={ProfileUpdate} /> 
             </div>
         )
     }

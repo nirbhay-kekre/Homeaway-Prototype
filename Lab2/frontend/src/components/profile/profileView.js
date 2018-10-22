@@ -6,7 +6,6 @@ import { fetchProfileDetailAction } from '../../actions/userProfileAction'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux';
 import './profile.css'
-import DEFAULT_PROFILE_PIC from './default-profile-pic.png'
 
 class ProfileView extends Component {
 
@@ -35,7 +34,7 @@ class ProfileView extends Component {
                 </div>
                 <div className="row">
                     <div className="col-12 col-md-4 my-auto">
-                        <img className="m-auto d-block image-dim" src={this.props.profile.profilefilepath} alt={DEFAULT_PROFILE_PIC}></img>
+                        <img className="m-auto d-block image-dim" src={this.props.profile.profilefilepath} ></img>
                     </div>
                     <div className="col-12 col-md-8 mx-auto">
                         <div className="row">

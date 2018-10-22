@@ -145,16 +145,17 @@ class Navbar extends Component {
         const createNavBarItem = (item, index) => {
             return <NavItem key={item.title + index} to={item.to} title={item.title} dropdown={item.dropdown} button={item.button} theme={this.props.logo} />
         }
-        let customBorderStyle = {};
+        let customBorderStyle = {}, customToggleBackground ={};
         if (this.props.logo !== "white") {
             customBorderStyle.borderBottom = "1px solid #dbdbdb";
+            customToggleBackground.backgroundImage = `url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(0,103,219, 0.7)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 8h24M4 16h24M4 24h24'/%3E%3C/svg%3E")`;
         }
 
         return (
             <div style={customBorderStyle}>
                 <nav className="navbar navbar-expand-lg navbar-dark bd-navbar">
                     <button className="navbar-toggler navbar-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                        <span className="navbar-toggler-icon"></span>
+                        <span className="navbar-toggler-icon" style={customToggleBackground}></span>
                     </button>
                     <div className="navbar-brand mr-0 mr-md-2 ">
                         <Logo className="navbar-brand " to="/" logo={this.props.logo}></Logo>
