@@ -19,8 +19,8 @@ class Home extends Component {
         return (
             <div className="home-container">
                 <Navbar showMenu={true} logo="white"></Navbar>
-                <div className="home-inner">
-                    <div className="home-search" style={{ width: "100%", maxWidth: '1020px', margin: "150px 0px 10px 0px" }}>
+                <div className="home-inner d-flex">
+                    <div className="home-search w-100 m-auto">
                         <h1 id="intro" style={{ color: "#fff" }}>
                             <span>Book beach houses, cabins,</span><br />
                             <span>condos and more, worldwide</span>

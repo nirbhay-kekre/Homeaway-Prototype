@@ -4,7 +4,10 @@ var { mongoose } = require('./connection/mongoose');
 
 const LoginService = require('./services/loginService.js');
 const SignUpService = require('./services/signUpService');
-const { LOGIN_REQUEST_TOPIC, SIGNUP_REQUEST_TOPIC} = require('./kafka/topics'); 
+const ListPropertiesService = require('./services/listPropertyService');
+const PassportService = require('./services/passportService');
+const { LOGIN_REQUEST_TOPIC, SIGNUP_REQUEST_TOPIC,
+     PASSPORT_REQUEST_TOPIC, LIST_PROPERTY_REQUEST_TOPIC} = require('./kafka/topics'); 
 
 function handleTopicRequest(topic_name,fname){
     var consumer = connection.getConsumer(topic_name);
@@ -39,3 +42,5 @@ function handleTopicRequest(topic_name,fname){
 //second argument is a function that will handle this topic request
 handleTopicRequest(LOGIN_REQUEST_TOPIC,LoginService);
 handleTopicRequest(SIGNUP_REQUEST_TOPIC, SignUpService);
+handleTopicRequest(LIST_PROPERTY_REQUEST_TOPIC, ListPropertiesService );
+handleTopicRequest(PASSPORT_REQUEST_TOPIC, PassportService)

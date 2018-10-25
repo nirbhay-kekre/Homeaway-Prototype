@@ -22,6 +22,8 @@ class Navbar extends Component {
     handleLogout = () => {
         cookie.remove('cookie', { path: '/' });
         axios.delete("http://localhost:3001/signout");
+        localStorage.removeItem("jwtToken");
+        localStorage.removeItem("loggedInUser");
         const navOptions = this.navContent();
         this.setState({
             items: navOptions
@@ -49,18 +51,18 @@ class Navbar extends Component {
                     button: false
                 },
             ];
-            let localCookie = cookie.load('cookie');
-            if (localCookie) {
-                localCookie = JSON.parse(localCookie.substring(2, localCookie.length))
+            let loggedInUser = localStorage.getItem('loggedInUser');
+            if (loggedInUser) {
+                loggedInUser = JSON.parse(loggedInUser)
                 let name = ""
-                if (localCookie["firstname"]) {
-                    name = localCookie["firstname"];
+                if (loggedInUser["firstname"]) {
+                    name = loggedInUser["firstname"];
                 }
-                if (localCookie["lastname"]) {
+                if (loggedInUser["lastname"]) {
                     if (name) {
-                        name += " " + localCookie["lastname"].charAt(0) + "."
+                        name += " " + loggedInUser["lastname"].charAt(0) + "."
                     } else {
-                        name = localCookie["lastname"]
+                        name = loggedInUser["lastname"]
                     }
                 }
                 if (!name) {
@@ -86,7 +88,7 @@ class Navbar extends Component {
                         onClick: this.handleLogout
                     }]
                 }
-                if (localCookie["role"] === "owner" || localCookie["role"] === "both") {
+                if (loggedInUser["role"] === "owner" || loggedInUser["role"] === "both") {
                     userOptions["dropdown"].push({
                         type: "divider"
                     });

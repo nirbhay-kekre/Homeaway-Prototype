@@ -1,14 +1,14 @@
 var crypto = require('crypto');
 var conn = require('./Connection');
 
-var TIMEOUT = 8000; //time to wait for response in ms
+var TIMEOUT = 10000; //time to wait for response in ms
 var self;
 
 exports = module.exports = KafkaRPC;
 
 function KafkaRPC() {
     self = this;
-    this.connection = conn;
+    this.connection = conn; // single connection
     this.requests = {}; //hash to store request in wait for response
     this.response_queue = false; //placeholder for the future queue
     this.producer = this.connection.getProducer();

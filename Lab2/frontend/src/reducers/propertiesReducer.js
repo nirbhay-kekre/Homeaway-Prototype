@@ -1,4 +1,4 @@
-import { FETCH_PROPERTIES_LIST, FETCH_PROPERTY_DETAIL, SEARCH_FILTER_CRITERIA } from '../actions/types';
+import { FETCH_PROPERTIES_LIST, FETCH_PROPERTY_DETAIL, SEARCH_FILTER_CRITERIA, USER_AUTH_FAIL } from '../actions/types';
 
 const initialState = {
     searchResults: [],
@@ -17,7 +17,8 @@ const initialState = {
         },
         amenity: [],
         sorting: {}
-    }
+    },
+    pagination: {}
 }
 
 export default function (state = initialState, action) {
@@ -25,7 +26,14 @@ export default function (state = initialState, action) {
         case FETCH_PROPERTIES_LIST:
             return {
                 ...state,
-                searchResults: action.payload.data.results
+                searchResults: action.payload.data.results,
+                pagination: {
+                    total: action.payload.data.total,
+                    limit: action.payload.data.limit,
+                    offset: action.payload.data.offset,
+                    page: action.payload.data.page,
+                    pages: action.payload.data.pages
+                }
             }
         case FETCH_PROPERTY_DETAIL:
             return {
@@ -37,6 +45,8 @@ export default function (state = initialState, action) {
                 ...state,
                 filters: action.payload
             }
+        case USER_AUTH_FAIL:
+            return initialState;// reseting state on auth failure
         default: return state;
     }
 }

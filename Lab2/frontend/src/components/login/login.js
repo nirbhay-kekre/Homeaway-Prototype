@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import './login.css'
-import cookie from 'react-cookies';
-import { Redirect } from 'react-router';
 import { loginAction } from '../../actions/loginAction'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router';
 
 class Login extends Component {
 
@@ -55,10 +54,7 @@ class Login extends Component {
     }
 
     render() {
-        let redirectVar = null, invalidCredentials = null;
-        if (cookie.load('cookie') && this.props.loginResponse.success) {
-            redirectVar = <Redirect to="/" />
-        }
+        let invalidCredentials = null;
         if (this.state.errorMessage) {
             invalidCredentials = <p className="alert alert-danger error-message">{this.state.errorMessage}</p>
         } else if (false === this.props.loginResponse.success) {
@@ -66,7 +62,7 @@ class Login extends Component {
         }
         return (
             <div className='login-container'>
-                {redirectVar}
+                {localStorage.getItem("jwtToken") ? <Redirect to="/" /> : ""}
                 <div className='login-inner'>
                     <div className="login-header text-center col-md-12 traveler">
                         <h1 >Log in to HomeAway</h1>

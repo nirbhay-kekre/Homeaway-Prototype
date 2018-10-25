@@ -2,8 +2,9 @@ const express = require("express");
 const kafka = require('./../kafka/client');
 const { LOGIN_REQUEST_TOPIC, LOGIN_RESPONSE_TOPIC } = require('./../kafka/topics');
 const { responseHandler, sendInternalServerError, sendBadRequest } = require('./responses');
-
+const jwt = require('jsonwebtoken');
 const router = express.Router();
+const config = require('./../authProxy/config/settings');
 
 router.post("/", (req, res) => {
     console.log("Inside Login Route :");
@@ -19,6 +20,12 @@ router.post("/", (req, res) => {
             if (err) {
                 sendInternalServerError(res);
             } else {
+                if(result.code === 200){
+                    var token = jwt.sign(result.data, config.secret, {
+                        expiresIn: 10080 // in seconds
+                    });
+                    result.data.token = 'JWT ' + token;
+                }
                 responseHandler(res, result);
             }
         });

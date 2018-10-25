@@ -5,12 +5,13 @@ let session = require('express-session');
 let cookieParser = require('cookie-parser');
 let cors = require('cors');
 let expressValidator = require("express-validator");
-
+var morgan = require('morgan');
+let passport = require('passport');
 let login = require("./routes/login");
 let signup = require("./routes/signUp");
 // let signout = require("./routes/signout");
 // let profile = require("./routes/profile");
-// let property = require("./routes/property");
+let property = require("./routes/property");
 // let ownerProperty = require("./routes/ownerProperty");
 // let travelerProperty = require("./routes/travelerProperty");
 // let sessionValidator = require("./routes/sessionValidator");
@@ -18,6 +19,8 @@ let signup = require("./routes/signUp");
 
 
 let app = express();
+// Set up middleware
+let requireAuth = passport.authenticate('jwt', {session: false});
 
 app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
 app.use(cookieParser());
@@ -34,7 +37,7 @@ app.use(session({
      limit: 1024 * 1024 *5
    }));
 app.use(bodyParser.json({limit:1024 * 1024 *5}));
-//app.use(express.static(__dirname + "/public"));
+// app.use(express.static(__dirname + "/public"));
 
 app.use(function(req, res, next) {
     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
@@ -46,14 +49,21 @@ app.use(function(req, res, next) {
   });
 
 app.use(expressValidator());
-// app.use("/profilePic",express.static(__dirname+ "/uploads/profile"))
-// app.use("/propertyPic",express.static(__dirname+"/uploads/property"))
+
+// Log requests to console
+app.use(morgan('dev'));
+app.use(passport.initialize());
+// Bring in defined Passport Strategy
+require('./authProxy/config/passport')(passport);
+console.log(__dirname);
+app.use("/profilePic",express.static(__dirname+ "/uploads/profile"))
+app.use("/propertyPic",express.static(__dirname+"/uploads/property"))
 app.use("/login", login);
 app.use("/signup", signup);
 // app.use("/signout", signout);
-// app.use("/", sessionValidator);
+app.use("/", requireAuth);
 // app.use("/profile", profile);
-// app.use("/property", property);
+app.use("/property", property);
 // app.use("/property", ownerProperty);
 // app.use("/property", travelerProperty);
 // app.use("/makeMeOwner", makeMeOwner);

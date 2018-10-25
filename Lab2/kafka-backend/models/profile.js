@@ -21,5 +21,5 @@ const profileSchema = new Schema({
     phone: {type: String, default:""},
 });
 
-const Profile = mongoose.model('profile', profileSchema);
+const Profile = mongoose.model('profiles', profileSchema);
 module.exports = {Profile};
