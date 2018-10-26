@@ -1,4 +1,4 @@
-import { LOGIN_FAIL, LOGIN_SUCCESS } from '../actions/types';
+import { LOGIN_FAIL, LOGIN_SUCCESS, USER_AUTH_FAIL } from '../actions/types';
 
 const initialState = {
     loginResponse: {}
@@ -18,6 +18,8 @@ export default function (state = initialState, action) {
                 ...state,
                 loginResponse: action.payload.response.data
             }
+        case USER_AUTH_FAIL: 
+            return initialState;// reseting state on AUTH failure on routes other than login
         default: return state;
     }
 }

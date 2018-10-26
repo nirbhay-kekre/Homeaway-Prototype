@@ -45,10 +45,11 @@ class SearchList extends Component {
                     accomodates={result.accomodates}
                     amenities={result.amenities}
                     oneNightRate={result.oneNightRate}
-                    // arrivalDate={this.state.arrivalDate}
-                    // departureDate={this.state.departureDate}
-                    // guests ={this.state.filters.accomodates.min}
-                    // searchCity={this.state.filters.city}
+                    arrivalDate={this.props.filters.arrivalDate}
+                    departureDate={this.props.filters.departureDate}
+                    guests ={this.props.filters.accomodates.min}
+                    minNightStay = {result.minNightStay}
+                    //searchCity={this.props.filters.city}
                     cardFixedHeight="150px"
                     cardIndex={result.propertyId}
                 ></SearchResultCard>
@@ -62,7 +63,7 @@ class SearchList extends Component {
             <div className="container">
                 {this.createCard()}
                 <div className="d-flex justify-content-center">
-                    <Pagination
+                   {this.props.results.length === 0 ? <div className='my-5'><h3>Sorry no properties found for your search criteria</h3></div> :  <Pagination
                         activePage={this.props.pagination.page}
                         itemsCountPerPage={this.props.pagination.limit}
                         totalItemsCount={this.props.pagination.total}
@@ -70,7 +71,7 @@ class SearchList extends Component {
                         onChange={this.handlePageChange}
                         itemClass = 'page-item'
                         linkClass = 'page-link'
-                    />
+                    />}
                 </div>
             </div>
         )

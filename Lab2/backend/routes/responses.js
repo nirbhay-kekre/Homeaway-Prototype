@@ -12,6 +12,20 @@ const sendSuccess = (resp, data = {}) => {
     resp.end(JSON.stringify(responseData));
 }
 
+const sendNoContent = (resp, data = {}) => {
+    let responseData = {
+        success: true,
+        message: "No Content",
+        ...data
+    };
+    console.log("sending No Content response with code 204");
+    console.log(responseData);
+    resp.writeHead(204, {
+        'Content-Type': 'application/json'
+    });
+    resp.end(JSON.stringify(responseData));
+}
+
 const sendAuthenticationFailure = (resp, data = {}) => {
     console.log("sending Authentication Failure with code 401", data);
     resp.writeHead(401, {
@@ -76,6 +90,9 @@ const responseHandler = (resp, result = {}) => {
     switch (result.code) {
         case 200:
             sendSuccess(resp, result.data);
+            break;
+        case 204:
+            sendNoContent(resp, result.data);
             break;
         case 400:
             sendBadRequest(resp);

@@ -1,4 +1,4 @@
-import { FETCH_PROPERTIES_LIST, FETCH_PROPERTY_DETAIL, SEARCH_FILTER_CRITERIA, USER_AUTH_FAIL } from '../actions/types';
+import { FETCH_PROPERTIES_LIST, FETCH_PROPERTY_DETAIL, SEARCH_FILTER_CRITERIA, RESET_PROPERTY } from '../actions/types';
 
 const initialState = {
     searchResults: [],
@@ -45,7 +45,7 @@ export default function (state = initialState, action) {
                 ...state,
                 filters: action.payload
             }
-        case USER_AUTH_FAIL:
+        case RESET_PROPERTY:
             return initialState;// reseting state on auth failure
         default: return state;
     }

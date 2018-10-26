@@ -3,9 +3,10 @@ import Logo from './logo';
 import BirdHouse from './birdLogo';
 import NavItem from './navItem';
 import './navbar.css'
-import cookie from 'react-cookies';
 import axios from 'axios';
-
+import { loginAction } from '../../actions/loginAction'
+import PropTypes from 'prop-types'
+import { connect } from 'react-redux';
 
 class Navbar extends Component {
     constructor(props) {
@@ -19,8 +20,16 @@ class Navbar extends Component {
         }
     }
 
+    componentWillReceiveProps = (nextProps) => {
+        if (this.props.loginResponse != nextProps.loginResponse) {
+            const navOptions = this.navContent();
+            this.setState({
+                items: navOptions
+            })
+        }
+    }
+
     handleLogout = () => {
-        cookie.remove('cookie', { path: '/' });
         axios.delete("http://localhost:3001/signout");
         localStorage.removeItem("jwtToken");
         localStorage.removeItem("loggedInUser");
@@ -147,7 +156,7 @@ class Navbar extends Component {
         const createNavBarItem = (item, index) => {
             return <NavItem key={item.title + index} to={item.to} title={item.title} dropdown={item.dropdown} button={item.button} theme={this.props.logo} />
         }
-        let customBorderStyle = {}, customToggleBackground ={};
+        let customBorderStyle = {}, customToggleBackground = {};
         if (this.props.logo !== "white") {
             customBorderStyle.borderBottom = "1px solid #dbdbdb";
             customToggleBackground.backgroundImage = `url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(0,103,219, 0.7)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 8h24M4 16h24M4 24h24'/%3E%3C/svg%3E")`;
@@ -181,4 +190,13 @@ class Navbar extends Component {
 
 }
 
-export default Navbar;
+
+const mapStateToProps = (state) => ({
+    loginResponse: state.loginReducer.loginResponse,
+})
+
+Navbar.propTypes = {
+    loginResponse: PropTypes.object.isRequired,
+}
+
+export default connect(mapStateToProps, { loginAction })(Navbar);

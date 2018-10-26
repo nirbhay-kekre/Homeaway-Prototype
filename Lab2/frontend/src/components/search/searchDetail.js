@@ -2,26 +2,46 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux';
 import ImageSlider from './imageSlider'
-import {fetchPropertyDetail} from './../../actions/fetchPropertyAction'
+import { fetchPropertyDetail } from './../../actions/fetchPropertyAction'
 
 class SearchDetail extends Component {
-    
-    
-    componentWillMount(){
-        
+
+    constructor(props) {
+        super(props);
+        this.formatDate =this.formatDate.bind(this);
+        this.state = {
+            arrivalDate: this.props.location.state.arrivalDate || this.formatDate(new Date()),
+            departureDate: this.props.location.state.departureDate || this.formatDate(new Date()),
+            accomodates: this.props.location.state.accomodates_min || 1,
+        }
+        this.onChange = this.onChange.bind(this);
+    }
+
+    onChange = (e) => {
+        this.setState({
+            [e.target.name]: e.target.value
+        })
+    }
+    formatDate = (date) => {
+        return `${date.getUTCFullYear()}-${date.getUTCMonth() + 1}-${date.getUTCDate()}`;
+    }
+    componentWillMount() {
+
         const params = {
             propertyId: this.props.location.state.propertyId,
-            arrivalDate: this.props.location.state.arrivalDate,
-            departureDate: this.props.location.state.departureDate,
-            accomodates: this.props.location.state.accomodates_min
+            arrivalDate: this.state.arrivalDate,
+            departureDate: this.state.departureDate,
+            accomodates: this.state.accomodates
         }
         this.props.fetchPropertyDetail(params);
     }
 
     render() {
-        let feedbackMessage =null;
+        let feedbackMessage = null;
         return (
+
             <div>
+
                 <div className="container">
                     <div className="row p-1">
 
@@ -84,7 +104,7 @@ class SearchDetail extends Component {
                         <div className="col-4 border-left border-right">
                             {feedbackMessage}
                             <div className="row m-3">
-                                <h3>${this.props.result.oneNightRate}</h3>
+                                <h4>${this.props.result.oneNightRate}</h4>
                                 <p className="text-muted p-2"> per night</p>
                             </div>
                             <div className="row mx-3 my-4">
@@ -95,7 +115,7 @@ class SearchDetail extends Component {
                                                 <small className="w-100 text-center text-muted">Check In</small>
                                             </div>
                                             <div className="row">
-                                                <p className="w-100 text-center" >{this.props.result.arrivalDate}</p>
+                                                <input type='date' className="w-100 text-center" name="arrivalDate" onChange={this.onChange} max={this.state.arrivalDate} value={this.state.arrivalDate}></input>
                                             </div>
                                         </div>
                                         <div className="col-6">
@@ -103,7 +123,7 @@ class SearchDetail extends Component {
                                                 <small className="w-100 text-center text-muted">Check Out</small>
                                             </div>
                                             <div className="row">
-                                                <p className="w-100 text-center" >{this.props.result.departureDate}</p>
+                                                <input type='date' className="w-100 text-center" name="departureDate" onChange={this.onChange} min={this.state.arrivalDate} value={this.state.departureDate}></input>
                                             </div>
                                         </div>
                                     </div>
@@ -113,7 +133,7 @@ class SearchDetail extends Component {
                                                 <small className="w-100 text-center text-muted">guests</small>
                                             </div>
                                             <div className="row">
-                                                <p className="w-100 text-center" >{this.props.result.guests + " guests"}</p>
+                                                <input type="number" className="w-100 text-center" name="accomodates" onChange={this.onChange} min="1" value={this.state.accomodates}/>
                                             </div>
                                         </div>
                                     </div>
@@ -130,6 +150,7 @@ class SearchDetail extends Component {
                     </div>
 
                 </div>
+
             </div>
         )
     }
@@ -140,7 +161,7 @@ const mapStateToProps = (state) => ({
 })
 
 SearchDetail.propTypes = {
-    fetchPropertyDetail : PropTypes.func.isRequired,
+    fetchPropertyDetail: PropTypes.func.isRequired,
     result: PropTypes.array.isRequired
 }
 export default connect(mapStateToProps, { fetchPropertyDetail })(SearchDetail);

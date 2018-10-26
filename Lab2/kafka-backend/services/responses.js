@@ -12,6 +12,19 @@ const prepareSuccess = (data = {}) => {
     return responseData;
 }
 
+const prepareNoContent = (data ={}) =>{
+    const responseData = {
+        code: 204,
+        data: {
+            success: true,
+            message: "No content",
+            ...data
+        }
+    };
+    console.log("preparing No content response with code 204");
+    console.log(responseData);
+    return responseData;
+}
 const prepareAuthenticationFailure = (data = {}) => {
     const responseData = {
         code: 401,
@@ -68,4 +81,6 @@ const prepareResourceConflictFailure = (resp, data = {}) => {
     return responseData;
 }
 
-module.exports = { prepareSuccess, prepareAuthenticationFailure, prepareAuthorizationFailure, prepareInternalServerError, prepareResourceConflictFailure };
+module.exports = { prepareSuccess, prepareNoContent,
+     prepareAuthenticationFailure, prepareAuthorizationFailure,
+      prepareInternalServerError, prepareResourceConflictFailure };

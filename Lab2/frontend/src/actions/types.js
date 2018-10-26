@@ -8,3 +8,4 @@ export const UPDATE_PROFILE = "UPDATE_PROFILE";
 export const SIGNUP_SUCCESS = "SIGNUP_SUCCESS";
 export const SIGNUP_FAIL = "SIGNUP_FAIL";
 export const USER_AUTH_FAIL = "USER_AUTH_FAIL";
+export const RESET_PROPERTY = "RESET_PROPERTY";

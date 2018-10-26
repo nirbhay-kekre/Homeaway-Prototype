@@ -15,7 +15,6 @@ class SearchResultCard extends Component{
                             arrivalDate: this.props.arrivalDate,
                             departureDate: this.props.departureDate,
                             accomodates_min: this.props.guests,
-                            city: this.props.searchCity,
                         }
                     }
 
@@ -44,7 +43,10 @@ class SearchResultCard extends Component{
                                 </div>
                                 <div className="row w-100 mt-auto p-2 position-absolute cardbottom">
                                     <div className="col-12">
-                                        <h5 className="row">${this.props.oneNightRate} per night</h5>
+                                        <div className="row">
+                                        <h5 className="col-6">${this.props.oneNightRate} per night</h5>
+                                        <h5 className="col-6 d-flex justify-content-left">minimum night stay: {this.props.minNightStay}</h5>
+                                        </div>
                                         {this.props.customFooter? <p className="row">{this.props.customFooter}</p>:""}
                                         <small className="row">click for property details</small>
                                     </div>

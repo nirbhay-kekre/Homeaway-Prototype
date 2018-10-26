@@ -1,5 +1,6 @@
 const { prepareInternalServerError, prepareSuccess } = require('./responses')
 const { Property } = require('./../models/property');
+let DateDiff = require("date-diff");
 
 async function handle_request(req, callback) {
     let resp = {}
@@ -7,19 +8,14 @@ async function handle_request(req, callback) {
         let searchCriteria = createSearchCriteriaObject(req);
 
         let properties = await Property.paginate(...searchCriteria);
-        if (properties) {
-            resp = prepareSuccess({
-                results: properties.docs,
-                total: properties.total,
-                limit: properties.limit,
-                offset: properties.offset,
-                page: properties.page,
-                pages: properties.pages
-            });
-        }
-        else {
-            resp = prepareAuthenticationFailure();
-        }
+        resp = prepareSuccess({
+            results: properties.docs,
+            total: properties.total,
+            limit: properties.limit,
+            offset: properties.offset,
+            page: properties.page,
+            pages: properties.pages
+        });
     } catch (error) {
         console.log(error);
         resp = prepareInternalServerError()
@@ -49,7 +45,15 @@ createSearchCriteriaObject = (req) => {
         if (bathroom && bathroom.min) filter.bathroom = { $gte: bathroom.min };
         if (amenity && amenity.length > 0) filter.amenities = { $in: amenity };
         if (city) filter.city = { $regex: ".*" + city + ".*" };
-        if (arrivalDate && departureDate) filter.availability = { $elemMatch: { endDate: { $gte: (new Date(departureDate)).toISOString() }, startDate: { $lte: (new Date(arrivalDate)).toISOString() } } }
+        if (arrivalDate && departureDate) {
+            filter.availability = { $elemMatch: { endDate: { $gte: (new Date(departureDate)).toISOString() }, startDate: { $lte: (new Date(arrivalDate)).toISOString() } } }
+            let numOfOnboardingDays = 1;
+            if (new Date(departureDate) > new Date(arrivalDate)) {
+                let dateDiff = new DateDiff(new Date(departureDate), new Date(arrivalDate));
+                numOfOnboardingDays = dateDiff.days() + 1;
+            }
+            filter.minNightStay = { $lte: numOfOnboardingDays }
+        }
         else if (arrivalDate) filter.availability = { $elemMatch: { startDate: { $lte: (new Date(arrivalDate)).toISOString() } } };
         else if (departureDate) filter.availability = { $elemMatch: { endDate: { $gte: (new Date(departureDate)).toISOString() } } };
 
