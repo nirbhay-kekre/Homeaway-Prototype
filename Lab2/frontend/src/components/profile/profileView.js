@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import cookie from 'react-cookies';
 import { Redirect } from 'react-router';
 import { fetchProfileDetailAction } from '../../actions/userProfileAction'
 import PropTypes from 'prop-types'
@@ -10,11 +9,11 @@ import './profile.css'
 class ProfileView extends Component {
 
     componentDidMount() {
-        this.props.fetchProfileDetailAction();
+        this.props.fetchProfileDetailAction((JSON.parse(localStorage.getItem("loggedInUser"))).username);
     }
     render() {
         let redirectVar = null;
-        if (!cookie.load('cookie')) {
+        if (!localStorage.getItem("loggedInUser")||!localStorage.getItem("jwtToken")) {
             redirectVar = <Redirect to="/login"></Redirect>
         }
 

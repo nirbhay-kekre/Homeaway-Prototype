@@ -37,6 +37,7 @@ export default function (state = initialState, action) {
                 ...state.profile,
                 ...action.payload.data,
                 profilefilepath: action.payload.data.profilefilepath ? action.payload.data.profilefilepath : Default_profile_Pic,
+                createdOn: action.payload.data.createdOn ? new Date(action.payload.data.createdOn).getFullYear() : "The beginning"
             }
             return {
                 ...state,
