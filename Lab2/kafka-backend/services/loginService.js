@@ -7,11 +7,12 @@ async function handle_request(req, callback) {
     try {
         let user = await User.findOne({
             username: req.username,
-            role: req.role,
         });
         let match = false;
         if (user) {
-            match = await bcrypt.compare(req.password, user.password);
+            if (user.role === req.role || user.role === "both") {            
+                match = await bcrypt.compare(req.password, user.password);
+            }
         }
         if (match) {
             resp = prepareSuccess({

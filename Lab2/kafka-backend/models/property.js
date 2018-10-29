@@ -4,7 +4,7 @@ const mongoose = require('mongoose'),
 const mongoosePaginate = require('mongoose-paginate');
 
 const propertySchema = new Schema({
-        propertyId: Number,
+        propertyId: String,
         headline: String,
         propertyType: String,
         bedroom: Number,

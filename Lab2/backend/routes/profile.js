@@ -9,6 +9,7 @@ let router = express.Router();
 let multer = require("multer");
 const path = require("path");
 const jwtDecode = require('jwt-decode');
+const config = require('./../authProxy/config/settings');
 
 let storage = multer.diskStorage({
     destination: function (req, file, callbk) {
@@ -77,7 +78,7 @@ router.post("/update", upload.single('profilePhoto'), function (req, res) {
 
 function validateInput(req) {
     if (req.file !== undefined) {
-        req.body.profilefilepath = "http://localhost:3001/profilePic/" + req.file.filename;
+        req.body.profilefilepath = `http://${config.backend_host}:${config.backend_port}/profilePic/` + req.file.filename;
         console.log("new profile ----> ",req.body.profilefilepath);
     }
 
