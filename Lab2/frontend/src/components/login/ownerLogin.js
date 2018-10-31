@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import Navbar from './../nav/navbar';
-import axios from 'axios'
 import './login.css'
-import cookie from 'react-cookies';
+import { loginAction } from '../../actions/loginAction'
+import PropTypes from 'prop-types'
+import { connect } from 'react-redux';
 import { Redirect } from 'react-router';
 import ownerLoginImage from './ownerLogin.png'
 
@@ -14,8 +14,6 @@ class OwnerLogin extends Component {
             username: "",
             password: "",
             errorMessage: "",
-            authFlag: false,
-            isLoginAttempted: false
         }
         this.loginHandler = this.loginHandler.bind(this);
         this.usernameChangeHandler = this.usernameChangeHandler.bind(this);
@@ -23,8 +21,7 @@ class OwnerLogin extends Component {
     }
     componentWillMount() {
         this.setState({
-            authFlag: false,
-            message: null
+            errorMessage: ""
         })
     }
     usernameChangeHandler = (e) => {
@@ -38,7 +35,7 @@ class OwnerLogin extends Component {
         })
     }
 
-    loginHandler = (e) => {
+    loginHandler = async (e) => {
         e.preventDefault();
         let msg = "";
         if (!this.state.username) {
@@ -49,62 +46,41 @@ class OwnerLogin extends Component {
         }
         if (msg) {
             this.setState({
-                isLoginAttempted: true,
-                authFlag: false,
                 errorMessage: msg
             })
         }
         else {
-            axios.defaults.withCredentials = true;
-            axios.post("http://localhost:3001/login",{
-                    username: this.state.username,
-                    password: this.state.password,
-                    role: "owner"
-            }).then(response => {
-                if (response.status === 200) {
-                    this.setState({
-                        authFlag: true,
-                        errorMessage: "",
-                        isLoginAttempted: true,
-                    })
-                }
-            }, error => {
-                if(error.message === "Network Error"){
-                    this.setState({
-                        authFlag: false,
-                        errorMessage: "Server is not running, try again later",
-                        isLoginAttempted: true,
-                    })
-                }
-                else if (error.response.status === 401 || error.response.status === 500) {
-                    this.setState({
-                        authFlag: false,
-                        errorMessage: error.response.data.message,
-                        isLoginAttempted: true,
-                    })
-                }
+            await this.props.loginAction({
+                username: this.state.username,
+                password: this.state.password,
+                role: "owner"
+            });
+            this.setState({
+                errorMessage: ""
             })
         }
     }
 
     render() {
         let redirectVar = null, invalidCredentials = null;
-        let localCookie=cookie.load('cookie');
-        if (localCookie) {
-            localCookie = JSON.parse(localCookie.substring(2,localCookie.length));
-            if(localCookie.role==="owner" || localCookie.role==="both"){
+        let loggedInUser  = localStorage.getItem("loggedInUser");
+        if (loggedInUser && localStorage.getItem("jwtToken")) {
+            loggedInUser= JSON.parse(loggedInUser);
+            if(loggedInUser.role==="owner" || loggedInUser.role==="both"){
                 redirectVar = <Redirect to="/owner/dashboard/all" />
             }else{
                 redirectVar = <Redirect to="/" />
             }
         }
-        if (this.state.errorMessage && this.state.isLoginAttempted && !this.state.authFlag) {
+        if (this.state.errorMessage ) {
             invalidCredentials = <p className="alert alert-danger error-message">{this.state.errorMessage}</p>
+        }else if (false === this.props.loginResponse.success) {
+            debugger;
+            invalidCredentials = <p className="alert alert-danger error-message">{this.props.loginResponse.message}</p>
         }
         return (
             <div>
                 {redirectVar}
-                <Navbar logo="blue"></Navbar>
                 <div className='login-container'>
                     <div className='login-inner row'>
                         <div className="col-md-6 col-sm-6 hidden-xs">
@@ -145,4 +121,12 @@ class OwnerLogin extends Component {
     }
 }
 
-export default OwnerLogin;
+const mapStateToProps = (state) => ({
+    loginResponse: state.loginReducer.loginResponse,
+})
+
+OwnerLogin.propTypes = {
+    loginResponse: PropTypes.object.isRequired,
+}
+
+export default connect(mapStateToProps, { loginAction })(OwnerLogin);

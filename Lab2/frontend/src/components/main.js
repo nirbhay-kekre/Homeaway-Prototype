@@ -3,7 +3,7 @@ import { Route, Switch } from 'react-router-dom';
 import Home from './home/home';
 import Login from './login/login'
 import Signup from './signup/signup'
-// import OwnerLogin from './login/ownerLogin'
+import OwnerLogin from './login/ownerLogin'
 import Welcome from './welcome/welcome'
 import ProfileView from './profile/profileView'
 import ProfileUpdate from './profile/profileUpdate'
@@ -16,8 +16,8 @@ import Proxy from './proxy/proxy';
 // import TravelerHistory from './history/travelerHistory'
 // import OwnerAllProperties from './ownerDashboard/ownerAllPropertyListing'
 // import OwnerSoldProperties from './ownerDashboard/ownerSoldPropertyListing';
-// import OwnerPostProperties from './ownerDashboard/ownerPostProperty'
-// import ChangeOwnership from './changeOwnership/changeOwnership'
+import OwnerPostProperties from './ownerDashboard/ownerPostProperty'
+import ChangeOwnership from './changeOwnership/changeOwnership'
 
 //Create a Main Component
 class Main extends Component {
@@ -28,13 +28,10 @@ class Main extends Component {
                 {/*
                 
                 
-                <Route exact path="/login/owner" component={OwnerLogin} />
                 
                 <Route exact path='/mytrips' component={TravelerHistory}/> 
                 <Route exact path='/owner/dashboard/all' component={OwnerAllProperties} />
                 <Route exact path='/owner/dashboard/sold' component={OwnerSoldProperties} />
-                <Route exact path="/owner/dashboard/post" component={OwnerPostProperties}/>
-                <Route exact path="/signup/owner/" component={ChangeOwnership}/>*/}
 
                 {/** Switch for nav bar */}
                 <Switch>
@@ -47,18 +44,21 @@ class Main extends Component {
                     {/* For all other route show menu on nav*/}
                     <Route path="/" render={(props) => <Navbar {...props} showMenu={true} />} />
                 </Switch>
+
                 {/** Switch for Authentication Proxy */}
                 <Switch>
                     {/* home, login and signup are accessible without login */}
                     <Route exact path="/" />
                     <Route exact path="/login" />
-                    <Route exaxt path="/signup"/>
-                    <Route path="/" component={Proxy}/>
+                    <Route exaxt path="/signup" />
+                    <Route exact path="/login/owner"/>
+                    <Route path="/" component={Proxy} />
                 </Switch>
 
                 <Route exact path="/login" component={Login} />
                 <Route exact path="/signup" component={Signup} />
                 <Route exact path="/welcome" component={Welcome} />
+                <Route exact path="/login/owner" component={OwnerLogin} />
 
                 <Route exact path="/" component={Home} />
 
@@ -69,6 +69,9 @@ class Main extends Component {
 
                 <Route exact path="/profile/view" component={ProfileView} />
                 <Route exact path="/profile/update" component={ProfileUpdate} />
+                <Route exact path="/signup/owner/" component={ChangeOwnership} />
+    
+                <Route exact path="/owner/dashboard/post" component={OwnerPostProperties} />
             </div>
         )
     }

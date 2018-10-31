@@ -61,6 +61,12 @@ router.use("/create", isUserOwner, upload.any(), function (req, res, next) {
     if (req.files) {
         req.body.photoUrl = req.files.map(file => `http://${config.backend_host}:${config.backend_port}/propertyPic/${file.filename}`)
     }
+    if(req.body.amenities){
+        req.body.amenities = JSON.parse(req.body.amenities);
+    }
+    if(req.body.availability){
+        req.body.availability= JSON.parse(req.body.availability);
+    }
     let errors = validateInput(req);
     if (errors) {
         let msg = errors.map(error => error.msg).reduce((accumulator, currentVal) => accumulator + "\n" + currentVal);
@@ -98,20 +104,20 @@ function validateInput(req) {
     req.checkBody("phone", "Phone number must be 10 digits").isLength({ max: 10 });
     let errors = req.validationErrors();
     if(!req.body.availability || !req.body.availability.length>0 ){
-        // if(errors === false){
-        //     errors =[];
-        // }
-        // errors.push({
-        //     location: "body",
-        //     msg: "property availability is required",
-        //     param: "availability"
-        // });
-        req.body.availability =[
-            {
-                "startDate": "2018-10-25T00:00:00.000Z",
-                "endDate": "2018-12-25T00:00:00.000Z"
-            }
-        ];
+        if(errors === false){
+            errors =[];
+        }
+        errors.push({
+            location: "body",
+            msg: "property availability is required",
+            param: "availability"
+        });
+        // req.body.availability =[
+        //     {
+        //         "startDate": "2018-10-25T00:00:00.000Z",
+        //         "endDate": "2018-12-25T00:00:00.000Z"
+        //     }
+        // ];
     }
     if(!req.body.photoUrl || !(req.body.photoUrl.length >=2 && req.body.photoUrl.length<=5) ){
         if(errors === false){

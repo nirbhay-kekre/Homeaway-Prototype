@@ -1,4 +1,7 @@
-import { LOGIN_FAIL, LOGIN_SUCCESS, USER_AUTH_FAIL } from '../actions/types';
+import {
+    LOGIN_FAIL, LOGIN_SUCCESS,
+    USER_AUTH_FAIL, CHANGE_TO_OWNER_SUCCESS
+} from '../actions/types';
 
 const initialState = {
     loginResponse: {}
@@ -6,19 +9,24 @@ const initialState = {
 
 export default function (state = initialState, action) {
     switch (action.type) {
+        case CHANGE_TO_OWNER_SUCCESS:
+            return {
+                ...state,
+                loginResponse: action.payload.data
+            }
         case LOGIN_SUCCESS:
             return {
                 ...state,
                 loginResponse: action.payload.data
             }
         case LOGIN_FAIL:
-        console.log("Fail:")
-            console.log({payload : action.payload});
+            console.log("Fail:")
+            console.log({ payload: action.payload });
             return {
                 ...state,
                 loginResponse: action.payload.response.data
             }
-        case USER_AUTH_FAIL: 
+        case USER_AUTH_FAIL:
             return initialState;// reseting state on AUTH failure on routes other than login
         default: return state;
     }

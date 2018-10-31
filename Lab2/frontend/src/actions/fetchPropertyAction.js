@@ -16,7 +16,7 @@ export const updateSearchPropertyFilterCriteria = (filter) => (dispatch) => {
     });
 }
 
-export const fetchPropertiesList = (filters = {}, pageNumber = 1, limit = 2) => async (dispatch) => {
+export const fetchPropertiesList = (filters = {}, pageNumber = 1, limit = 10) => async (dispatch) => {
     axios.defaults.withCredentials = true;
     let response = null;
     console.log({ filters });

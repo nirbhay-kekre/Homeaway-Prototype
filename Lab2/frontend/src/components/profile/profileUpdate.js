@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import axios from 'axios'
-import cookie from 'react-cookies';
 import { Redirect } from 'react-router';
 import './profile.css'
 import house from './house.png'
@@ -42,7 +40,6 @@ class ProfileUpdate extends Component {
 
     updateProfileSubmitHandler = async (e) => {
         e.preventDefault();
-        axios.defaults.withCredentials = true;
         const fdata = new FormData();
         fdata.append("firstname", this.state.firstname);
         fdata.append("lastname", this.state.lastname);
