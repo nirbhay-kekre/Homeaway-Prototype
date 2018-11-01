@@ -3,11 +3,13 @@ import propertiesReducer from './propertiesReducer';
 import loginReducer from './loginReducer';
 import userProfileReducer from './userProfileReducer';
 import signupReducer from './signupReducer';
-import postPropertyReducer from './postPropertyReducer'
+import postPropertyReducer from './postPropertyReducer';
+import bookPropertyReducer from './bookPropertyReducer';
 export default combineReducers({
     searchProperty : propertiesReducer,
     loginReducer: loginReducer,
     userProfileReducer: userProfileReducer,
     signupReducer: signupReducer,
-    postPropertyReducer: postPropertyReducer
+    postPropertyReducer: postPropertyReducer,
+    bookPropertyReducer: bookPropertyReducer,
 })

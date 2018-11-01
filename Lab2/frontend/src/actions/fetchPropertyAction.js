@@ -60,6 +60,7 @@ export const fetchPropertyDetail = (propertyDetail) => async (dispatch) => {
     axios.defaults.withCredentials = true;
     let response = null;
     try {
+        debugger;
         response = await axios.get(getURL("property/search/detail?"), {
             params: propertyDetail,
             headers: {

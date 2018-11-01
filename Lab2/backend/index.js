@@ -12,7 +12,7 @@ let signup = require("./routes/signUp");
 let profile = require("./routes/profile");
 let property = require("./routes/property");
 let ownerProperty = require("./routes/ownerProperty");
-// let travelerProperty = require("./routes/travelerProperty");
+let travelerProperty = require("./routes/travelerProperty");
 // let sessionValidator = require("./routes/sessionValidator");
 let makeMeOwner = require("./routes/makeMeOwner");
 const config = require('./authProxy/config/settings');
@@ -65,7 +65,7 @@ app.use("/", requireAuth);
 app.use("/profile", profile);
 app.use("/property", property);
 app.use("/property", ownerProperty);
-// app.use("/property", travelerProperty);
+app.use("/property", travelerProperty);
 app.use("/makeMeOwner", makeMeOwner);
 
 

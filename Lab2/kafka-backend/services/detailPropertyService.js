@@ -45,19 +45,7 @@ async function handle_request(req, callback) {
 createSearchCriteria = (propertyId, arrivalDate, departureDate, accomodates, numOfOnboardingDays) => {
 
     const searchCriteria = {
-        propertyId,
-        // availability: {
-        //     $elemMatch: {
-        //         endDate: { $gte: departureDate },
-        //         startDate: { $lte: arrivalDate }
-        //     }
-        // },
-        // minNightStay: {
-        //     $lte: numOfOnboardingDays
-        // },
-        // accomodates: {
-        //     $gte: accomodates
-        // }
+        propertyId
     }
     console.log("Detail search criteria: ", JSON.stringify(searchCriteria))
     return searchCriteria;

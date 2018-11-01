@@ -38,7 +38,7 @@ export default function (state = initialState, action) {
         case FETCH_PROPERTY_DETAIL:
             return {
                 ...state,
-                result: action.payload.data.result
+                result: action.payload.data.result || {}
             }
         case SEARCH_FILTER_CRITERIA:
             return{
