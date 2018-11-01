@@ -13,9 +13,9 @@ import Navbar from './nav/navbar';
 import SearchHederForm from './search/searchHeaderForm';
 import SearchFilterForm from './search/searchFilterForm';
 import Proxy from './proxy/proxy';
-// import TravelerHistory from './history/travelerHistory'
-// import OwnerAllProperties from './ownerDashboard/ownerAllPropertyListing'
-// import OwnerSoldProperties from './ownerDashboard/ownerSoldPropertyListing';
+import TravelerHistory from './history/travelerHistory'
+import OwnerAllProperties from './ownerDashboard/ownerAllPropertyListing'
+import OwnerSoldProperties from './ownerDashboard/ownerSoldPropertyListing';
 import OwnerPostProperties from './ownerDashboard/ownerPostProperty'
 import ChangeOwnership from './changeOwnership/changeOwnership'
 
@@ -29,9 +29,6 @@ class Main extends Component {
                 
                 
                 
-                <Route exact path='/mytrips' component={TravelerHistory}/> 
-                <Route exact path='/owner/dashboard/all' component={OwnerAllProperties} />
-                <Route exact path='/owner/dashboard/sold' component={OwnerSoldProperties} />
 
                 {/** Switch for nav bar */}
                 <Switch>
@@ -72,6 +69,10 @@ class Main extends Component {
                 <Route exact path="/signup/owner/" component={ChangeOwnership} />
     
                 <Route exact path="/owner/dashboard/post" component={OwnerPostProperties} />
+                <Route exact path='/mytrips' component={TravelerHistory}/> 
+                <Route exact path='/owner/dashboard/all' component={OwnerAllProperties} />
+                <Route exact path='/owner/dashboard/sold' component={OwnerSoldProperties} />
+
             </div>
         )
     }

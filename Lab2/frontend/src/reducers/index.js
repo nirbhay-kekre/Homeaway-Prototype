@@ -5,6 +5,7 @@ import userProfileReducer from './userProfileReducer';
 import signupReducer from './signupReducer';
 import postPropertyReducer from './postPropertyReducer';
 import bookPropertyReducer from './bookPropertyReducer';
+import propertyHistoryReducer from './propertyHistoryReducer'
 export default combineReducers({
     searchProperty : propertiesReducer,
     loginReducer: loginReducer,
@@ -12,4 +13,5 @@ export default combineReducers({
     signupReducer: signupReducer,
     postPropertyReducer: postPropertyReducer,
     bookPropertyReducer: bookPropertyReducer,
+    propertyHistoryReducer: propertyHistoryReducer
 })

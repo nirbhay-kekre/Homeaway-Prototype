@@ -11,14 +11,16 @@ const ProfileViewService = require('./services/viewProfileService');
 const ProfileUpdateService = require('./services/updateProfileService');
 const MakeMeOwnerService = require('./services/makeMeOwnerService');
 const postPropertyService = require('./services/postPropertyService');
-const bookPropertyService = require('./services/bookPropertyService')
+const bookPropertyService = require('./services/bookPropertyService');
+const propertyHistoryService = require('./services/propertyHistoryService')
 
 const {
     LOGIN_REQUEST_TOPIC, SIGNUP_REQUEST_TOPIC,
     PASSPORT_REQUEST_TOPIC, LIST_PROPERTY_REQUEST_TOPIC,
     DETAIL_PROPERTY_REQUEST_TOPIC, PROFILE_VIEW_REQUEST_TOPIC,
     PROFILE_UPDATE_REQUEST_TOPIC, MAKE_ME_OWNER_REQUEST_TOPIC,
-    POST_PROPERTY_REQUEST, BOOK_PROPERTY_REQUEST
+    POST_PROPERTY_REQUEST, BOOK_PROPERTY_REQUEST,
+    PROPERTY_HISTORY_REQUEST_TOPIC
 } = require('./kafka/topics');
 
 function handleTopicRequest(topic_name, fname) {
@@ -63,3 +65,4 @@ handleTopicRequest(PROFILE_UPDATE_REQUEST_TOPIC,ProfileUpdateService);
 handleTopicRequest(MAKE_ME_OWNER_REQUEST_TOPIC, MakeMeOwnerService);
 handleTopicRequest(POST_PROPERTY_REQUEST, postPropertyService);
 handleTopicRequest(BOOK_PROPERTY_REQUEST, bookPropertyService);
+handleTopicRequest(PROPERTY_HISTORY_REQUEST_TOPIC, propertyHistoryService);

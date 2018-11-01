@@ -25,7 +25,17 @@ const propertySchema = new Schema({
         availability: [{
             startDate: String,
             endDate: String
-        }]
+        }],
+        history:[
+            {
+                propertyId: String,
+                guests: Number,
+                buyer: String,
+                arrivalDate: String,
+                departureDate: String,
+                amountPaid: Number
+            }
+        ]
 });
 propertySchema.plugin(mongoosePaginate);
 

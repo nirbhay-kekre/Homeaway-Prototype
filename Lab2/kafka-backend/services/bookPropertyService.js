@@ -1,6 +1,5 @@
 const { prepareInternalServerError, prepareSuccess } = require('./responses')
 const { Property } = require('./../models/property');
-const { Booking } = require('./../models/bookingHistory')
 let DateDiff = require("date-diff");
 
 async function handle_request(req, callback) {
@@ -20,7 +19,7 @@ async function handle_request(req, callback) {
         let property = await Property.findOne(searchCriteria);
 
         if (property) {
-            let updatedAvailabilily = []
+            let updatedAvailabilily = [];
             for (i = 0; i < property._doc.availability.length; i++) {
                 let current = property._doc.availability[i];
                 let arrival = arrivalDate.toISOString();
@@ -50,17 +49,20 @@ async function handle_request(req, callback) {
                     updatedAvailabilily.push(current);
                 }
             }
-            let updatedprop = await Property.findOneAndUpdate({ propertyId: propertyId },
-                { availability: updatedAvailabilily }, { new: true });
-            await Booking.create({
-                propertyId,
+            let updatedHistory = property._doc.history ? property._doc.history : [];
+            updatedHistory.push({
                 guests,
-                owner: property._doc.owner,
                 buyer,
                 arrivalDate: arrivalDate.toISOString(),
                 departureDate: departureDate.toISOString(),
                 amountPaid
-            })
+            });
+            let updatedprop = await Property.findOneAndUpdate({ propertyId: propertyId },
+                {
+                    availability: updatedAvailabilily,
+                    history: updatedHistory
+                }, { new: true });
+
             resp = prepareSuccess({
                 success: true,
                 message: "Booking Success"
