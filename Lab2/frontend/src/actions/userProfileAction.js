@@ -27,7 +27,7 @@ export const updateProfileAction = (fdata) => (dispatch) => {
         axios.defaults.withCredentials = true;
         axios.defaults.headers.common['Authorization']= localStorage.getItem('jwtToken');
         try {
-            let response = await axios.post("http://localhost:3001/profile/update", fdata);
+            let response = await axios.post(getURL("/profile/update"), fdata);
             dispatch({
                 type: UPDATE_PROFILE,
                 payload: response,

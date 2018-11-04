@@ -20,7 +20,7 @@ let app = express();
 // Set up middleware
 let requireAuth = passport.authenticate('jwt', {session: false});
 
-app.use(cors({ origin: `http://${config.frontend_host}:${config.frontend_port}`, credentials: true }));
+app.use(cors({ origin: `http://${config.frontend_host}`, credentials: true }));
 app.use(cookieParser());
 app.use(session({
     secret              : 'askjfn2r|e123asjk1@vhdas%539*EQ46',
@@ -37,7 +37,7 @@ app.use(session({
 app.use(bodyParser.json({limit:1024 * 1024 *5}));
 
 app.use(function(req, res, next) {
-    res.setHeader('Access-Control-Allow-Origin', `http://${config.frontend_host}:${config.frontend_port}`);
+    res.setHeader('Access-Control-Allow-Origin', `http://${config.frontend_host}`);
     res.setHeader('Access-Control-Allow-Credentials', 'true');
     res.setHeader('Access-Control-Allow-Methods', 'GET,HEAD,OPTIONS,POST,PUT,DELETE');
     res.setHeader('Access-Control-Allow-Headers', 'Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers');

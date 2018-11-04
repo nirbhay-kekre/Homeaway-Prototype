@@ -30,7 +30,6 @@ class Navbar extends Component {
     }
 
     handleLogout = () => {
-        axios.delete("http://localhost:3001/signout");
         localStorage.removeItem("jwtToken");
         localStorage.removeItem("loggedInUser");
         const navOptions = this.navContent();
