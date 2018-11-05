@@ -1,5 +1,6 @@
-## AWS S3 Instance
-http://homeaway2525.s3-website.us-east-2.amazonaws.com/
+## AWS Instances
+S3: http://homeaway2525.s3-website.us-east-2.amazonaws.com/
+EC2: 52.14.46.43
 
 ## Architecture Diagram
 All the routes are implemented in the following way: 
