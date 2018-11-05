@@ -24,5 +24,5 @@ get the code from backend folder and do the changes needed for Host and port var
 run **npm install** and **node index.js**
 
 ## Running Kafka Backend:
-get the code from Kafka backend and do the changes in https://github.com/Anuragis/CMPE273-37/blob/master/Lab2/kafka-backend/connection/mongoose.js for mongoDb Connection. <br>
-run **run **npm install** and **npm start**
+get the code from Kafka backend and do the changes in https://github.com/Anuragis/CMPE273-37/blob/master/Lab2/kafka-backend/connection/mongoose.js for mongoDb Connection. <br><br>
+run **npm install** and **npm start**
