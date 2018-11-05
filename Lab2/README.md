@@ -1,5 +1,5 @@
 ## AWS Instances
-S3: http://homeaway2525.s3-website.us-east-2.amazonaws.com/
+S3: http://homeaway2525.s3-website.us-east-2.amazonaws.com/ <br>
 EC2: 52.14.46.43
 
 ## Architecture Diagram
