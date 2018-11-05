@@ -9,6 +9,8 @@ import Proxy from '../proxy/proxy';
 class OwnerAllProperties extends Component {
     render() {
 
+        let loggedInUser = localStorage.getItem("loggedInUser");
+        loggedInUser = JSON.parse(loggedInUser);
         return (
             <div>
                 <Proxy />
@@ -18,6 +20,7 @@ class OwnerAllProperties extends Component {
                         historyFor="owner"
                         NoCardMessage="You haven't posted any properties yet"
                         propertyHistoryTitle="All posted properties"
+                        owner={loggedInUser.username}
                     ></BookingHistory>
                 </div>
             </div>

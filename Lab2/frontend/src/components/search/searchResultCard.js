@@ -15,6 +15,7 @@ class SearchResultCard extends Component{
                             arrivalDate: this.props.arrivalDate,
                             departureDate: this.props.departureDate,
                             accomodates_min: this.props.guests,
+                            owner: this.props.owner,
                         }
                     }
 

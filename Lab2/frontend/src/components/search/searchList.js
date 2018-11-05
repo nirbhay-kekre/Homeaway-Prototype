@@ -52,6 +52,7 @@ class SearchList extends Component {
                     //searchCity={this.props.filters.city}
                     cardFixedHeight="150px"
                     cardIndex={result.propertyId}
+                    owner={result.owner}
                 ></SearchResultCard>
             )
 

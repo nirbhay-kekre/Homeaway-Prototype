@@ -64,7 +64,6 @@ class BookingHistory extends Component {
     }
 
     getPropertyView = (properties) => {
-        debugger;
         let propertyView = [];
         let loggedInUser = localStorage.getItem('loggedInUser');
         if (loggedInUser) {
@@ -172,6 +171,7 @@ class BookingHistory extends Component {
                                     cardFixedHeight="175px"
                                     amenities = {result.amenities}
                                     cardIndex={result.bookingId}
+                                    owner={result.owner}
                                 />
                             );
                         })}

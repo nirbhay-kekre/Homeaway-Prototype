@@ -80,7 +80,7 @@ class Navbar extends Component {
                     title: name,
                     dropdown: [{
                         title: "Inbox",
-                        to: "#"
+                        to: "/conversations/all"
                     }, {
                         title: "My trips",
                         to: "/mytrips"

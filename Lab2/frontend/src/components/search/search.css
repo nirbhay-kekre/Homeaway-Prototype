@@ -16,6 +16,17 @@
     min-height: 150px;
 }
 
+.modal {
+    display: block;
+}
+
+.modal-container {
+       position: relative;
+     }
+     .modal-container .modal, .modal-container .modal-backdrop {
+       position: absolute;
+     }
+
 @media (max-width: 768px){
     .sticky-top {
         position: relative;

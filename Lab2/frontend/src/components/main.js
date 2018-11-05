@@ -18,6 +18,8 @@ import OwnerAllProperties from './ownerDashboard/ownerAllPropertyListing'
 import OwnerSoldProperties from './ownerDashboard/ownerSoldPropertyListing';
 import OwnerPostProperties from './ownerDashboard/ownerPostProperty'
 import ChangeOwnership from './changeOwnership/changeOwnership'
+import AllConversations from './inbox/allConversations';
+import DetailConversation from './inbox/detailConversation';
 
 //Create a Main Component
 class Main extends Component {
@@ -73,6 +75,8 @@ class Main extends Component {
                 <Route exact path='/owner/dashboard/all' component={OwnerAllProperties} />
                 <Route exact path='/owner/dashboard/sold' component={OwnerSoldProperties} />
 
+                <Route exact path='/conversations/all' component={AllConversations}/>
+                <Route exact path='/detail/conversation' component={DetailConversation}/>
             </div>
         )
     }

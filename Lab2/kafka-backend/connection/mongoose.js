@@ -2,6 +2,6 @@ var mongoose = require('mongoose');
 
 mongoose.Promise = global.Promise;
 
-mongoose.connect('mongodb://root:nirbhay123@ds045557.mlab.com:45557/homeaway_nirbhay');
+mongoose.connect('mongodb://root:nirbhay123@ds045557.mlab.com:45557/homeaway_nirbhay', {poolSize: 200});
 
 module.exports = {mongoose};

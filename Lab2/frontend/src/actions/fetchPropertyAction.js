@@ -60,7 +60,6 @@ export const fetchPropertyDetail = (propertyDetail) => async (dispatch) => {
     axios.defaults.withCredentials = true;
     let response = null;
     try {
-        debugger;
         response = await axios.get(getURL("property/search/detail?"), {
             params: propertyDetail,
             headers: {
@@ -73,6 +72,15 @@ export const fetchPropertyDetail = (propertyDetail) => async (dispatch) => {
             payload: response
         })
     } catch (error) {
+        if (error.message === "Network Error") {
+            console.log("Server is down!");
+        } else if (error.response.status === 401) {
+            localStorage.removeItem("jwtToken");
+            localStorage.removeItem("loggedInUser");
+            dispatch({
+                type: USER_AUTH_FAIL
+            });
+        }
         console.log(error);
     }
 }

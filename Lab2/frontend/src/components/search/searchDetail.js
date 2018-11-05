@@ -4,7 +4,9 @@ import { connect } from 'react-redux';
 import ImageSlider from './imageSlider'
 import { fetchPropertyDetail } from './../../actions/fetchPropertyAction';
 import { bookPropertyAction } from './../../actions/bookPropertyAction';
+import { sendMessageAction } from '../../actions/sendMessageAction'
 import Proxy from '../proxy/proxy';
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 
 class SearchDetail extends Component {
 
@@ -16,11 +18,54 @@ class SearchDetail extends Component {
             departureDate: this.props.location.state.departureDate || this.formatDate(new Date()),
             accomodates: this.props.location.state.accomodates_min || 1,
             errorMessage: "",
-            success: null
-        }
+            success: null,
+            open: false,
+            questionToOwner: ""
+        };
+
         this.onChange = this.onChange.bind(this);
+        this.cancelMessage = this.cancelMessage.bind(this);
+        this.sendMessage = this.sendMessage.bind(this);
     }
 
+    sendMessage = async () => {
+        debugger
+        try {
+            let loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
+            if (this.state.questionToOwner) {
+                const params = {
+                    propertyId: this.props.location.state.propertyId,
+                    owner: this.props.result.owner,
+                    traveler: loggedInUser.username,
+                    headline: this.props.result.headline,
+                    from: loggedInUser.username,
+                    to: this.props.result.owner,
+                    message: this.state.questionToOwner
+                }
+                await this.props.sendMessageAction(params);
+                this.setState({
+                    questionToOwner: "",
+                    open: !this.state.open
+                })
+            }
+        } catch (error) {
+            this.setState({
+                open: !this.state.open
+            })
+        }
+
+    }
+    cancelMessage = () => {
+        this.setState({
+            questionToOwner: "",
+            open: !this.state.open
+        })
+    }
+    handleHide() {
+        this.setState({
+            open: !this.state.open
+        })
+    }
     onChange = (e) => {
         this.setState({
             [e.target.name]: e.target.value
@@ -39,7 +84,11 @@ class SearchDetail extends Component {
         }
         this.props.fetchPropertyDetail(params);
     }
-
+    handleShow() {
+        this.setState({
+            open: true
+        });
+    }
     bookNowHandler = async (e) => {
         e.preventDefault();
         try {
@@ -83,9 +132,12 @@ class SearchDetail extends Component {
                 <div className="col-xs-2"><button type="button" className="close" data-dismiss="alert"><span aria-hidden="true">×</span><span className="sr-only">Close</span></button></div>
             </div>
         }
+
+
+
         return (
             <div>
-                <Proxy/>
+                <Proxy />
                 <form className="form-horizontal" onSubmit={this.bookNowHandler}>
                     <div className="container">
                         <div className="row p-1">
@@ -188,13 +240,31 @@ class SearchDetail extends Component {
                                     <h4 className="text-right col-6 w-100">${this.props.result.totalPrice}</h4>
                                 </div>
                                 <div className="row m-4">
-                                    <button class="btn btn-primary search-button w-100 p-3 m-1" type="submit">Book Now</button>
+                                    <button className="btn btn-primary search-button w-100 p-3 m-1" type="submit">Book Now</button>
+                                </div>
+                                <div className="row m-4">
+                                    <button type="button" className="btn btn-primary search-button w-100 p-3 m-1" onClick={this.handleHide.bind(this)}>
+                                        Ask owner a Question
+                                    </button>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </form>
+                <Modal backdrop={true} isOpen={this.state.open} toggle={this.handleHide.bind(this)} className={this.props.className}>
+                    <ModalHeader toggle={this.handleHide.bind(this)}>Ask owner a question</ModalHeader>
+                    <ModalBody>
+                        <div>
+                            <textarea name="questionToOwner" value={this.state.questionToOwner} onChange={this.onChange} className="form-control" rows="5" style={{ resize: "none", }} placeholder="Message"></textarea>
+                        </div>
+                    </ModalBody>
+                    <ModalFooter className="row">
+                        <Button color="primary" className="col-3 float-right" onClick={this.sendMessage.bind(this)}>Send</Button>{' '}
+                        <Button color="dark" className="col-3 float-left text-white" onClick={this.cancelMessage.bind(this)}>Cancel</Button>
+                    </ModalFooter>
+                </Modal>
             </div>
+
         )
     }
 }
@@ -207,4 +277,4 @@ SearchDetail.propTypes = {
     fetchPropertyDetail: PropTypes.func.isRequired,
     result: PropTypes.array.isRequired
 }
-export default connect(mapStateToProps, { fetchPropertyDetail, bookPropertyAction })(SearchDetail);
+export default connect(mapStateToProps, { fetchPropertyDetail, bookPropertyAction, sendMessageAction })(SearchDetail);

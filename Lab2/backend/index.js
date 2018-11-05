@@ -13,6 +13,7 @@ let property = require("./routes/property");
 let ownerProperty = require("./routes/ownerProperty");
 let travelerProperty = require("./routes/travelerProperty");
 let makeMeOwner = require("./routes/makeMeOwner");
+let conversation = require("./routes/conversation")
 const config = require('./authProxy/config/settings');
 
 
@@ -63,7 +64,7 @@ app.use("/property", property);
 app.use("/property", ownerProperty);
 app.use("/property", travelerProperty);
 app.use("/makeMeOwner", makeMeOwner);
-
+app.use("/conversation", conversation);
 
 
 app.listen(config.backend_port, () => console.log(`Server listening on port ${config.backend_port}`))

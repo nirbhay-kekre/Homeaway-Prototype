@@ -3,7 +3,7 @@ import {
     UPDATE_AVAILABILITY, UPDATE_BOOKING_OPTION,
     UPDATE_DETAILS, UPDATE_LOCATION,
     UPDATE_PHOTOS, UPDATE_PRICE,
-    PROPERTY_POSTED
+    PROPERTY_POSTED, USER_AUTH_FAIL
 } from './types';
 import axios from 'axios';
 import getURL from './url';
@@ -123,7 +123,25 @@ export const submitPropertyAction = (fdata) => (dispatch) => {
             });
             resolve(response);
         } catch (error) {
-            console.log(error);
+            if (error.message === "Network Error") {
+                console.log("Server is down!");
+                reject("Server is down!");
+                error.response = {
+                    data: {
+                        success: false,
+                        message: "Server is down!"
+                    }
+                }
+            }
+            else {
+                if (error.response.status === 401) {
+                    localStorage.removeItem("jwtToken");
+                    localStorage.removeItem("loggedInUser");
+                    dispatch({
+                        type: USER_AUTH_FAIL
+                    });
+                }
+            }
             reject(error);
         }
     });
