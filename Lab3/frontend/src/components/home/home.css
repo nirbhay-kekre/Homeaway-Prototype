@@ -1,0 +1,36 @@
+.home-container {
+    background-image: linear-gradient(180deg,rgba(0,0,0,.5),rgba(0,0,0,.2) 12%,rgba(0,0,0,.2) 88%,rgba(0,0,0,.5)), url(./home.jpg);
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    
+  }
+  
+  .home-inner {
+    height: 100vh;
+  }
+  
+  .home-search{
+    max-width: 1020px;
+  }
+  
+  .home-searchField{
+    position: relative;
+    margin:auto;
+    padding: 10px 5px
+  }
+
+  .form-control{
+    height: 58px;
+    margin: 20px 0px; 
+  }
+  .search-button{
+    height: 58px;
+    border-radius: 40px;
+    margin: 20px 0px;
+    background-color: #0067db;
+  }
+
+
+  

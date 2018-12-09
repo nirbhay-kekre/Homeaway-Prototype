@@ -1,0 +1,117 @@
+.login-container {
+    background-color: #f4f4f4;
+    height: 100vh;
+    margin-right: auto;
+    margin-left: auto;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+h1,.h1{
+    font-size:40px;
+    font-weight: 100;
+    color:#353e44;
+}
+.col-md-12{
+    width: 100%
+}
+.signup{
+    margin-right: 3px;
+    font-size: 18px;
+    color: #666;
+}
+.link{
+    font-size: 18px;
+    color: #2a6ebb;
+    text-decoration: none;
+    margin-bottom: 15px;
+}
+.login-inner{
+    margin-bottom: 15px;
+    padding: 60px;
+    font-family: 'Open Sans', sans-serif;
+    text-align: center
+}
+
+.login-pannel{
+    border-color: #dbdbdb;
+    margin-bottom: 20px;
+    background-color: #fff;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    box-shadow: 0 1px 1px rgba(0,0,0,0.05);
+    border-radius: 3px
+}
+.pannel-body{
+    height:auto;
+}
+.login-header{
+    font-weight: 100;
+}
+.pannel-header{
+    color: #666;
+    font-size: 22px;
+    font-weight: 300;
+    text-align: left;
+    border-bottom: 1px solid #dbdbdb;
+    padding: 10px 0;
+    margin: 0 20px;
+    position: relative;
+}
+.login-dashboard{
+    margin: 10px auto;
+}
+
+p{
+    margin:0px
+}
+.credential{
+    height: 44px;
+    padding: 9px 14px;
+    font-size: 18px;
+    line-height: 1.33;
+    border-radius: 0;
+    padding-right: 40px;
+    margin: auto;
+}
+
+.login-form{
+    padding: 20px 20px 30px;
+    min-height: 300px;
+    clear: both;
+    font-size: 14px;
+}
+.login-checkBox{
+    margin: 10px 0px 0px 0px;
+    font-size: 14px;
+    float: left;
+}
+
+.login-button, .login-button:hover, .login-button:focus{
+    padding: 9px 31px;
+    font-size: 18px;
+    line-height: 1.33;
+    border-radius: 0;
+    background-color: #ff8a00;
+    color: #fff;
+    text-shadow: none;
+    border-color: #ff8a00;
+    position: relative;
+    width: 100%;
+    box-shadow: none;
+}
+
+.login-button:active, .login-button:active{
+    background-color:#e57c00!important;
+    border-color:#e57c00!important;
+    text-decoration:none;
+    box-shadow: none;
+}
+
+.error-message{
+    background-color: #ed605a;
+    border-color: transparent;
+    color: #fff;
+    padding: 15px 5px;
+    white-space: pre-line;
+}
