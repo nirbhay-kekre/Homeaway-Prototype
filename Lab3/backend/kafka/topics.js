@@ -23,7 +23,7 @@ const PROPERTY_HISTORY_RESPONSE_TOPIC = "propertyHistoryResponse1";
 const CONVERSATION_VIEW_REQUEST = "conversationViewRequest1";
 const CONVERSATION_VIEW_RESPONSE = "conversationViewResponse1";
 const CONVERSATION_UPDATE_REQUEST = "conversationUpdateRequest1";
-const CONVERSATION_UPDATE_RESPONSE = "conversationUpdateResponse1"
+const CONVERSATION_UPDATE_RESPONSE = "conversationUpdateResponse1";
 
 module.exports = {
     LOGIN_REQUEST_TOPIC, LOGIN_RESPONSE_TOPIC,

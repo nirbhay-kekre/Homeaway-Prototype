@@ -15,7 +15,8 @@ let travelerProperty = require("./routes/travelerProperty");
 let makeMeOwner = require("./routes/makeMeOwner");
 let conversation = require("./routes/conversation")
 const config = require('./authProxy/config/settings');
-
+const graphqlHTTP = require('express-graphql');
+const schema = require('./graphQlSchema/credentialSchema');
 
 let app = express();
 // Set up middleware
@@ -56,8 +57,12 @@ require('./authProxy/config/passport')(passport);
 console.log(__dirname);
 app.use("/profilePic",express.static(__dirname+ "/uploads/profile"))
 app.use("/propertyPic",express.static(__dirname+"/uploads/property"))
-app.use("/login", login);
+//app.use("/login", login);
 app.use("/signup", signup);
+app.use("/unprotected",graphqlHTTP({
+    schema,
+    graphiql: true
+}));
 app.use("/", requireAuth);
 app.use("/profile", profile);
 app.use("/property", property);
