@@ -21,13 +21,11 @@ async function handle_request(req, callback) {
         let property = await Property.findOne(searchCriteria);
         if (property) {
             resp = prepareSuccess({
-                result: {
                     ...property._doc,
                     guests: accomodates,
                     arrivalDate: arrivalDate,
                     departureDate: departureDate,
-                    totalPrice: (property._doc.oneNightRate * numOfOnboardingDays).toFixed(2),
-                }
+                    totalPrice: (property._doc.oneNightRate * numOfOnboardingDays).toFixed(2)
             });
         }
         else {
