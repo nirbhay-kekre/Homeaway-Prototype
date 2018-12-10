@@ -16,12 +16,19 @@ let makeMeOwner = require("./routes/makeMeOwner");
 let conversation = require("./routes/conversation")
 const config = require('./authProxy/config/settings');
 const graphqlHTTP = require('express-graphql');
-const schema = require('./graphQlSchema/credentialSchema');
+const schema = require('./graphQlSchema/schema');
+const jwtDecode = require('jwt-decode');
 
 let app = express();
 // Set up middleware
 let requireAuth = passport.authenticate('jwt', {session: false});
-
+const getUserFromToken = (req, res, next) =>{
+    if(req.headers.authorization){
+        const jwtDecoded = jwtDecode(req.headers.authorization.substring(4, req.headers.authorization.length));
+        req.user = jwtDecoded;
+    }
+    next();
+}
 app.use(cors({ origin: `http://${config.frontend_host}`, credentials: true }));
 app.use(cookieParser());
 app.use(session({
@@ -51,25 +58,26 @@ app.use(expressValidator());
 
 // Log requests to console
 app.use(morgan('dev'));
-app.use(passport.initialize());
+//app.use(passport.initialize());
 // Bring in defined Passport Strategy
-require('./authProxy/config/passport')(passport);
+//require('./authProxy/config/passport')(passport);
 console.log(__dirname);
+app.use("/",getUserFromToken);
 app.use("/profilePic",express.static(__dirname+ "/uploads/profile"))
 app.use("/propertyPic",express.static(__dirname+"/uploads/property"))
 //app.use("/login", login);
-app.use("/signup", signup);
-app.use("/unprotected",graphqlHTTP({
+//app.use("/signup", signup);
+app.use("/homeaway_api",graphqlHTTP({
     schema,
     graphiql: true
 }));
-app.use("/", requireAuth);
+//app.use("/", requireAuth);
 app.use("/profile", profile);
 app.use("/property", property);
 app.use("/property", ownerProperty);
 app.use("/property", travelerProperty);
 app.use("/makeMeOwner", makeMeOwner);
-app.use("/conversation", conversation);
+//app.use("/conversation", conversation);
 
 
 app.listen(config.backend_port, () => console.log(`Server listening on port ${config.backend_port}`))
