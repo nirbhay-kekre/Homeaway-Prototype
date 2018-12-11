@@ -36,7 +36,7 @@ class BookingHistory extends Component {
                 headline: this.state.headline
             }, this.props.historyFor, this.props.sold);
             this.setState({
-                searchResults: this.getPropertyView(response.data.properties),
+                searchResults: this.getPropertyView(response.data.history.properties),
                 currentPage: 1,
             })
         }
@@ -46,12 +46,11 @@ class BookingHistory extends Component {
     }
     componentDidMount = async () => {
         try {
-            debugger;
             let response = await this.props.fetchPropertyHistory({
                 city: this.state.city,
                 headline: this.state.headline
             }, this.props.historyFor, this.props.sold);
-            let searchResults = this.getPropertyView(response.data.properties);
+            let searchResults = this.getPropertyView(response.data.history.properties);
             ;
             this.setState({
                 searchResults,
@@ -123,7 +122,6 @@ class BookingHistory extends Component {
 
     getBookingHistoryCards() {
         if (this.state.searchResults.length > 0) {
-            debugger;
             return (
                 <div>
                     <form className="form-horizontal" onSubmit={this.onSubmit}>

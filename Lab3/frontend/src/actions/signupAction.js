@@ -1,6 +1,8 @@
 import { SIGNUP_SUCCESS, SIGNUP_FAIL } from './types'
 import axios from 'axios';
 import getURL from './url';
+import { ApolloService } from './../graphql/ApolloClient';
+import Mutation from './../graphql/mutation'
 
 export const signupAction = (signUpForm) => (dispatch) => {
     return new Promise(async (resolve, reject) => {
@@ -9,12 +11,14 @@ export const signupAction = (signUpForm) => (dispatch) => {
         let message = validateSignUpForm(signUpForm);
         if (message) {
             let error = {
-                response: {
+               
                     data: {
-                        success: false,
-                        message
+                        signup: {
+                            success: false,
+                            message
+                        }
                     }
-                }
+                
             };
             dispatch({
                 type: SIGNUP_FAIL,
@@ -24,14 +28,28 @@ export const signupAction = (signUpForm) => (dispatch) => {
         } else {
             try {
                 console.log("Signing up")
-                response = await axios.post(getURL("signup"), signUpForm);
+                //response = await axios.post(getURL("signup"), signUpForm);
+                response = await ApolloService.mutate({
+                    variables: {
+                        ...signUpForm
+                    },
+                    mutation: Mutation.SIGNUP
+                })
                 console.log("signUp response");
                 console.log(response);
-                dispatch({
-                    type: SIGNUP_SUCCESS,
-                    payload: response
-                });
-                resolve(response);
+                if (response.data.signup.statusCode === 200 && response.data.signup.success === true) {
+                    dispatch({
+                        type: SIGNUP_SUCCESS,
+                        payload: response
+                    });
+                    resolve(response);
+                } else {
+                    dispatch({
+                        type: SIGNUP_FAIL,
+                        payload: response
+                    });
+                    reject(response);
+                }
             } catch (error) {
                 dispatch({
                     type: SIGNUP_FAIL,

@@ -5,6 +5,8 @@ import {
 } from './types'
 import getURL from './url';
 import axios from 'axios';
+import { ApolloService } from './../graphql/ApolloClient';
+import Queries from './../graphql/query';
 
 export const updateSearchPropertyFilterCriteria = (filter) => (dispatch) => {
     return new Promise((resolve, reject) => {
@@ -21,28 +23,23 @@ export const fetchPropertiesList = (filters = {}, pageNumber = 1, limit = 10) =>
     let response = null;
     console.log({ filters });
     try {
-        response = await axios.get(getURL('/property/search/list'),
-            {
-                params: {
-                    filters,
-                    pagination: {
-                        page: pageNumber,
-                        limit
-                    }
-                },
-                headers: {
-                    'Authorization': localStorage.getItem('jwtToken')
-                }
-            });
-        console.log(response);
-        dispatch({
-            type: FETCH_PROPERTIES_LIST,
-            payload: response
+        response = await ApolloService.query({
+            variables: {
+                filters: JSON.stringify(filters),
+                pagination: JSON.stringify({
+                    page: pageNumber,
+                    limit
+                })
+            },
+            query: Queries.GET_PROPERTIES
         })
-    } catch (error) {
-        if (error.message === "Network Error") {
-            console.log("Server is down!");
-        } else if (error.response.status === 401) {
+        console.log(response);
+        if (response.data.properties.statusCode === 200 && response.data.properties.success === true) {
+            dispatch({
+                type: FETCH_PROPERTIES_LIST,
+                payload: response
+            })
+        } else if (response.data.properties.statusCode === 401) {
             localStorage.removeItem("jwtToken");
             localStorage.removeItem("loggedInUser");
             dispatch({
@@ -52,6 +49,10 @@ export const fetchPropertiesList = (filters = {}, pageNumber = 1, limit = 10) =>
                 type: RESET_PROPERTY
             })
         }
+    } catch (error) {
+        if (error.message === "Network Error") {
+            console.log("Server is down!");
+        }
         console.log(error);
     }
 }
@@ -60,27 +61,29 @@ export const fetchPropertyDetail = (propertyDetail) => async (dispatch) => {
     axios.defaults.withCredentials = true;
     let response = null;
     try {
-        response = await axios.get(getURL("property/search/detail?"), {
-            params: propertyDetail,
-            headers: {
-                'Authorization': localStorage.getItem('jwtToken')
-            }
-        });
-        console.log(response);
-        dispatch({
-            type: FETCH_PROPERTY_DETAIL,
-            payload: response
+        response = await ApolloService.query({
+            variables: {
+                ...propertyDetail
+            },
+            query: Queries.GET_PROPERTY
         })
-    } catch (error) {
-        if (error.message === "Network Error") {
-            console.log("Server is down!");
-        } else if (error.response.status === 401) {
+        console.log(response);
+        if (response.data.property.statusCode === 200 && response.data.property.success === true) {
+            dispatch({
+                type: FETCH_PROPERTY_DETAIL,
+                payload: response
+            })
+        } else if (response.data.property.statusCode === 401) {
             localStorage.removeItem("jwtToken");
             localStorage.removeItem("loggedInUser");
             dispatch({
                 type: USER_AUTH_FAIL
             });
         }
+    } catch (error) {
+        if (error.message === "Network Error") {
+            console.log("Server is down!");
+        } 
         console.log(error);
     }
 }

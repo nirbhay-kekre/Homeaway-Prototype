@@ -9,14 +9,16 @@ export default function (state = initialState, action) {
         case SIGNUP_SUCCESS:
             return {
                 ...state,
-                signupResponse: action.payload.data
+                signupResponse: action.payload.data.signup
             }
         case SIGNUP_FAIL:
-            console.log("Fail:")
-            console.log({ payload: action.payload });
+            // console.log("Fail:")
+            // console.log({ payload: action.payload });
+            console.log({payload: action.payload});
+            console.log("################");
             return {
                 ...state,
-                signupResponse: action.payload.response.data
+                signupResponse: action.payload.data.signup
             }
         default: return state;
     }

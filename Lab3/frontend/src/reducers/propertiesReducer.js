@@ -26,19 +26,19 @@ export default function (state = initialState, action) {
         case FETCH_PROPERTIES_LIST:
             return {
                 ...state,
-                searchResults: action.payload.data.results,
+                searchResults: action.payload.data.properties.results,
                 pagination: {
-                    total: action.payload.data.total,
-                    limit: action.payload.data.limit,
-                    offset: action.payload.data.offset,
-                    page: action.payload.data.page,
-                    pages: action.payload.data.pages
+                    total: action.payload.data.properties.total,
+                    limit: action.payload.data.properties.limit,
+                    offset: action.payload.data.properties.offset,
+                    page: action.payload.data.properties.page,
+                    pages: action.payload.data.properties.pages
                 }
             }
         case FETCH_PROPERTY_DETAIL:
             return {
                 ...state,
-                result: action.payload.data.result || {}
+                result: action.payload.data.property || {}
             }
         case SEARCH_FILTER_CRITERIA:
             return{

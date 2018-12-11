@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom';
 export default class IndividualConversation extends Component {
     render() {
-        debugger;
         return (
             <div class="card m-3">
                 <Link to={

@@ -14,7 +14,6 @@ class DetailConversation extends Component {
 
     }
     onChange = (e) => {
-        debugger
         this.setState({
             [e.target.name]: e.target.value
         })

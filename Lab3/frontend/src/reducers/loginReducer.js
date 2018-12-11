@@ -12,19 +12,19 @@ export default function (state = initialState, action) {
         case CHANGE_TO_OWNER_SUCCESS:
             return {
                 ...state,
-                loginResponse: action.payload.data
+                loginResponse: action.payload.data.makeMeOwner
             }
         case LOGIN_SUCCESS:
             return {
                 ...state,
-                loginResponse: action.payload.data
+                loginResponse: action.payload.data.login
             }
         case LOGIN_FAIL:
             console.log("Fail:")
             console.log({ payload: action.payload });
             return {
                 ...state,
-                loginResponse: action.payload.response.data
+                loginResponse: action.payload.data.login
             }
         case USER_AUTH_FAIL:
             return initialState;// reseting state on AUTH failure on routes other than login

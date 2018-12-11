@@ -40,21 +40,34 @@ class ProfileUpdate extends Component {
 
     updateProfileSubmitHandler = async (e) => {
         e.preventDefault();
-        const fdata = new FormData();
-        fdata.append("firstname", this.state.firstname);
-        fdata.append("lastname", this.state.lastname);
-        fdata.append("aboutme", this.state.aboutme);
-        fdata.append("city", this.state.city);
-        fdata.append("company", this.state.company);
-        fdata.append("school", this.state.school);
-        fdata.append("hometown", this.state.hometown);
-        fdata.append("languages", this.state.languages);
-        fdata.append("gender", this.state.gender);
-        fdata.append("phone", this.state.phone);
-        fdata.append("profilefilepath", this.state.profilefilepath)
-        fdata.append("profilePhoto", this.state.profilePhoto);
+        // const fdata = new FormData();
+        // fdata.append("firstname", this.state.firstname);
+        // fdata.append("lastname", this.state.lastname);
+        // fdata.append("aboutme", this.state.aboutme);
+        // fdata.append("city", this.state.city);
+        // fdata.append("company", this.state.company);
+        // fdata.append("school", this.state.school);
+        // fdata.append("hometown", this.state.hometown);
+        // fdata.append("languages", this.state.languages);
+        // fdata.append("gender", this.state.gender);
+        // fdata.append("phone", this.state.phone);
+        // fdata.append("profilefilepath", this.state.profilefilepath)
+        // fdata.append("profilePhoto", this.state.profilePhoto);
+        const data = {
+            firstname: this.state.firstname,
+            lastname: this.state.lastname,
+            aboutme: this.state.aboutme,
+            city: this.state.city,
+            company: this.state.company,
+            school: this.state.school,
+            hometown: this.state.hometown,
+            languages: this.state.languages,
+            gender: this.state.gender,
+            phone: this.state.phone,
+            profilefilepath: this.state.profilefilepath
+        }
         try {
-            await this.props.updateProfileAction(fdata);
+            await this.props.updateProfileAction(data);
             this.setState({
                 isProfileUpdateSuccessfull: true,
                 profilePhoto: null,
@@ -74,7 +87,6 @@ class ProfileUpdate extends Component {
 
     componentWillReceiveProps(nextProps) {
         if (this.props.profile !== nextProps.profile) {
-            //debugger;
             this.setState({
                 ...nextProps.profile,
                 profilePhoto: null,
@@ -89,7 +101,7 @@ class ProfileUpdate extends Component {
     }
 
     render() {
-        debugger;
+
         let redirectVar = null, feedbackMessage, imagePreview = this.state.profileUpateTempUrl ? this.state.profileUpateTempUrl : this.state.profilefilepath+"?"+new Date().getTime();
         if (!localStorage.getItem("loggedInUser") || !localStorage.getItem("jwtToken")) {
             redirectVar = <Redirect to="/login"></Redirect>

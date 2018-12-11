@@ -12,7 +12,7 @@ export default function (state = initialState, action) {
         case CONVERSATION_GET:
             return {
                 ...state,
-                conversations: action.payload.data.conversations
+                conversations: action.payload.data.getMessage.conversations
             };
         case CONVERSATION_CLEAR:
             return initialState;

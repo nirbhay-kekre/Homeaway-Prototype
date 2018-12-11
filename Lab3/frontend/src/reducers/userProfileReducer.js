@@ -24,9 +24,9 @@ export default function (state = initialState, action) {
         case GET_PROFILE_DETAIL:
             profile = {
                 ...state.profile,
-                ...action.payload.data,
-                profilefilepath: action.payload.data.profilefilepath ? action.payload.data.profilefilepath : Default_profile_Pic,
-                createdOn: action.payload.data.createdOn ? new Date(action.payload.data.createdOn).getFullYear() : "The beginning"
+                ...action.payload.data.profile,
+                profilefilepath: action.payload.data.profile.profilefilepath ? action.payload.data.profile.profilefilepath : Default_profile_Pic,
+                createdOn: action.payload.data.profile.createdOn ? new Date(action.payload.data.profile.createdOn).getFullYear() : "The beginning"
             }
             return {
                 ...state,
@@ -35,9 +35,9 @@ export default function (state = initialState, action) {
         case UPDATE_PROFILE:
             profile = {
                 ...state.profile,
-                ...action.payload.data,
-                profilefilepath: action.payload.data.profilefilepath ? action.payload.data.profilefilepath : Default_profile_Pic,
-                createdOn: action.payload.data.createdOn ? new Date(action.payload.data.createdOn).getFullYear() : "The beginning"
+                ...action.payload.data.updateProfile,
+                profilefilepath: action.payload.data.updateProfile.profilefilepath ? action.payload.data.updateProfile.profilefilepath : Default_profile_Pic,
+                createdOn: action.payload.data.updateProfile.createdOn ? new Date(action.payload.data.updateProfile.createdOn).getFullYear() : "The beginning"
             }
             return {
                 ...state,

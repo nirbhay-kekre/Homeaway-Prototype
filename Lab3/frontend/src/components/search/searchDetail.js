@@ -29,7 +29,7 @@ class SearchDetail extends Component {
     }
 
     sendMessage = async () => {
-        debugger
+
         try {
             let loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
             if (this.state.questionToOwner) {

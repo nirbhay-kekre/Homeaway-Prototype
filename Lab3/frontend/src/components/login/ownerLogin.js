@@ -75,7 +75,6 @@ class OwnerLogin extends Component {
         if (this.state.errorMessage ) {
             invalidCredentials = <p className="alert alert-danger error-message">{this.state.errorMessage}</p>
         }else if (false === this.props.loginResponse.success) {
-            debugger;
             invalidCredentials = <p className="alert alert-danger error-message">{this.props.loginResponse.message}</p>
         }
         return (

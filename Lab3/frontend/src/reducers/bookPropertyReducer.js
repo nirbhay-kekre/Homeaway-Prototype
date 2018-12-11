@@ -11,14 +11,14 @@ export default function (state = initialState, action) {
         case BOOK_PROPERTY_SUCCESS:
             return {
                 ...state,
-                bookingStatus: action.payload.data
+                bookingStatus: action.payload.data.bookProperty
             }
         case BOOK_PROPERTY_FAIL:
             console.log("Fail:")
             console.log({ payload: action.payload });
             return {
                 ...state,
-                bookingStatus: action.payload.response.data
+                bookingStatus: action.payload.data.bookProperty
             }
         default: return state;
     }

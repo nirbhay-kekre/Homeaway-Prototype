@@ -367,7 +367,7 @@ const Mutation = new GraphQLObjectType({
                 arrivalDate: { type: GraphQLString },
                 departureDate: { type: GraphQLString },
                 guests: { type: GraphQLInt },
-                amountPaid: { type: GraphQLFloat }
+                amountPaid: { type: GraphQLString }
             },
             async resolve(parent, args, context) {
                 var body = {
@@ -412,8 +412,10 @@ const RootQuery = new GraphQLObjectType({
                             return responseHandler(result);
                         }
                     });
+                    console.log("Execution was here")
                     return resp;
                 } else {
+                    console.log("no user in context was here")
                     return sendAuthenticationFailure();
                 }
             }
@@ -449,11 +451,17 @@ const RootQuery = new GraphQLObjectType({
         property: {
             type: propertySchemaType,
             args: {
-                propertyId: { type: GraphQLString }
+                propertyId: { type: GraphQLString },
+                arrivalDate: { type: GraphQLString },
+                departureDate: { type: GraphQLString },
+                accomodates: { type: GraphQLInt }
             },
             async resolve(parent, args, context) {
                 var body = {
-                    propertyId: args.propertyId
+                    propertyId: args.propertyId,
+                    arrivalDate: args.arrivalDate,
+                    departureDate: args.departureDate,
+                    accomodates: args.accomodates
                 }
                 if (context.user) {
                     let res = await kafka.make_request(DETAIL_PROPERTY_REQUEST_TOPIC, DETAIL_PROPERTY_RESPONSE_TOPIC, body, function (err, result) {
@@ -502,11 +510,15 @@ const RootQuery = new GraphQLObjectType({
         history: {
             type: bookingHistoryType,
             args: {
-                historyFor: { type: GraphQLString }
+                historyFor: { type: GraphQLString },
+                filters: { type: GraphQLString },
+                sold: { type: GraphQLBoolean}
             },
             async resolve(parent, args, context) {
                 var body = {
                     historyFor: args.historyFor,
+                    filters: args.filters,
+                    sold: args.sold
                 }
                 if (context.user) {
                     body.username = context.user.username;

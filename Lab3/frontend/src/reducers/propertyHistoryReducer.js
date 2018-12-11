@@ -11,7 +11,7 @@ export default function (state = initialState, action) {
         case PROPERTY_HISTORY:
             return {
                 ...state,
-                historyResponse: action.payload.data
+                historyResponse: action.payload.data.history
             }
         default: return state;
     }

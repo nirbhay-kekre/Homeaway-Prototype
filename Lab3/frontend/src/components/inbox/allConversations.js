@@ -7,11 +7,9 @@ import IndividualConversation from './individualConversation';
 class AllConversations extends Component {
 
     componentWillMount() {
-        debugger;
         this.props.getMessageAction()
     }
     render() {
-        debugger
         let loggedInUser = localStorage.getItem("loggedInUser");
         if (loggedInUser)
             loggedInUser = JSON.parse(loggedInUser);
