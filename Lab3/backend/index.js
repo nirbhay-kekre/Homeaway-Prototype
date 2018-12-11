@@ -76,11 +76,11 @@ app.use("/homeaway_api", graphqlHTTP({
     graphiql: true
 }));
 //app.use("/", requireAuth);
-app.use("/profile", profile);
-app.use("/property", property);
-app.use("/property", ownerProperty);
-app.use("/property", travelerProperty);
-app.use("/makeMeOwner", makeMeOwner);
+// app.use("/profile", profile);
+// app.use("/property", property);
+// app.use("/property", ownerProperty);
+// app.use("/property", travelerProperty);
+// app.use("/makeMeOwner", makeMeOwner);
 //app.use("/conversation", conversation);
 
 
